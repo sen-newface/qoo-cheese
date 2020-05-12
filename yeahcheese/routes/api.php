@@ -8,20 +8,7 @@ Route::post('register', 'Api\UsersController@register');
 Route::post('login', 'Api\UsersController@login');
 Route::get('logout', 'Api\UsersController@logout');
 
-Route::group(['prefix' => 'events'], function() {
-    
-    Route::get('{page}', 'Api\EventsController@index');
-    Route::post('auth', 'Api\EventsController@auth');
-    Route::get('{id}', 'Api\EventsController@show');
-    Route::post('/', 'Api\EventsController@store');
-    Route::put('{id}', 'Api\EventsController@update');
-    Route::delete('{id}', 'Api\EventsController@delete');
+Route::resource('events', 'Api\EventsController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+Route::resource('events.photos', 'Api\PhotosController', ['only' => ['index', 'store', 'destroy']]);
 
-    Route::group(['prefix' => 'photos'], function() {
-        Route::get('/', 'Api\PhotosController@index');
-        Route::post('/', 'Api\PhotosController@store');
-        Route::delete('{id}', 'Api\PhotosController@delete');
-    });
-
-});
 
