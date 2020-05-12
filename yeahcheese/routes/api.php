@@ -9,11 +9,20 @@ Route::post('login', 'Api\UsersController@login');
 Route::get('logout', 'Api\UsersController@logout');
 
 Route::group(['prefix' => 'events'], function() {
+    
     Route::get('{page}', 'Api\EventsController@index');
     Route::post('auth', 'Api\EventsController@auth');
     Route::get('{id}', 'Api\EventsController@show');
     Route::post('/', 'Api\EventsController@store');
     Route::put('{id}', 'Api\EventsController@update');
     Route::delete('{id}', 'Api\EventsController@delete');
+
+    Route::group(['prefix' => 'photos'], function() {
+        Route::get('/', 'PhotosController@index');
+        Route::put('/', 'PhotosController@store');
+        Route::get('{id}', 'PhotosController@show');
+        Route::delete('{id}', 'PhotosController@delete');
+    });
+
 });
 
