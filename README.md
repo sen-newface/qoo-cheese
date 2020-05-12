@@ -1,2 +1,2 @@
-# environment
-Dockerfileだったりeditorconfigなど環境系ファイル置き場
+# TEAM KAMATA QOO cheese
+究極の画像共有システム made by kamata of sen
