@@ -34,6 +34,6 @@ class Event extends Model
   }
 
   protected $fillable = [
-    'name', 'start_day', 'end_day',
+    'name', 'start_day', 'end_day', 'user_id'
   ];
 }
