@@ -18,10 +18,9 @@ Route::group(['prefix' => 'events'], function() {
     Route::delete('{id}', 'Api\EventsController@delete');
 
     Route::group(['prefix' => 'photos'], function() {
-        Route::get('/', 'PhotosController@index');
-        Route::put('/', 'PhotosController@store');
-        Route::get('{id}', 'PhotosController@show');
-        Route::delete('{id}', 'PhotosController@delete');
+        Route::get('/', 'Api\PhotosController@index');
+        Route::post('/', 'Api\PhotosController@store');
+        Route::delete('{id}', 'Api\PhotosController@delete');
     });
 
 });
