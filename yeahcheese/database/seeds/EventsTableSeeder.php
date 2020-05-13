@@ -24,7 +24,7 @@ class EventsTableSeeder extends Seeder
                 'name' => $faker->name,
                 'start_date' => $start_date,
                 'end_date' => $faker->date($format='Y-m-d', $min=$start_date, $max='now'),
-                'user_id' => $faker->regexify('[1-3]{1}')
+                'user_id' => $faker->regexify('[1-5]{1}')
             ]);
         }
     }
