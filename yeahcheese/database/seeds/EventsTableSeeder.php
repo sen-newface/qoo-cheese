@@ -21,7 +21,7 @@ class EventsTableSeeder extends Seeder
         for($i = 0; $i < 10; $i++){
             $start_date = $faker->date($format='Y-m-d',$max='now');
             Event::create([
-                'name' => $faker->name,
+                'name' => $faker->city,
                 'start_date' => $start_date,
                 'end_date' => $faker->date($format='Y-m-d', $min=$start_date, $max='now'),
                 'user_id' => $faker->regexify('[1-5]{1}')
