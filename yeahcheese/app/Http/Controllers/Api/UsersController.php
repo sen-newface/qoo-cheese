@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\User as UserResource;
 
 class UsersController extends Controller
 {
@@ -14,7 +16,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        
+        // ! ログインしていない場合はnullが返却
+        $user = Auth::user();
+        return new UserResource($user);
     }
 
     /**
@@ -24,7 +28,9 @@ class UsersController extends Controller
      */
     public function register()
     {
-        //
+        //TODO: ユーザー登録処理
+        // ? Laravel標準のを用いれば一発？
+        // return new UserResource($user);
     }
 
     /**
@@ -34,7 +40,9 @@ class UsersController extends Controller
      */
     public function login()
     {
-        //
+        //TODO: ログイン処理
+        // ? Laravel標準のを用いれば一発？
+        // return new UserResource($user);
     }
 
     /**
@@ -44,7 +52,11 @@ class UsersController extends Controller
      */
     public function logout()
     {
-        //
+        //TODO: ログアウト処理
+        // ? Laravel標準のを用いれば一発？
+        return [
+            'status' => 204
+        ];
     }
 
 }
