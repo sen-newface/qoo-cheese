@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Photo as PhotoResource;
 
 class Event extends JsonResource
 {
@@ -19,6 +20,7 @@ class Event extends JsonResource
             'name' => $this->name,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
+            'photos' => PhotoResource::collection($this->photos)
         ];
     }
 }

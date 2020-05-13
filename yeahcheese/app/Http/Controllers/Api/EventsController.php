@@ -11,12 +11,12 @@ class EventsController extends Controller
 {
     /**
      * イベント一覧取得
-     * ! 複数のイベント取得はリソースコレクションで対応
      * @return void
      */
     public function index()
     {
-        //
+        // TODO: ユーザーに紐づくイベントを複数取得
+        // return EventResource::collection($events);
     }
 
     /**
