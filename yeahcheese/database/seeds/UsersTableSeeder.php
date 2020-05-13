@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
+use Faker\Factory as Faker;
 
 class UsersTableSeeder extends Seeder
 {
@@ -11,25 +13,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = new \App\User([
-            'name' => '千太郎',
-            'email' => 'sentaro@sentaro.com',
-            'password' => 'sentaro'
-        ]);
-        $user->save();
+        //一括削除
+        User::truncate();
 
-        $user = new \App\User([
-            'name' => '千洋子',
-            'email' => 'senyoko@senyoko.com',
-            'password' => 'senyoko'
-        ]);
-        $user->save();
+        $faker = Faker::create('ja_JP');
 
-        $user = new \App\User([
-            'name' => '千次郎',
-            'email' => 'senjiro@senjiro.com',
-            'password' => 'senjiro'
-        ]);
-        $user->save();
+        for($i = 0; $i < 5; $i++){
+            User::create([
+                'name' => $faker->name,
+                'email' => $faker->safeEmail,
+                'password' => $faker->password
+            ]);
+        }
     }
 }
