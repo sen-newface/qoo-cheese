@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Event;
+use Faker\Factory as Faker;
 
 class EventsTableSeeder extends Seeder
 {
@@ -11,44 +13,18 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        $event = new \App\Event([
-            'name' => '千入学式',
-            'start_date' => '2019-04-06',
-            'end_date' => '2019-04-06',
-            'user_id' => '2',
-        ]);
-        $event->save();
+        //一括削除
+        Event::truncate();
 
-        $event = new \App\Event([
-            'name' => '千夏休み',
-            'start_date' => '2019-07-06',
-            'end_date' => '2019-08-06',
-            'user_id' => '1',
-        ]);
-        $event->save();
+        $faker = Faker::create('ja_JP');
 
-        $event = new \App\Event([
-            'name' => '千冬休み',
-            'start_date' => '2019-12-24',
-            'end_date' => '2020-01-06',
-            'user_id' => '3',
+        for($i = 0; $i < 10; $i++){
+            $start_date = $faker->date($format='Y-m-d',$max='now');
+            Event::create([
+                'name' => $faker->name,
+                'start_date' => $start_date,
+                'end_date' => $faker->date($format='Y-m-d', $min=$start_date, $max='now'),
+                'user_id' => $faker->regexify('[1-3]{1}')
         ]);
-        $event->save();
-
-        $event = new \App\Event([
-            'name' => '千梅雨入り',
-            'start_date' => '2019-06-06',
-            'end_date' => '2020-06-26',
-            'user_id' => '3',
-        ]);
-        $event->save();
-
-        $event = new \App\Event([
-            'name' => '千BBQ',
-            'start_date' => '2019-08-08',
-            'end_date' => '2020-08-08',
-            'user_id' => '1',
-        ]);
-        $event->save();
-    }
+    }}
 }
