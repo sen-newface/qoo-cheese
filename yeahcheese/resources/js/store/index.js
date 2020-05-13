@@ -7,11 +7,11 @@ import photos from './photos';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  modules: [
+  modules: {
     users,
     events,
     photos
-  ]
+  }
 });
 
 export default store;
