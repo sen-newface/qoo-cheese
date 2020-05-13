@@ -27,7 +27,8 @@ class EventsController extends Controller
      */
     public function auth()
     {
-        //
+        // TODO: トークンを利用して認証キーをあれこれ照合して、認証キーに紐づくイベントを取得し、リソースクラスに渡す
+        // return new EventResource($event);
     }
 
     /**
