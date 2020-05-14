@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: 'E401'    
+    name: 'E404'    
 }
 </script>
 
