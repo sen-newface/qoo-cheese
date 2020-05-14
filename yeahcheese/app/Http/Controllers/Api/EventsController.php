@@ -11,7 +11,8 @@ class EventsController extends Controller
 {
     /**
      * イベント一覧取得
-     * @return void
+     *
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function index()
     {
@@ -21,9 +22,8 @@ class EventsController extends Controller
 
     /**
      * 認証キーと紐づくイベント取得
-     * ? これは別コントローラに切り分けたほうがスッキリする？ 
-     * 
-     * @return void
+     *
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function auth()
     {
@@ -33,9 +33,8 @@ class EventsController extends Controller
 
     /**
      * 単一イベント取得
-     * 
-     * @param App\Event
-     * @return void
+     *
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function show(Event $event)
     {
@@ -46,7 +45,7 @@ class EventsController extends Controller
     /**
      * イベント追加
      *
-     * @return void
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function store()
     {
@@ -57,8 +56,7 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      *
-     * @param App\Event
-     * @return void
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function update(Event $event)
     {
@@ -68,11 +66,8 @@ class EventsController extends Controller
 
     /**
      * イベント削除
-     *
-     * @param App\Event
-     * @return void
      */
-    public function destroy(Event $event)
+    public function destroy(Event $event): array
     {
         // TODO: イベント削除の処理
         return [
