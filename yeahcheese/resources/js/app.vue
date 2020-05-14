@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <testAuth></testAuth>
+    <div class="container mt-5">
+        <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
 //add_auth_apiのマージが完了後 testAuth関連は削除
-import testAuth from "./tmpAuthTest";
+import login from "./pages/login";
 export default {
   name: "App",
-  components: { testAuth }
+  components: { login }
 };
 </script>
 
