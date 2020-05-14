@@ -11,8 +11,6 @@ class EventsController extends Controller
 {
     /**
      * イベント一覧取得
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function index()
     {
@@ -22,8 +20,6 @@ class EventsController extends Controller
 
     /**
      * 認証キーと紐づくイベント取得
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function auth()
     {
@@ -33,8 +29,6 @@ class EventsController extends Controller
 
     /**
      * 単一イベント取得
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function show(Event $event)
     {
@@ -44,8 +38,6 @@ class EventsController extends Controller
 
     /**
      * イベント追加
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function store()
     {
@@ -55,8 +47,6 @@ class EventsController extends Controller
 
     /**
      * イベント情報更新（写真を除く）
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function update(Event $event)
     {
