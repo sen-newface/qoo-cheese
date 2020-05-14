@@ -51,6 +51,8 @@ export default {
     methods: {
         logout() {
             // TODO: ログアウトの実際にリクエストを送る
+            //...ログアウトのapiを叩く
+            //最終的にvue側でnullにする
             this.user = null;
         }
     },
