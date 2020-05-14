@@ -6,6 +6,6 @@ export default {
   //   ...apiを叩いて、イベント情報を取得する処理
   //   ...
   //   payload = { id: ..., name: ..., photos: ... };
-  //   commit(types.SET_EVENT, payload); ステートが更新される
+  //   commit(types.SET_EVENT, payload);
   // }
 }

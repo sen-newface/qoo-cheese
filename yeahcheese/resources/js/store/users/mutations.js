@@ -5,5 +5,5 @@ export default {
   // TODO: dispatch(types.SET_USER, payload) で、このミューテーションが呼び出される
   // [types.SET_EVENT](state, payload) {
   // },
-  // ... 
+  // ... ステートが更新される
 }

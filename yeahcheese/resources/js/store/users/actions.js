@@ -6,6 +6,6 @@ export default {
   //   ...apiを叩いて、ユーザー情報を取得する処理
   //   ...
   //   payload = { id: ..., name: ..., email: ... };
-  //   commit(types.SET_USER, payload); ステートが更新される
+  //   commit(types.SET_USER, payload);
   // }
 }
