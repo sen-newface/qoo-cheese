@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Event;
 
 use App\Http\Resources\Event as EventResource;
 
@@ -33,10 +34,11 @@ class EventsController extends Controller
 
     /**
      * 単一イベント取得
-     *
+     * 
+     * @param App\Event
      * @return void
      */
-    public function show()
+    public function show(Event $event)
     {
         // TODO: Vueから受け取ったevent_idで単一のイベントを取得して、リソースクラスに渡す
         // return new EventResource($event);
@@ -56,9 +58,10 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      *
+     * @param App\Event
      * @return void
      */
-    public function update()
+    public function update(Event $event)
     {
         // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
         // return new EventResource($event);
@@ -67,9 +70,10 @@ class EventsController extends Controller
     /**
      * イベント削除
      *
+     * @param App\Event
      * @return void
      */
-    public function destroy()
+    public function destroy(Event $event)
     {
         // TODO: イベント削除の処理
         return [
