@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\HasApiTokens;
 
 class AuthController extends Controller
 {
-  use HasApiTokens;
 
   public function me(Request $request)
   {
@@ -29,7 +26,7 @@ class AuthController extends Controller
     ]);
     $user->fill($form)->save();
     $user->setToken();
-    return response($user, 200);
+    return response($user, 201);
   }
 
   public function login(Request $request)
