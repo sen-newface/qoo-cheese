@@ -26,6 +26,7 @@ class PhotosController extends Controller
      */
     public function delete()
     {
+        // TODO: イベントに紐づく写真削除の処理
         return [
             'status' => 204
         ];

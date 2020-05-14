@@ -71,6 +71,7 @@ class EventsController extends Controller
      */
     public function destroy()
     {
+        // TODO: イベント削除の処理
         return [
             'status' => 204
         ];
