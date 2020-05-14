@@ -12,7 +12,7 @@
                         <router-link to="/">トップへ戻る</router-link>
                     </li>
                     <!-- ログイン時 -->
-                    <template>
+                    <template v-if="isLogin">
                         <li class="nav-item">
                             <router-link to="/events">イベント一覧</router-link>
                         </li>
@@ -23,7 +23,7 @@
                         </li>
                     </template>
                     <!-- 未ログイン時 -->
-                    <template>
+                    <template v-else>
                         <li class="nav-item">
                             <router-link to="/login">ログイン</router-link>
                         </li>
@@ -40,9 +40,23 @@
 <script>
 export default {
     name: 'CommonHeader',
+    data() {
+        return {
+            user: {
+                id: 1,
+                name: 'xxx'
+            }
+        };
+    },
     methods: {
         logout() {
-            // TODO: ログアウトのリクエストを送る
+            // TODO: ログアウトの実際にリクエストを送る
+            this.user = null;
+        }
+    },
+    computed: {
+        isLogin() {
+            return this.user !== null;
         }
     }
 }
