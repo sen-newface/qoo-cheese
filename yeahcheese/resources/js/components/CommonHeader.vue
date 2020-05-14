@@ -40,6 +40,11 @@
 <script>
 export default {
     name: 'CommonHeader',
+    methods: {
+        logout() {
+            // TODO: ログアウトのリクエストを送る
+        }
+    }
 }
 </script>
 
