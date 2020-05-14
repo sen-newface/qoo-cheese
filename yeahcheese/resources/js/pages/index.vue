@@ -13,11 +13,11 @@ export default {
         };
     },
     methods: {
-        findAuthKey(key) {  // ボタンを押した時に呼び出される
-            if(key === "") {
+        findAuthKey() {  // ボタンを押した時に呼び出される
+            if(this.authKey === "") {
                 console.log("入力してください");
             }
-            else console.log(key);
+            else console.log(this.authKey);
         }
     }
 }
