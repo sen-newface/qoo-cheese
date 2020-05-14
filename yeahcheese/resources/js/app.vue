@@ -1,16 +1,38 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <testAuth></testAuth>
+    <base-event-detail :event-info="event"></base-event-detail>
   </div>
 </template>
 
 <script>
-//add_auth_apiのマージが完了後 testAuth関連は削除
-import testAuth from "./tmpAuthTest";
+import BaseEventDetail from "./BaseEventDetail";
 export default {
   name: "App",
-  components: { testAuth }
+  components: {
+    BaseEventDetail
+  },
+  data() {
+    return {
+      event: {
+        id: 1,
+        name: '運動会',
+        key: Math.random().toString(32).substring(2),
+        start_date: '2020/08/30',
+        end_date: '2020/09/5',
+        photos: [
+          {
+            id: 2,
+            name: '写真1'
+          },
+          {
+            id: 4,
+            name: '写真3'
+          }
+        ]
+      }
+    }
+  }
 };
 </script>
 
