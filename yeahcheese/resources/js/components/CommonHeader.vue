@@ -8,31 +8,30 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <router-link to="/">トップへ戻る</router-link>
-                </li>
-                <!-- ログイン時 -->
-                <template>
-                    <li class="nav-item">
-                        <router-link to="/events">イベント一覧</router-link>
+                    <li class="nav-item active">
+                        <router-link to="/">トップへ戻る</router-link>
                     </li>
-                    <li class="nav-item">
-                        <form @submit.prevent="logout">
-                            <button type="submit">ログアウト</button>
-                        </form>
-                    </li>
-                </template>
-                <!-- 未ログイン時 -->
-                <template>
-                    <li class="nav-item">
-                        <router-link to="/login">ログイン</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/register">アカウント作成</router-link>
-                    </li>
-                </template>
+                    <!-- ログイン時 -->
+                    <template>
+                        <li class="nav-item">
+                            <router-link to="/events">イベント一覧</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <form @submit.prevent="logout">
+                                <button type="submit">ログアウト</button>
+                            </form>
+                        </li>
+                    </template>
+                    <!-- 未ログイン時 -->
+                    <template>
+                        <li class="nav-item">
+                            <router-link to="/login">ログイン</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/register">アカウント作成</router-link>
+                        </li>
+                    </template>
                 </ul>
-                </form>
             </div>
         </nav>
     </header>
