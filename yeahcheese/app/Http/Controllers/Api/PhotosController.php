@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Photo;
 use App\Http\Resources\Photo as PhotoResource;
 
 class PhotosController extends Controller
@@ -22,9 +23,10 @@ class PhotosController extends Controller
     /**
      * イベントに紐づく写真の削除
      *
+     * @param App\Photo
      * @return void
      */
-    public function delete()
+    public function delete(Photo $photo)
     {
         // TODO: イベントに紐づく写真削除の処理
         return [
