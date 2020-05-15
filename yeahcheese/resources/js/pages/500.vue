@@ -12,7 +12,4 @@ export default {
 </script>
 
 <style>
-.error-container {
-    padding: 10%;
-}
 </style>
