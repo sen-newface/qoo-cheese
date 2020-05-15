@@ -62,13 +62,17 @@ class PhotoControllerTest extends TestCase
     public function testDestroy()
     {
         factory(User::class, 10)->create();
-        factory(Event::class, 30)->create();
+        factory(Event::class, 20)->create();
         $user = User::find(1);
+        dd($user);
         $event = Event::where('user_id', $user->id)->get();
-        $event->delete();
-        return [
-            'status' => 204
-        ];
+        dd($event);
+        // $url = '/api/events/' . $event->id;
+
+        // $response = $this->delete($url, $event->id);
+
+        // dd($response);
+        
     }
 
 }
