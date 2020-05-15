@@ -2,8 +2,12 @@ import mutations from './mutations';
 import getters from './getters';
 import actions from './actions';
 
-const state = () => {
-  // test: 'テストの値'
+const state = {
+  user: {
+    name: "",
+    email: ""
+  },
+  validationMessage: []
 }
 
 export default {
