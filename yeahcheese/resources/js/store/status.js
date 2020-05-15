@@ -4,9 +4,9 @@ const state = {
 
 const getters = {
   code: state => state.code,
-  isError: state => {
-    var cpdeTop = state.code.toString().slice(0, 1);
-    if (cpdeTop == 2) {
+  isApiSuccess: state => {
+    var codeTop = state.code.toString().slice(0, 1);
+    if (codeTop == 2) {
       return true;
     } else {
       return false;
