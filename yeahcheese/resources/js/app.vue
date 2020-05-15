@@ -7,11 +7,8 @@
 </template>
 
 <script>
-//add_auth_apiのマージが完了後 testAuth関連は削除
-import login from "./pages/login";
 export default {
   name: "App",
-  components: { login }
 };
 </script>
 
