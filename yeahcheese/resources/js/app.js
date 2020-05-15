@@ -4,10 +4,14 @@ import store from './store';
 import router from './router';
 import App from './app.vue';
 
-const app = new Vue ({
+const createApp = async () => {
+  await store.dispatch('users/getMe')
+  new Vue({
     el: '#app',
     store,
     router,
     components: { App },
     template: '<App/>'
-});
+  });
+}
+createApp()
