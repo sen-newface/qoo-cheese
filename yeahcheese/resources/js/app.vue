@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <common-header></common-header>
     <router-view></router-view>
     <base-event
       v-for="event in events"
@@ -12,10 +13,11 @@
 
 <script>
 import BaseEvent from "./BaseEvent";
+import CommonHeader from './components/CommonHeader.vue';
 export default {
   name: "App",
   components: {
-    BaseEvent
+    BaseEvent, CommonHeader
   },
   data() {
     return {
