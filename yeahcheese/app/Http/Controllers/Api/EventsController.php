@@ -9,6 +9,12 @@ use App\Http\Resources\Event as EventResource;
 
 class EventsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')
+            ->except(['auth', 'show']);
+    }
+
     public function index()
     {
         //
