@@ -7,10 +7,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-3">
-                    <li class="nav-item active mr-3 ml-5">
-                        <router-link to="/">トップへ戻る</router-link>
-                    </li>
+                <ul class="navbar-nav ml-5">
                     <!-- ログイン時 -->
                     <template v-if="isLogin">
                         <li class="nav-item mr-3">
