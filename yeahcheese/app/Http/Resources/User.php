@@ -16,7 +16,7 @@ class User extends JsonResource
     {
         if (is_null($this->resource)) {
             return [
-                'status' => 204
+                'status' => 404
             ];
         }
 
