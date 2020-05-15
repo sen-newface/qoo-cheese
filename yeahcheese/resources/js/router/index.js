@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
 import store from '../store';
+
+import Login from '../pages/login.vue';
 import Index from '../pages/index.vue';
 import Register from '../pages/register.vue'
 
@@ -11,6 +12,10 @@ const routes = [
   {
     path: '/',
     component: Index
+  },
+  {
+    path: '/login',
+    component: Login
   },
   {
     path: '/register',
