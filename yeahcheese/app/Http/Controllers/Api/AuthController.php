@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Requests\CreateUserRequest;
+use App\User;
+
+class AuthController extends Controller
+{
+
+  public function me(Request $request)
+  {
+    $user = $request->user();
+    $user->setToken();
+    return response($user, 200);
+  }
+
+  public function signup(CreateUserRequest $request)
+  {
+    $user = new User;
+    $form = $request->all();
+    $user->fill($form)->save();
+    $user->setToken();
+    return response($user, 201);
+  }
+
+  public function login(Request $request)
+  {
+    $user = User::all()->where("email", $request->email)->first();
+    if (!$user || $user->password != $request->password) {
+      return response("passwordかemailが間違っています", 401);
+    }
+    $user->setToken();
+    return response($user, 200);
+  }
+}

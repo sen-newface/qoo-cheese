@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
@@ -15,20 +15,23 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+  'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+  'paths' => ['api/*'],
 
-    'allowed_origins' => ['*'],
+  'allowed_methods' => ['*'],
 
-    'allowed_origins_patterns' => [],
+  'allowed_origins' => ['*'],
 
-    'allowed_headers' => ['*'],
+  'allowed_origins_patterns' => [],
 
-    'exposed_headers' => false,
+  'allowed_headers' => ['*'],
 
-    'max_age' => false,
+  'exposed_headers' => false,
 
-    'supports_credentials' => false,
+  'max_age' => false,
+
+  'supports_credentials' => true,
+
 
 ];
