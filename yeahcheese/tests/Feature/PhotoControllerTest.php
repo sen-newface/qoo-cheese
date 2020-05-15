@@ -61,17 +61,26 @@ class PhotoControllerTest extends TestCase
 
     public function testDestroy()
     {
+
+        $deleteTime = Carbon::now();
+
         factory(User::class, 10)->create();
-        factory(Event::class, 20)->create();
-        $user = User::find(1);
-        dd($user);
-        $event = Event::where('user_id', $user->id)->get();
-        dd($event);
-        // $url = '/api/events/' . $event->id;
+        $user = User::first();
+        $event = new Event();
+        $event->id = 100;
+        $event->name = '運動会';
+        $event->key = 'test-key';
+        $event->start_date = $deleteTime;
+        $event->end_date = $deleteTime;
+        $event->user_id = $user->id;
+        $event->created_at = $deleteTime;
+        $event->updated_at = $deleteTime;
 
-        // $response = $this->delete($url, $event->id);
+        $url = '/api/events/' . $event->id;
 
-        // dd($response);
+        $response = $this->delete($url, $event->id);
+
+        dd($response);
         
     }
 
