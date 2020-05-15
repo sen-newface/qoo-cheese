@@ -1,7 +1,7 @@
 <template>
     <div class="mx-auto col-md-6">
-        <p>認証キー：<input type="text" class="form-control" v-model="authKey" @keyup.enter="findAuthKey(authKey)" placeholder="認証キーを入力してください"></p>
-        <button @click="findAuthKey(authKey)" class="btn btn-outline-primary">送信する</button>
+        <p>認証キー：<input type="text" class="form-control" v-model="authKey" @keyup.enter="findAuthKey()" placeholder="認証キーを入力してください"></p>
+        <button @click="findAuthKey()" class="btn btn-outline-primary">送信する</button>
     </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     },
     methods: {
         findAuthKey() {  // ボタンを押した時に呼び出される
-            if(this.authKey === "") {
+            if(this.authKey.trim() === "") {
                 console.log("入力してください");
             }
             else console.log(this.authKey);
