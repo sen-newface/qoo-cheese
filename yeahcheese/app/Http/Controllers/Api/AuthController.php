@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateUserRequest;
 use App\User;
 
 class AuthController extends Controller
@@ -16,14 +17,10 @@ class AuthController extends Controller
     return response($user, 200);
   }
 
-  public function signup(Request $request)
+  public function signup(CreateUserRequest $request)
   {
     $user = new User;
     $form = $request->all();
-    $request->validate([
-      'email' => 'required|email',
-      'password' => 'required',
-    ]);
     $user->fill($form)->save();
     $user->setToken();
     return response($user, 201);

@@ -8,10 +8,12 @@
 </template>
 
 <script>
-import CommonHeader from './components/CommonHeader.vue';
+import CommonHeader from "./components/CommonHeader.vue";
 export default {
   name: "App",
-  components: { CommonHeader }
+  components: {
+    CommonHeader
+  }
 };
 </script>
 
