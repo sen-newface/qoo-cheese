@@ -65,7 +65,10 @@ class PhotoControllerTest extends TestCase
         factory(Event::class, 30)->create();
         $user = User::find(1);
         $event = Event::where('user_id', $user->id)->get();
-        dd($event);
+        $event->delete();
+        return [
+            'status' => 204
+        ];
     }
 
 }
