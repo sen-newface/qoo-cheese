@@ -15,8 +15,8 @@ class EventsTest extends TestCase
     public function testStore(){
         $data = [
             'name' => 'test',
-            'start_date' => '2019-11-11',
-            'end_date' => '2019-12-12',
+            'start_date' => '2020-11-11',
+            'end_date' => '2020-12-12',
         ];
         $user = factory(User::class)->create();
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);

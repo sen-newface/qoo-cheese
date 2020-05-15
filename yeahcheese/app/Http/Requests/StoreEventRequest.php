@@ -25,7 +25,7 @@ class StoreEventRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'start_date' => 'required|date|before_or_equal:end_date',
+            'start_date' => 'required|date|before_or_equal:end_date|after:yesterday',
             'end_date' => 'required|date|after_or_equal:start_date',
             'photos.image_path' => 'url'
         ];
@@ -40,6 +40,7 @@ class StoreEventRequest extends FormRequest
         'start_date.required' => '公開開始日を入力してください',
         'start_date.date' => '日付の入力が不適切です',
         'start_date.before_or_equal:end_date' => '公開終了日以前に設定してください',
+        'start_date.after:yesterday' => '当日以降に設定してください',
         'end_date.required' => '公開終了日を入力してください',
         'end_date.date' => '日付の入力が不適切です',
         'end_date.after_or_equal:start_date' => '公開開始日以後に設定してください',
