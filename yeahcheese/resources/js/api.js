@@ -14,7 +14,6 @@ const getToken = (key = AUTH_KEY) => {
 };
 
 const deleteToken = (key = AUTH_KEY) => {
-  console.log("aaaaaaa")
   return localStorage.removeItem(key);
 };
 

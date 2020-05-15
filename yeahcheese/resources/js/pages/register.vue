@@ -5,7 +5,8 @@
       <label for="name">名前</label>
       <input
         type="text"
-        :class="formClass('name')"
+        class="form-control"
+        :class="isValid('name')"
         id="name"
         placeholder="名前"
         v-model="registerForm.name"
@@ -15,7 +16,8 @@
       <label for="exampleInputEmail1">メールアドレス</label>
       <input
         type="email"
-        :class="formClass('email')"
+        class="form-control"
+        :class="isValid('email')"
         id="exampleInputEmail1"
         placeholder="メールアドレス"
         v-model="registerForm.email"
@@ -25,7 +27,8 @@
       <label for="exampleInputPassword1">パスワード</label>
       <input
         type="password"
-        :class="formClass('password')"
+        class="form-control"
+        :class="isValid('password')"
         id="exampleInputPassword1"
         placeholder="パスワード"
         v-model="registerForm.password"
@@ -35,7 +38,8 @@
       <label for="password_conf">パスワード確認</label>
       <input
         type="password"
-        :class="formClass('password')"
+        class="form-control"
+        :class="isValid('password')"
         id="password_conf"
         placeholder="パスワード確認"
         v-model="registerForm.password_confirmation"
@@ -69,13 +73,11 @@ export default {
     ...mapGetters({
       isApiSuccess: "status/isApiSuccess"
     }),
-    formClass: function() {
+    isValid() {
       return function(form_name) {
-        let base = "form-control";
-        if (Object.keys(this.validationMessages).includes(form_name)) {
-          base += " is-invalid";
-        }
-        return base;
+        return Object.keys(this.validationMessages).includes(form_name)
+          ? "is-invalid"
+          : "";
       };
     },
     valiMessages() {

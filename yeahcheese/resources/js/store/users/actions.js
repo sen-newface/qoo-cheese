@@ -26,7 +26,6 @@ export default {
 
   async login(context, data) {
     let response = await api.userLogin(data);
-    console.log(response)
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       context.commit("setUser", response);
