@@ -3,6 +3,8 @@ import store from "./store/";
 
 const AUTH_KEY = "auth_key";
 
+axios.defaults.headers.common['Accept'] = "application/json";
+
 const setApiStatus = (code = "200") => {
   return store.commit("status/setCode", code);
 };
@@ -20,19 +22,18 @@ const setToken = (token = "", key = AUTH_KEY) => {
 };
 
 
-const tokenHeader = {
-  Accept: "application/json",
-  Authorization: "Bearer " + getToken()
-};
-
 // トークン保存を伴わないaxios
 const httpWithToken = axios.create({
-  tokenHeader
+  headers: {
+    Authorization: "Bearer " + getToken()
+  }
 });
 
 // トークン保存を伴うaxios
 const httpWithTokenAndStore = axios.create({
-  tokenHeader
+  headers: {
+    Authorization: "Bearer " + getToken()
+  }
 });
 
 
@@ -49,7 +50,7 @@ const onSuccess = (response) => {
 
 const onError = (e) => {
   setApiStatus(e.response.status);
-  return e;
+  return e.response.data;
 };
 
 export default {
@@ -83,7 +84,7 @@ export default {
   // 返却値なし
   // トークンの削除　APIの処理は伴わないが今のところこちらに書いておく
   userLogout() {
-    deleteToken;
+    deleteToken();
   },
 
   // イベント認証キーチェック
