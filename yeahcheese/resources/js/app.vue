@@ -2,7 +2,7 @@
   <div id="app">
     <common-header></common-header>
     <div class="container mt-5">
-        <router-view></router-view>
+      <router-view></router-view>
     </div>
   </div>
 </template>
