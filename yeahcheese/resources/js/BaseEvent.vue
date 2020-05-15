@@ -1,7 +1,7 @@
 <template>
     <div id="base-event">
         <!-- イベント詳細を表示するコンポーネント内で、paramsで渡したidを用いてイベント情報を取得できる？ -->
-        <router-link class="to-event-detail-link" :to="{ name: '詳細を表示するコンポーネントの名前', params: { id: eventInfo.id } }"></router-link>
+        <router-link class="to-event-detail-link" :to="{ name: 'eventShow', params: { id: eventInfo.id } }"></router-link>
         <div class="event-texts">
             <span class="event-name">イベント名：{{ eventInfo.name }}</span>
             <span class="auth-key">認証キー：{{ eventInfo.key }}</span>
@@ -14,7 +14,7 @@
                 :key="photo.id"
                 class="event-photo"
             >
-                <img :src="photo.image_path" :alt="eventInfo.name + 'の写真' + photo.id">
+                <img :src="photo.image_path" :alt="alt(photo.id)">
             </span>
         </div>
     </div>
@@ -26,6 +26,13 @@ export default {
     props: {
         eventInfo: {
             type: Object
+        }
+    },
+    computed: {
+        alt() {
+            return function (id) {
+                return this.eventInfo.name + 'の写真' + id;
+            }
         }
     }
 }
