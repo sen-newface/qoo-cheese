@@ -23,14 +23,11 @@ class PhotoControllerTest extends TestCase
     public function testStore()
     {
 
-        // 1.データ用意
         factory(User::class, 10)->create();
         factory(Event::class, 50)->create();
 
-        // 2.戻り値の確認のため、変数に格納
         $postTime = Carbon::now();
 
-        // 3.POSTする写真情報
         $photos = [
             'id' => 1,
             'image_path' => 'djsijiajdis.jpeg',
@@ -39,16 +36,10 @@ class PhotoControllerTest extends TestCase
             'updated_at' => $postTime
         ];
 
-        // 4.叩くAPI
         $url = '/api/events/' . $photos['event_id'] . '/photos';
 
-        // 5.写真を追加して、オウム返し
         $response = $this->post($url, $photos);
 
-        // 6.正常なデータが取得できているか検証
-        // - 200
-        // - 幾つのデータを持っているか
-        // - 指定したデータが返ってきているか
         $response
             ->assertOk()
             ->assertJsonCount(5)
@@ -78,9 +69,10 @@ class PhotoControllerTest extends TestCase
 
         $url = '/api/events/' . $event->id;
 
-        $response = $this->delete($url, $event->id);
+        $response = $this->delete($url, [$event->id]);
 
-        dd($response);
+        $response
+            ->assertOk();
         
     }
 
