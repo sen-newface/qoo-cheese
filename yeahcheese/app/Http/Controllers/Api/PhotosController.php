@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePhotoRequest;
 use App\Event;
 use App\Photo;
+use Illuminate\Http\Request;
+use App\Http\Resources\Photo as PhotoResource;
 
 // ! リソースクラスがマージされたら、returnを書き換える
 // ! それまでは仮のものを返す
@@ -17,15 +19,18 @@ class PhotosController extends Controller
             'test' => 1234
         ];
     }
+
     public function store(StorePhotoRequest $request)
     {
         $photo = new Photo();
         $photo->fill($request->all())->save();
         return response($photo, 201);
     }
+
     public function destroy(Event $event, Photo $photo)
     {
         $photo->delete();
+        // TODO: イベントに紐づく写真削除の処理
         return [
             'status' => 204
         ];
