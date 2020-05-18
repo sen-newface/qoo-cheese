@@ -7,7 +7,7 @@ use App\Event;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EventsTest extends TestCase
+class EventControllerTest extends TestCase
 {
     use RefreshDatabase; //マイグレーションが実行されテーブルが作成される
 
