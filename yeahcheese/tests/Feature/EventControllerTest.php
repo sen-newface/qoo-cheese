@@ -20,6 +20,13 @@ class EventsTest extends TestCase
         ];
         $user = factory(User::class)->create();
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
+        $res->assertJsonStructure([
+            'data' => [
+                'name',
+                'start_date',
+                'end_date'
+                ]
+            ]);
         $res->assertStatus(201);
     }
 }

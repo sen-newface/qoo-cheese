@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
+use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
 
@@ -15,15 +16,28 @@ class EventsController extends Controller
             ->except(['auth', 'show']);
     }
 
+    /**
+     * イベント一覧取得
+     */
     public function index()
     {
-        //
+        // TODO: ユーザーに紐づくイベントを複数取得
+        // return EventResource::collection($events);
     }
+
+    /**
+     * 認証キーと紐づくイベント取得
+     */
     public function auth()
     {
-        //
+        // TODO: トークンを利用して認証キーをあれこれ照合して、認証キーに紐づくイベントを取得し、リソースクラスに渡す
+        // return new EventResource($event);
     }
-    public function show()
+
+    /**
+     * 単一イベント取得
+     */
+    public function show(Event $event)
     {
 
         //
@@ -32,16 +46,26 @@ class EventsController extends Controller
     {   
         $request->merge(['user_id' => $request->user()->id]);
         
-        $event = Event::create($request->toArray());
+        return EventResource::make(Event::create($request->toArray()));
+    }
 
-        return new EventResource($event);
-    }
-    public function update()
+    /**
+     * イベント情報更新（写真を除く）
+     */
+    public function update(Event $event)
     {
-        //
+        // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
+        // return new EventResource($event);
     }
-    public function destroy()
+
+    /**
+     * イベント削除
+     */
+    public function destroy(Event $event): array
     {
-        //
+        // TODO: イベント削除の処理
+        return [
+            'status' => 204
+        ];
     }
 }

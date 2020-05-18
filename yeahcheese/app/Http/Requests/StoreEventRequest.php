@@ -26,8 +26,7 @@ class StoreEventRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'start_date' => 'required|date|before_or_equal:end_date|after:yesterday',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'photos.image_path' => 'url'
+            'end_date' => 'required|date|after_or_equal:start_date'
         ];
     }
 
@@ -43,8 +42,7 @@ class StoreEventRequest extends FormRequest
         'start_date.after:yesterday' => '当日以降に設定してください',
         'end_date.required' => '公開終了日を入力してください',
         'end_date.date' => '日付の入力が不適切です',
-        'end_date.after_or_equal:start_date' => '公開開始日以後に設定してください',
-        'photos.image_path' => 'URLが正しくありません'
+        'end_date.after_or_equal:start_date' => '公開開始日以後に設定してください'
       ];
     }
 }
