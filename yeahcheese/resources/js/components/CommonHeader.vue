@@ -8,7 +8,6 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-5">
-                    <!-- ログイン時 -->
                     <template v-if="isLogin">
                         <li class="nav-item mr-3">
                             <router-link to="/events">イベント一覧</router-link>
@@ -17,7 +16,6 @@
                             <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>
                         </li>
                     </template>
-                    <!-- 未ログイン時 -->
                     <template v-else>
                         <li class="nav-item mr-3">
                             <router-link to="/login">ログイン</router-link>
@@ -33,14 +31,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'CommonHeader',
     data() {
         return {
-            user: {
-                id: 1,
-                name: 'xxx'
-            }
         };
     },
     methods: {
@@ -52,9 +47,9 @@ export default {
         }
     },
     computed: {
-        isLogin() {
-            return this.user !== null;
-        }
+        ...mapGetters({
+            isLogin: 'users/isLogin'
+        })
     }
 }
 </script>
