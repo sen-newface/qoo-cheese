@@ -9,28 +9,28 @@ use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Resources\Photo as PhotoResource;
 
-// ! リソースクラスがマージされたら、returnを書き換える
-// ! それまでは仮のものを返す
 class PhotosController extends Controller
 {
-    public function index()
-    {
-        return [
-            'test' => 1234
-        ];
-    }
 
     public function store(StorePhotoRequest $request)
     {
+        $post_data = $request->except('image_path');
+        $imagefile = $request->file('image_path');
+        $path = $imagefile->store('public/images');
         $photo = new Photo();
-        $photo->fill($request->all())->save();
-        return response($photo, 201);
+        $photo->event_id = $post_data['event_id'];
+        $photo->image_path = str_replace('public/', 'storage/', $path);
+        $photo->save();
+
+        $opt = ['status' => 201];
+        $resource = new PhotoResource($photo);
+        $resource = $resource->additional($opt);
+        return $resource;
     }
 
     public function destroy(Event $event, Photo $photo)
     {
         $photo->delete();
-        // TODO: イベントに紐づく写真削除の処理
         return [
             'status' => 204
         ];

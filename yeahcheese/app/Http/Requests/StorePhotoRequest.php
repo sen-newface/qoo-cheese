@@ -17,24 +17,24 @@ class StorePhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'image_data' => 'required|image|mimes:jpeg|max:200'
+            'image_path' => 'required|image|mimes:jpeg|max:200'
         ];
     }
 
     public function messages()
     {
         return [
-            'image_data.required' => ':attributeの選択は必須です',
-            'image_data.image' => ':attributeを指定してください',
-            'image_data.mimes' => ':attributeはjpegで指定してください',
-            'image_data.max' => ':max以下の:attributeを指定してください'
+            'image_path.required' => ':attributeの選択は必須です',
+            'image_path.image' => ':attributeを指定してください',
+            'image_path.mimes' => ':attributeはjpegで指定してください',
+            'image_path.max' => ':max以下の:attributeを指定してください'
         ];
     }
 
     public function attributes()
     {
         return [
-            'image_data' => 'イベント写真'
+            'image_path' => 'イベント写真'
         ];
     }
 
