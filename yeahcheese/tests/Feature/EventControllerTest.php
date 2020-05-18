@@ -7,7 +7,6 @@ use App\Event;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-
 class EventsTest extends TestCase
 {
     use RefreshDatabase; //マイグレーションが実行されテーブルが作成される
@@ -22,9 +21,11 @@ class EventsTest extends TestCase
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
         $res->assertJsonStructure([
             'data' => [
+                'id',
                 'name',
                 'start_date',
-                'end_date'
+                'end_date',
+                'photos',
                 ]
             ]);
         $res->assertStatus(201);
