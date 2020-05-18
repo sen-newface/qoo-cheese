@@ -17,7 +17,7 @@ class AuthController extends Controller
     return response($user, 200)->header('authtoken', $user->token);
   }
 
-  public function signup(Request $request)
+  public function signup(CreateUserRequest $request)
   {
     $user = new User;
     $form = $request->all();
