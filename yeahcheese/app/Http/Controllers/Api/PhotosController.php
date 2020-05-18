@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePhotoRequest;
 use App\Event;
 use App\Photo;
 
@@ -17,12 +17,11 @@ class PhotosController extends Controller
             'test' => 1234
         ];
     }
-    public function store(Request $request)
+    public function store(StorePhotoRequest $request)
     {
         $photo = new Photo();
-        // TODO: バリデーション
         $photo->fill($request->all())->save();
-        return $photo->toArray();
+        return response($photo, 201);
     }
     public function destroy(Event $event, Photo $photo)
     {
