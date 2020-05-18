@@ -10,79 +10,77 @@ use App\User;
 use App\Event;
 use App\Photo;
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $commonTime;
-    public $storePhoto;
-    public $photo;
     public $event;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->commonTime = Carbon::now();
-
         $user = new User();
-        $user->name = 'test';
+        $user->name = 'TEST';
         $user->email = 'test@gmail.com';
-        $user->password = 'testtest';
+        $user->password = 'TESTTESTTEST';
         $user->save();
 
+        $this->actingAs($user);
+
         $event = new Event();
-        $event->id = 999;
-        $event->name = '運動会';
-        $event->key = 'oooooiiiiiii';
-        $event->start_date = $this->commonTime;
-        $event->end_date = $this->commonTime;
+        $event->name = 'XXX';
+        $event->key = 'XYZOPQRSTU';
+        $event->start_date = '2020-09-21';
+        $event->end_date = '2020-10-21';
         $event->user_id = $user->id;
         $event->save();
 
         $this->event = $event;
-
-        $this->storePhoto = [
-            'id' => 2,
-            'image_path' => 'djsijiajdis.jpeg',
-            'event_id' => 999,
-            'created_at' => $this->commonTime,
-            'updated_at' => $this->commonTime
-        ];
-
-        $this->photo = new Photo($this->storePhoto);
-        $this->photo->save();
     }
 
+    /**
+     * @test
+     */
     public function testStore()
     {
-        $url = '/api/events/' . $this->photo->event_id . '/photos';
-
-        $response = $this->post($url, $this->storePhoto);
-
+        Storage::fake('images');
+        $file = UploadedFile::fake()->image('test.jpeg');
+        $url = '/api/events/' . $this->event->id . '/photos';
+        $data = [
+            'event_id' => $this->event->id,
+            'image_path' => $file,
+        ];
+        $response = $this->post($url, $data);
+        Storage::disk('images')->exists($file->name);
         $response
-            ->assertOk()
-            ->assertJsonCount(5)
+            ->assertStatus(201)
+            ->assertJsonCount(2)
             ->assertJsonFragment([
-                'id' => 2,
-                'image_path' => 'djsijiajdis.jpeg',
-                'event_id' => 999,
+                'status' => 201,
             ]);
     }
 
+    /**
+     * @test
+     */
     public function testDestroy()
     {
-        $deletePhoto = [
-            'id' => 3,
-            'image_path' => 'djsijiajdis.jpeg',
-            'event_id' => 999,
-            'created_at' => $this->commonTime,
-            'updated_at' => $this->commonTime
+        Storage::fake('images');
+        $file = UploadedFile::fake()->image('test.jpeg');
+        $url = '/api/events/' . $this->event->id . '/photos';
+        $data = [
+            'event_id' => $this->event->id,
+            'image_path' => $file,
         ];
-        $photo = new Photo($deletePhoto);
-        $url = '/api/events/' . $this->event->id . '/photos' . '/' . $deletePhoto['id'];
-        $response = $this->delete($url, [$this->event, $photo]);
+        $url = '/api/events/' . $this->event->id . '/photos';
+        $response = $this->post($url, $data);
+        $photo = $response['data'];
+        $url .= '/' . $photo['id'];
+        $response = $this->delete($url, [$this->event, $photo['id']]);
         $response
             ->assertOk()
             ->assertJsonCount(1)
