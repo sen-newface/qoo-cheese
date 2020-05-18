@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Photo;
+use App\Http\Resources\Photo as PhotoResource;
 
 // ! リソースクラスがマージされたら、returnを書き換える
 // ! それまでは仮のものを返す
