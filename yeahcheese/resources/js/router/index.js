@@ -11,6 +11,7 @@ import E401 from '../pages/401.vue';
 import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
+import EventStore from '../pages/eventStore.vue'
 
 Vue.use(Router);
 
@@ -52,6 +53,10 @@ const routes = [
     path: '/register',
     component: Register,
     meta: { requiresNotAuth: true }
+  },
+  {
+    path: '/events/new',
+    component: EventStore
   }
 ];
 

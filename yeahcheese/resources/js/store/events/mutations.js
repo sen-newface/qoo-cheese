@@ -10,5 +10,8 @@ export default {
   resetEvent(state) {
     state.events = []
     state.initLoad = true
+  },
+  setEvent(state, event) {
+    state.events.push(event)
   }
 }
