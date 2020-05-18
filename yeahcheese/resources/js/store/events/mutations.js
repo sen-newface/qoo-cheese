@@ -1,9 +1,11 @@
 import * as types from '../mutation-types';
 
 export default {
-  // TODO: ステート内のイベントを更新する処理
-  // TODO: dispatch(types.SET_EVENT, payload) で、このミューテーションが呼び出される
-  // [types.SET_EVENT](state, payload) {
-  // },
-  // ... ステートが更新される
+  setEventValidationMessage(state, mes) {
+    state.validationMessage = mes
+  },
+
+  setEvent(state, event) {
+    state.events.push(event)
+  }
 }

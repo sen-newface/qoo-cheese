@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="register">
+  <form @submit.prevent="eventStore">
     <validationMessages :errors="valiMessages" />
     <div class="form-group">
       <label for="name">名前</label>
@@ -9,40 +9,29 @@
         :class="isValid('name')"
         id="name"
         placeholder="名前"
-        v-model="registerForm.name"
+        v-model="eventStoreForm.name"
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputEmail1">メールアドレス</label>
+      <label for="exampleInputStartDate">公開開始日</label>
       <input
-        type="email"
+        type="date"
         class="form-control"
-        :class="isValid('email')"
-        id="exampleInputEmail1"
-        placeholder="メールアドレス"
-        v-model="registerForm.email"
+        :class="isValid('start_date')"
+        id="exampleInputStartDate"
+        placeholder="公開開始日"
+        v-model="eventStoreForm.start_date"
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">パスワード</label>
+      <label for="exampleInputEndDate">公開終了日</label>
       <input
-        type="password"
+        type="date"
         class="form-control"
-        :class="isValid('password')"
-        id="exampleInputPassword1"
-        placeholder="パスワード"
-        v-model="registerForm.password"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password_conf">パスワード確認</label>
-      <input
-        type="password"
-        class="form-control"
-        :class="isValid('password')"
-        id="password_conf"
-        placeholder="パスワード確認"
-        v-model="registerForm.password_confirmation"
+        :class="isValid('end_date')"
+        id="exampleInputEndDate"
+        placeholder="公開終了日"
+        v-model="eventStoreForm.end_date"
       />
     </div>
     <button type="submit" class="btn btn-primary">登録</button>
@@ -54,17 +43,16 @@ import api from "../api";
 import { mapGetters } from "vuex";
 import validationMessages from "../components/validationMessages";
 export default {
-  name: "Register",
+  name: "EventStore",
   components: {
     validationMessages
   },
   data() {
     return {
-      registerForm: {
+      eventStoreForm: {
         name: "",
-        email: "",
-        password: "",
-        password_confirmation: ""
+        start_date: "",
+        end_date: "",
       },
       validationMessages: []
     };
@@ -95,11 +83,11 @@ export default {
     }
   },
   methods: {
-    async register() {
+    async eventStore() {
       this.delValidation();
       const response = await this.$store.dispatch(
-        "users/register",
-        this.registerForm
+        "events/eventStore",
+        this.eventStoreForm
       );
 
       if (this.isApiSuccess) {
@@ -116,4 +104,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
