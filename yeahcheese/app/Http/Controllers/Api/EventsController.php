@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreEventRequest;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
 
 class EventsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')
+            ->except(['auth', 'show']);
+    }
+
     /**
      * イベント一覧取得
      */
@@ -32,17 +39,14 @@ class EventsController extends Controller
      */
     public function show(Event $event)
     {
-        // TODO: Vueから受け取ったevent_idで単一のイベントを取得して、リソースクラスに渡す
-        // return new EventResource($event);
-    }
 
-    /**
-     * イベント追加
-     */
-    public function store()
-    {
-        // TODO: イベントを作成してから、その戻り値のインスタンスをリソースクラスに渡す
-        // return new EventResource($event);
+        //
+    }
+    public function store(StoreEventRequest $request)
+    {   
+        $request->merge(['user_id' => $request->user()->id]);
+        
+        return EventResource::make(Event::create($request->toArray()));
     }
 
     /**
