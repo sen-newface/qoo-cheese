@@ -15,6 +15,9 @@
                         <li class="nav-item mr-3">
                             <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>
                         </li>
+                        <li class="nav-item mr-3">
+                            <span class="text-secondary">{{ user.name }}さんがログイン中</span>
+                        </li>
                     </template>
                     <template v-else>
                         <li class="nav-item mr-3">
@@ -48,6 +51,7 @@ export default {
     },
     computed: {
         ...mapGetters({
+            user: 'users/user',
             isLogin: 'users/isLogin'
         })
     }
