@@ -6,5 +6,9 @@ export default {
   },
   setInitLoad(state, bool) {
     state.initLoad = bool
+  },
+  resetEvent(state) {
+    state.events = []
+    state.initLoad = true
   }
 }
