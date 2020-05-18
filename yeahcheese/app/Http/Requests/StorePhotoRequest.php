@@ -16,16 +16,13 @@ class StorePhotoRequest extends FormRequest
 
     public function rules()
     {
-        // ! vueで同じ名前を指定する
         return [
-            'event_id' => 'required|numeric|unique:photos',
             'image_data' => 'required|image|mimes:jpeg|max:200'
         ];
     }
 
     public function messages()
     {
-        // ? event_idのバリデーションメッセージはいらない？
         return [
             'image_data.required' => ':attributeの選択は必須です',
             'image_data.image' => '写真を指定してください',
