@@ -21,13 +21,18 @@ const setToken = (token = "", key = AUTH_KEY) => {
 
 
 // axios
+axios.defaults.headers.common['Accept'] = "application/json";
 const httpWithToken = axios.create({
   headers: {
     Authorization: "Bearer " + getToken()
   }
 });
 
-axios.defaults.headers.common['Accept'] = "application/json";
+httpWithToken.interceptors.request.use(request => {
+  setApiStatus(200);
+  return request
+})
+
 // トークン保存・更新が必要な場合はここで行う
 httpWithToken.interceptors.response.use(
   (response) => {
@@ -35,18 +40,15 @@ httpWithToken.interceptors.response.use(
     setApiStatus(response.status);
     return response;
   },
-  (error) => {
-    setApiStatus(error.response.status);
-  }
-
 );
 
 const onSuccess = (response) => {
-  return response.data;
+  return response ? response.data : response;
 };
 
 const onError = (e) => {
-  return e.response.data;
+  setApiStatus(e.response.status);
+  return e.response.status == 422 ? e.response.data : e;
 };
 
 export default {

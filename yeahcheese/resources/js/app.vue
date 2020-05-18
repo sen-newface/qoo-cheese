@@ -22,14 +22,14 @@ export default {
   },
   watch: {
     code: {
-      async handler(val) {
+      handler(val) {
         if (val === 500) {
           this.$router.push("/500");
         } else if (val === 404) {
           this.$router.push("/404");
         } else if (val === 403) {
           this.$router.push("/403");
-        } else if (val === 403) {
+        } else if (val === 401) {
           this.$router.push("/login");
         }
       }
