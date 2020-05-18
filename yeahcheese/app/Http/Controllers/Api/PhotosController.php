@@ -16,7 +16,8 @@ class PhotosController extends Controller
     {
         $post_data = $request->except('image_path');
         $imagefile = $request->file('image_path');
-        $path = $imagefile->store('public/images');
+        $filename = time() . '_' . $imagefile->getClientOriginalName();
+        $path = $imagefile->storeAs('public/images', $filename);
         $photo = new Photo();
         $photo->event_id = $post_data['event_id'];
         $photo->image_path = str_replace('public/', 'storage/', $path);
