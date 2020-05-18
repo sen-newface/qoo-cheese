@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'CommonHeader',
     data() {
@@ -39,11 +39,11 @@ export default {
         };
     },
     methods: {
+        ...mapActions({
+            userLogout: 'users/logout'
+        }),
         logout() {
-            // TODO: ログアウトの実際にリクエストを送る
-            //...ログアウトのapiを叩く
-            //最終的にvue側でnullにする
-            this.user = null;
+            this.userLogout();
         }
     },
     computed: {
