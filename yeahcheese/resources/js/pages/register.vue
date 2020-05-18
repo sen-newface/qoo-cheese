@@ -84,8 +84,8 @@ export default {
       var response = [];
       Object.values(this.validationMessages).forEach(val => {
         if (Array.isArray(val)) {
-          val.forEach(val2 => {
-            response.push(val2);
+          val.forEach(innerText => {
+            response.push(innerText);
           });
         } else {
           response.push(val);
