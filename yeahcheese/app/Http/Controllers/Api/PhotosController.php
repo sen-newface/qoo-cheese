@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Event;
 use App\Photo;
 
+// ! リソースクラスがマージされたら、returnを書き換える
+// ! それまでは仮のものを返す
 class PhotosController extends Controller
 {
     public function index()
@@ -21,7 +24,7 @@ class PhotosController extends Controller
         $photo->fill($request->all())->save();
         return $photo->toArray();
     }
-    public function delete(Photo $photo)
+    public function destroy(Event $event, Photo $photo)
     {
         $photo->delete();
         return [
