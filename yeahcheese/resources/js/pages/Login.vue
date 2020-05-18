@@ -1,32 +1,77 @@
 <template>
-    <div>
-        <div class="mx-auto col-md-6">
-            <p>Eメール：<input type="text" class="form-control" v-model="email" placeholder="メールアドレスを入力してください"></p>
-            <p>パスワード：<input type="password" class="form-control" v-model="password" @keyup.enter="login()" placeholder="パスワードを入力してください"></p>
-            <button @click="login()" class="btn btn-outline-primary">送信する</button>
-        </div>
+  <form @submit.prevent="login">
+    <validationMessages :errors="validationMessages" />
+    <div class="form-group">
+      <label for="exampleInputEmail">メールアドレス</label>
+      <input
+        type="email"
+        class="form-control"
+        id="exampleInputEmail"
+        placeholder="メールアドレス"
+        v-model="loginForm.email"
+      />
     </div>
+    <div class="form-group">
+      <label for="exampleInputPassword">パスワード</label>
+      <input
+        type="password"
+        class="form-control"
+        id="exampleInputPassword"
+        placeholder="パスワード"
+        v-model="loginForm.password"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">ログイン</button>
+  </form>
 </template>
 
 <script>
+import api from "../api";
+import { mapGetters } from "vuex";
+import validationMessages from "../components/validationMessages";
+
 export default {
-    data() {
-        return {
-            email: "",
-            password: ""
-        };
+  name: "Login",
+  components: {
+    validationMessages
+  },
+  data() {
+    return {
+      loginForm: {
+        email: "",
+        password: "",
+      },
+      validationMessages: []
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isApiSuccess: "status/isApiSuccess"
+    }),
+  },
+  methods: {
+    async login() {
+      this.delValidation();
+      if (this.loginForm.email.trim() === "" || this.loginForm.password.trim() === "") {
+        this.validationMessages.push("メールアドレスとパスワードを入力してください");
+        return false;
+      }
+      const response = await this.$store.dispatch(
+        "users/login",
+        this.loginForm
+      );
+      if (this.isApiSuccess) {
+        this.$router.push({ path: "/events" });
+      } else {
+        this.validationMessages.push("メールアドレスかパスワードが間違っています");
+      }
     },
-    methods: {
-        login() {  // ボタンを押した時に呼び出される
-            if(this.email.trim() === "" || this.password.trim() === "") {
-                console.log("メールアドレスとパスワードを入力してください");
-            }
-            else console.log(this.email, this.password);
-        }
-    }
-}
+    delValidation() {
+      this.validationMessages = [];
+    },
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
