@@ -39,15 +39,17 @@
                 >
             </div>
         </div>
-        <div
-            class="event-photos"
-            v-for="photo in photos"
-            :key="photo.id"
-        >
-            {{ photo.image_path }}
-            <!-- 
-                // TODO: 写真一枚一枚に削除ボタン追加
-            -->
+        <div class="event-photos">
+            <div
+                class="photos"
+                v-for="photo in photos"
+                :key="photo.id"
+            >
+                {{ photo.image_path }}
+                <!-- 
+                    // TODO: 写真一枚一枚に削除ボタン追加
+                -->
+            </div>
         </div>
     </div>
 </template>
