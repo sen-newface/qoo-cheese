@@ -148,18 +148,48 @@ const events = [
  * ! Laravel側で修正が必要かもしれない部分
  * ! * バリデーションエラーの場合、送信されてきたイベント情報をオウム返しする（これをVueで受け取り、再度表示させる）
  */
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import validationMessages from "../components/validationMessages";
 export default {
     name: 'EventEdit',
+    components: {
+        validationMessages
+    },
     data() {
         return {
             event: null,
-            photos: null
+            photos: null,
+            validationMessages: []
+        }
+    },
+    computed: {
+        ...mapGetters({
+            isSuccess: 'status/isApiSuccess'
+        }),
+        isValid() {
+            return function(form_name) {
+                return Object.keys(this.validationMessages).includes(form_name)
+                ? "is-invalid"
+                : "";
+            };
+        },
+        errors() {
+            var response = [];
+            Object.values(this.validationMessages).forEach(val => {
+                if (Array.isArray(val)) {
+                val.forEach(innerText => {
+                    response.push(innerText);
+                });
+                } else {
+                response.push(val);
+                }
+            });
+            return response;
         }
     },
     methods: {
-        ...mapActions([
-            'events/eventUpdate'
+        ...mapActions('events', [
+            'eventUpdate'
         ]),
         getEvents() {
             return events;
@@ -171,6 +201,25 @@ export default {
         },
         updateEvent() {
             // TODO: 定義したアクションを呼び出し、結果を再度eventに挿入
+            const payload = {
+                id: this.event,
+                event: this.event
+            };
+            const response = this.eventUpdate(payload);
+            this.validate(response);
+        },
+        validate(response) {
+            if (this.isSuccess === false) {
+                console.log(response);
+                this.validationMessages = response;
+            } else {
+                this.$router.push({
+                    'name': 'eventShow',
+                    'params': {
+                        id: this.event.id
+                    }
+                });
+            }
         }
     },
     created() {
