@@ -3,8 +3,6 @@ import store from "./store/";
 
 const AUTH_KEY = "auth_key";
 
-axios.defaults.headers.common['Accept'] = "application/json";
-
 const setApiStatus = (code = "200") => {
   return store.commit("status/setCode", code);
 };
@@ -22,35 +20,35 @@ const setToken = (token = "", key = AUTH_KEY) => {
 };
 
 
-// トークン保存を伴わないaxios
+// axios
+axios.defaults.headers.common['Accept'] = "application/json";
 const httpWithToken = axios.create({
   headers: {
     Authorization: "Bearer " + getToken()
   }
 });
 
-// トークン保存を伴うaxios
-const httpWithTokenAndStore = axios.create({
-  headers: {
-    Authorization: "Bearer " + getToken()
-  }
-});
-
+httpWithToken.interceptors.request.use(request => {
+  setApiStatus(200);
+  return request
+})
 
 // トークン保存・更新が必要な場合はここで行う
-httpWithTokenAndStore.interceptors.response.use((response) => {
-  if (response.data && response.data.token) { setToken(response.data.token); }
-  return response;
-});
+httpWithToken.interceptors.response.use(
+  (response) => {
+    if (response.headers.authtoken) { setToken(response.headers.authtoken); }
+    setApiStatus(response.status);
+    return response;
+  },
+);
 
 const onSuccess = (response) => {
-  setApiStatus(response.status);
-  return response.data;
+  return response ? response.data : response;
 };
 
 const onError = (e) => {
   setApiStatus(e.response.status);
-  return e.response.data;
+  return e.response.status == 422 ? e.response.data : e;
 };
 
 export default {
@@ -60,7 +58,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   getMe() {
-    return httpWithTokenAndStore.get("/api/user/").then(onSuccess, onError);
+    return httpWithToken.get("/api/user/").then(onSuccess, onError);
   },
 
   // ユーザー作成
@@ -68,7 +66,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   userSignup(user) {
-    return httpWithTokenAndStore.post("/api/signup/", user).then(onSuccess, onError);
+    return httpWithToken.post("/api/signup/", user).then(onSuccess, onError);
   },
 
   // login
@@ -76,7 +74,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   userLogin(user) {
-    return httpWithTokenAndStore.post("/api/login/", user).then(onSuccess, onError);
+    return httpWithToken.post("/api/login/", user).then(onSuccess, onError);
   },
 
   // logout
