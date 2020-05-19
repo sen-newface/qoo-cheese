@@ -17,60 +17,53 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-5">
-                    <template v-if="isLogin">
-                        <li class="nav-item mr-3">
-                            <router-link to="/events">イベント一覧</router-link>
-                        </li>
-                        <li class="nav-item mr-3">
-                            <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>
-                        </li>
-                        <li class="nav-item mr-3">
-                            <span class="text-secondary">{{ user.name }}さんがログイン中</span>
-                        </li>
-                    </template>
-                    <template v-else>
-                        <li class="nav-item mr-3">
-                            <router-link to="/login">ログイン</router-link>
-                        </li>
-                        <li class="nav-item mr-3">
-                            <router-link to="/register">アカウント作成</router-link>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-        </nav>
-    </header>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-5">
+          <template v-if="isLogin">
+            <li class="nav-item mr-3">
+              <router-link to="/events">イベント一覧</router-link>
+            </li>
+            <li class="nav-item mr-3">
+              <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>
+            </li>
+            <li class="nav-item mr-3">
+              <span class="text-secondary">{{ user.name }}さんがログイン中</span>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item mr-3">
+              <router-link to="/login">ログイン</router-link>
+            </li>
+            <li class="nav-item mr-3">
+              <router-link to="/register">アカウント作成</router-link>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 export default {
-    name: 'CommonHeader',
-    data() {
-        return {
-        };
-    },
-    methods: {
-        ...mapActions({
-            userLogout: 'users/logout'
-        }),
-        logout() {
-            this.userLogout();
-        }
-    },
-    computed: {
-        ...mapGetters({
-            user: 'users/user',
-            isLogin: 'users/isLogin'
-        })
+  name: "CommonHeader",
+  data() {
+    return {};
+  },
+  methods: {
+    ...mapActions({
+      userLogout: "users/logout"
+    }),
+    logout() {
+      this.userLogout();
     }
   },
   computed: {
-    isLogin() {
-      return this.user !== null;
-    }
+    ...mapGetters({
+      user: "users/user",
+      isLogin: "users/isLogin"
+    })
   }
 };
 </script>

@@ -52,7 +52,7 @@ export default {
       eventStoreForm: {
         name: "",
         start_date: "",
-        end_date: "",
+        end_date: ""
       },
       validationMessages: []
     };
@@ -104,5 +104,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

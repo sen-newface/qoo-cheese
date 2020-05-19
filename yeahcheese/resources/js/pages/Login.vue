@@ -39,7 +39,7 @@ export default {
     return {
       loginForm: {
         email: "",
-        password: "",
+        password: ""
       },
       validationMessages: []
     };
@@ -47,13 +47,18 @@ export default {
   computed: {
     ...mapGetters({
       isApiSuccess: "status/isApiSuccess"
-    }),
+    })
   },
   methods: {
     async login() {
       this.delValidation();
-      if (this.loginForm.email.trim() === "" || this.loginForm.password.trim() === "") {
-        this.validationMessages.push("メールアドレスとパスワードを入力してください");
+      if (
+        this.loginForm.email.trim() === "" ||
+        this.loginForm.password.trim() === ""
+      ) {
+        this.validationMessages.push(
+          "メールアドレスとパスワードを入力してください"
+        );
         return false;
       }
       const response = await this.$store.dispatch(
@@ -63,12 +68,14 @@ export default {
       if (this.isApiSuccess) {
         this.$router.push({ path: "/events" });
       } else {
-        this.validationMessages.push("メールアドレスかパスワードが間違っています");
+        this.validationMessages.push(
+          "メールアドレスかパスワードが間違っています"
+        );
       }
     },
     delValidation() {
       this.validationMessages = [];
-    },
+    }
   }
 };
 </script>
