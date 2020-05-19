@@ -7,5 +7,9 @@ export default {
 
   setEvent(state, event) {
     state.events.push(event)
+  },
+
+  delEvents(state) {
+    state.events = []
   }
 }
