@@ -11,22 +11,6 @@
       />
     </p>
     <button @click="findAuthKey()" class="btn btn-outline-primary">送信する</button>
-    <router-link
-      class="btn btn-outline-primary float-right"
-      :to="{ name: 'eventShow', params: { id: 1 } }"
-    >1</router-link>
-    <router-link
-      class="btn btn-outline-primary float-right"
-      :to="{ name: 'eventShow', params: { id: 2 } }"
-    >2</router-link>
-    <router-link
-      class="btn btn-outline-primary float-right"
-      :to="{ name: 'eventShow', params: { id: 3 } }"
-    >3</router-link>
-    <router-link
-      class="btn btn-outline-primary float-right"
-      :to="{ name: 'eventShow', params: { id: 4 } }"
-    >4</router-link>
   </div>
 </template>
 
