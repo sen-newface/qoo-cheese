@@ -10,6 +10,7 @@ import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
 import EventStore from '../pages/eventStore.vue'
+import EventEdit from '../pages/EventEdit.vue'
 
 Vue.use(Router);
 
@@ -46,6 +47,11 @@ const routes = [
   {
     path: '/events/new',
     component: EventStore
+  },
+  {
+    path: '/events/:id/edit',
+    name: 'eventEdit',
+    component: EventEdit
   }
 ];
 
