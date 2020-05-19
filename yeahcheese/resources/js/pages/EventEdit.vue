@@ -7,48 +7,54 @@
         >
             更新
         </button>
-        <div class="form-group">
-            <label for="name">イベント名</label>
-            <input
-                id="name"
-                class="form-control form-control-lg"
-                type="text"
-                placeholder="イベント名を入力してください"
-                :value="event.name"
+        <div id="event-form-wrapper">
+            <validation-messages
+                :errors="errors"
             >
-        </div>
-        <div class="form-group">
-            <label for="start-date">公開開始日</label>
-            <div class="col-10">
+            </validation-messages>
+            <div class="form-group">
+                <label for="name">イベント名</label>
                 <input
-                    id="start-date"
+                    id="name"
                     class="form-control form-control-lg"
-                    type="date"
-                    :value="event.start_date"
+                    type="text"
+                    placeholder="イベント名を入力してください"
+                    :value="event.name"
                 >
             </div>
-        </div>
-        <div class="form-group">
-            <label for="end-date">公開終了日</label>
-            <div class="col-10">
-                <input
-                    id="end-date"
-                    class="form-control form-control-lg" 
-                    type="date"
-                    :value="event.end_date"
-                >
+            <div class="form-group">
+                <label for="start-date">公開開始日</label>
+                <div class="col-10">
+                    <input
+                        id="start-date"
+                        class="form-control form-control-lg"
+                        type="date"
+                        :value="event.start_date"
+                    >
+                </div>
             </div>
-        </div>
-        <div class="event-photos">
-            <div
-                class="photos"
-                v-for="photo in photos"
-                :key="photo.id"
-            >
-                {{ photo.image_path }}
-                <!-- 
-                    // TODO: 写真一枚一枚に削除ボタン追加
-                -->
+            <div class="form-group">
+                <label for="end-date">公開終了日</label>
+                <div class="col-10">
+                    <input
+                        id="end-date"
+                        class="form-control form-control-lg" 
+                        type="date"
+                        :value="event.end_date"
+                    >
+                </div>
+            </div>
+            <div class="event-photos">
+                <div
+                    class="photos"
+                    v-for="photo in photos"
+                    :key="photo.id"
+                >
+                    {{ photo.image_path }}
+                    <!-- 
+                        // TODO: 写真一枚一枚に削除ボタン追加
+                    -->
+                </div>
             </div>
         </div>
     </div>
@@ -182,5 +188,11 @@ export default {
 <style scoped>
 #event-edit {
     position: relative;
+}
+#event-edit #name {
+    margin-left: 16px;
+}
+#event-edit button {
+    margin-bottom: 80px;
 }
 </style>
