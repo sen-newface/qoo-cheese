@@ -2,7 +2,7 @@
     <div id="event-edit">
         <button
             type="button"
-            class="btn btn-primary btn-lg float-right"
+            class="btn btn-primary btn-lg"
             @click="updateEvent"
         >
             更新
