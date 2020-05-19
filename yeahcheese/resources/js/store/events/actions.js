@@ -22,5 +22,10 @@ export default {
     } else {
       return response.errors;
     }
-  } 
+  },
+  async eventShow({ commit }, { id }) {
+    const response = await api.eventShow(id);
+    const isSuccess = store.getters["status/isApiSuccess"];
+    return response;
+  }
 }

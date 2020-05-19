@@ -60,76 +60,6 @@
 </template>
 
 <script>
-// ! 本来はルートコンポーネントでログイン確認後に
-// ! ユーザーと紐づくイベント一覧を取得しているはずなので必要なし
-const events = [
-    {
-        id: 1,
-        name: '運動会',
-        key: 'doaj432joj53io2oi2',
-        start_date: '2020-07-12',
-        end_date: '2020-09-21',
-        user_id: 3,
-        photos: [
-            {
-                id: 1,
-                image_path: 'yeah1.jpeg'
-            },
-            {
-                id: 2,
-                image_path: 'yeah2.jpeg'
-            },
-            {
-                id: 3,
-                image_path: 'yeah3.jpeg'
-            }
-        ]
-    },
-    {
-        id: 2,
-        name: '餅つき大会',
-        key: 'doaj432joj53io2oi2',
-        start_date: '2020-07-12',
-        end_date: '2020-09-21',
-        user_id: 3,
-        photos: [
-            {
-                id: 5,
-                image_path: 'mochi1.jpeg'
-            },
-            {
-                id: 6,
-                image_path: 'mochi2.jpeg'
-            }
-        ]
-    },
-    {
-        id: 3,
-        name: '芋掘り大会',
-        key: 'doaj432joj53io2oi2',
-        start_date: '2020-07-12',
-        end_date: '2020-09-21',
-        user_id: 3,
-        photos: [
-            {
-                id: 7,
-                image_path: 'imo1.jpeg'
-            },
-            {
-                id: 8,
-                image_path: 'imo2.jpeg'
-            },
-            {
-                id: 9,
-                image_path: 'imo3.jpeg'
-            },
-            {
-                id: 10,
-                image_path: 'imo4.jpeg'
-            }
-        ]
-    }
-];
 /**
  * [イベント編集] - イベント情報の更新と写真の追加・削除が可能
  * ? 必要な情報
@@ -188,12 +118,14 @@ export default {
     },
     methods: {
         ...mapActions('events', [
-            'eventUpdate'
+            'eventUpdate',
+            'eventShow'
         ]),
         getEvents() {
             return events;
         },
         setPhotos(event) {
+            console.log(event);
             if (Array.isArray(event.photos)) {
                 this.photos = event.photos;
             }
@@ -222,13 +154,14 @@ export default {
         }
     },
     created() {
-        const events = this.getEvents();
         const event_id = Number.parseInt(this.$route.params.id);
-        const event = events.filter((event) => {
-            return event.id === event_id;
-        });
-        this.event = event;
-        this.setPhotos(this.event);
+        const response = this.eventShow(event_id);
+        if (this.isSuccess) {
+            this.event = response;
+            this.setPhotos(this.event);
+        } else {
+            console.log("イベントを取得できませんでした");
+        }
     }
 }
 </script>
