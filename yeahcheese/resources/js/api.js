@@ -93,9 +93,10 @@ export default {
   // イベントの認証のみを行う,返却値 id をkey 返却値 keyをvalueにしてlocalstrageに保存
   eventAuth(key) {
     let param = { key: key }
-    httpWithToken.post("/api/events/auth", param).then(
+    return httpWithToken.post("/api/events/auth", param).then(
       res => {
-        setToken(res.data.key, res.data.event_id);
+        const key = "event-" + res.data.id
+        setToken(res.data.key, key);
         setApiStatus(res.status);
         return res.data;
       }
@@ -107,7 +108,7 @@ export default {
   // 返却値 event json
   // イベント取得、取得後 eventPhotosやるといいかな
   eventShow(id) {
-    let key = getToken(id)
+    let key = "event-" + getToken(id)
     return httpWithToken.get("/api/events/" + id + "?key=" + key).then(onSuccess, onError);
   },
 

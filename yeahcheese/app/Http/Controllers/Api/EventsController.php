@@ -28,10 +28,13 @@ class EventsController extends Controller
     /**
      * 認証キーと紐づくイベント取得
      */
-    public function auth()
+    public function auth(Request $request)
     {
-        // TODO: トークンを利用して認証キーをあれこれ照合して、認証キーに紐づくイベントを取得し、リソースクラスに渡す
-        // return new EventResource($event);
+        $event = Event::all()->where("key", $request->key)->first();
+        if (!$event) {
+        return response("認証キーが間違っています", 401);
+    }
+        return response($event, 200);
     }
 
     /**
@@ -43,9 +46,9 @@ class EventsController extends Controller
         //
     }
     public function store(StoreEventRequest $request)
-    {   
+    {
         $request->merge(['user_id' => $request->user()->id]);
-        
+
         return EventResource::make(Event::create($request->toArray()));
     }
 
