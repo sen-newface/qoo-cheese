@@ -2,7 +2,7 @@
     <div id="event-edit">
         <button
             type="button"
-            class="btn btn-primary btn-lg"
+            class="btn btn-primary btn-lg float-right"
             @click="updateEvent"
         >
             更新
@@ -18,7 +18,7 @@
             >
         </div>
         <div class="form-group">
-            <label for="start-date" class="col-2 col-form-label">公開開始日</label>
+            <label for="start-date">公開開始日</label>
             <div class="col-10">
                 <input
                     id="start-date"
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="end-date" class="col-2 col-form-label">公開終了日</label>
+            <label for="end-date">公開終了日</label>
             <div class="col-10">
                 <input
                     id="end-date"
