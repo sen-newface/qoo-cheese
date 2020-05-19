@@ -57,7 +57,11 @@ const routes = [
   {
     path: '/events/new',
     component: EventStore
-  }
+  },
+  {
+    path: '*',
+    component: E404
+  },
 ];
 
 const router = new Router({
@@ -66,9 +70,15 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  // if (to.matched.some(record => record.meta.requiresNotAuth) && store.getters['users/isLogin']) {
-  //   next({ path: '/' });
-  // }
+  // meta: requiresNotAuth ログインしてたらダメ
+  if (to.matched.some(record => record.meta.requiresNotAuth) && store.getters['users/isLogin']) {
+    next({ path: '/' });
+  }
+
+  // meta: requiresAuth ログイン必要
+  if (to.matched.some(record => record.meta.requiresAuth) && !store.getters['users/isLogin']) {
+    next({ path: '/login' });
+  }
   next();
 });
 
