@@ -32,7 +32,7 @@ class EventsController extends Controller
     {
         $event = Event::all()->where("key", $request->key)->first();
         if (!$event) {
-        return response("認証キーが間違っています", 401);
+        return response("認証キーが間違っています", 406);
     }
         return response($event, 200);
     }
