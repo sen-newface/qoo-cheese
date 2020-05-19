@@ -7,7 +7,7 @@
         type="text"
         class="form-control"
         id="key"
-        placeholder="認証キー"
+        placeholder="認証キーを入力してください"
         v-model="authKey"
       />
     </div>
@@ -43,7 +43,7 @@ export default {
     async checkAuthKey() {
     this.delValidation();
       if(this.authKey.trim() === "") {
-        this.validationMessages.push("メールアドレスとパスワードを入力してください");
+        this.validationMessages.push("認証キーを入力してください");
         return false
       }
       const response = await api.eventAuth(this.authKey)
