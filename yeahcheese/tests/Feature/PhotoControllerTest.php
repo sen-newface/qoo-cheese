@@ -50,6 +50,12 @@ class PhotoControllerTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonCount(2)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'image_path'
+                ]
+            ])
             ->assertJsonFragment([
                 'status' => 201,
             ]);
