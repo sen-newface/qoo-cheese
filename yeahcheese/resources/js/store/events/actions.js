@@ -1,11 +1,16 @@
 import * as types from '../mutation-types';
+import api from "../../api";
+import store from "../../store";
 
 export default {
-  // ? 以下のように使える、と思う
-  // getEvent({ commit }) {
-  //   ...apiを叩いて、イベント情報を取得する処理
-  //   ...
-  //   payload = { id: ..., name: ..., photos: ... };
-  //   commit(types.SET_EVENT, payload);
-  // }
+  async eventStore(context, data) {
+    let response = await api.eventPost(data);
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      context.commit("setEvent", response);
+      return response
+    } else {
+      return response.errors;
+    }
+  }
 }
