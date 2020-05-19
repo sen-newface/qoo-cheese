@@ -145,12 +145,14 @@ export default {
     name: 'EventEdit',
     data() {
         return {
-            events: null,
             event: null,
             photos: null
         }
     },
     methods: {
+        ...mapActions([
+            'events/eventUpdate'
+        ]),
         getEvents() {
             return events;
         },
