@@ -86,8 +86,18 @@ const events = [
 ]
 export default {
     name: 'EventEdit',
+    data() {
+        return {
+            events: null
+        }
+    },
+    methods: {
+        getEvents() {
+            return events;
+        }
+    },
     created() {
-        console.log(events);
+        this.events = getEvents();
     }
 }
 </script>
