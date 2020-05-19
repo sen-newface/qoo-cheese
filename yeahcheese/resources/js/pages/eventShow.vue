@@ -3,7 +3,7 @@
     <router-link v-if="isLogin" class="btn btn-outline-info mb-5" :to="{ path: '/events/'}">一覧へ戻る</router-link>
     <router-link v-else class="btn btn-outline-info mb-5" :to="{ path: '/'}">TOPへ</router-link>
     <div class="card text-center mb-5">
-      <div class="card-header">{{event.name}}{{event.id}}</div>
+      <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
         <a href="#" class="btn btn-primary">編集</a>
