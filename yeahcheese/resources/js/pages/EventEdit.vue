@@ -160,12 +160,15 @@ export default {
             if (Array.isArray(event.photos)) {
                 this.photos = event.photos;
             }
+        },
+        updateEvent() {
+            // TODO: 定義したアクションを呼び出し、結果を再度eventに挿入
         }
     },
     created() {
-        this.events = this.getEvents();
+        const events = this.getEvents();
         const event_id = Number.parseInt(this.$route.params.id);
-        const event = this.events.filter((event) => {
+        const event = events.filter((event) => {
             return event.id === event_id;
         });
         this.event = event;
