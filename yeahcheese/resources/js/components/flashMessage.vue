@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import flashMessage from '../store/flashMessage';
 export default {
   name: 'FlashMessage',
@@ -21,11 +21,6 @@ export default {
     setClass(){
         return this.getClass ? 'alert-' + this.getClass : ""
     }
-  },
-  methods: {
-    ...mapMutations({
-      setTextAndClass: 'flashMessage/setTextAndClass'
-    }),
   }
 };
 </script>
