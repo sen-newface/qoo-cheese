@@ -30,7 +30,7 @@ class AuthController extends Controller
   {
     $user = User::all()->where("email", $request->email)->first();
     if (!$user || $user->password != $request->password) {
-      return response("passwordかemailが間違っています", 401);
+      return response(null, 401);
     }
     $user->setToken();
     return response($user, 200);

@@ -31,7 +31,7 @@ export default {
       context.commit("setUser", response);
       return response;
     }
-    return false;
+    return response;
   },
 
   async logout(context) {
