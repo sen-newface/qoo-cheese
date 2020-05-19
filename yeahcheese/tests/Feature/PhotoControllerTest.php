@@ -51,13 +51,8 @@ class PhotoControllerTest extends TestCase
             ->assertStatus(201)
             ->assertJsonCount(2)
             ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'image_path'
-                ]
-            ])
-            ->assertJsonFragment([
-                'status' => 201,
+                'id',
+                'image_path'
             ]);
     }
 
@@ -75,15 +70,10 @@ class PhotoControllerTest extends TestCase
         ];
         $url = '/api/events/' . $this->event->id . '/photos';
         $response = $this->post($url, $data);
-        $photo = $response['data'];
-        $url .= '/' . $photo['id'];
-        $response = $this->delete($url, [$this->event, $photo['id']]);
+        $url .= '/' . $response['id'];
+        $response = $this->delete($url, [$this->event, $response['id']]);
         $response
-            ->assertOk()
-            ->assertJsonCount(1)
-            ->assertJsonFragment([
-                'status' => 204
-            ]);
+            ->assertStatus(204);
     }
 
 }
