@@ -1,0 +1,31 @@
+name: php_syntax-test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  php_syntax-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:10.1
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: postgres_test
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_password
+    env:
+      APP_ENV: testing
+      DB_HOST: localhost
+      DB_PORT: 5432
+      PAGER: cat # prevent psql commands using less
+    steps:
+      # syntax
+      - name: install reviewdog
+        run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b tmp/bin
+      - name: check syntax(php)
+        run: ./yeahcheese/syntax/php_check.sh
