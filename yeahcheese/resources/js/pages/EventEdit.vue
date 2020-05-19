@@ -1,5 +1,54 @@
 <template>
     <div id="event-edit">
+        <button
+            type="button"
+            class="btn btn-primary btn-lg"
+            @click="updateEvent"
+        >
+            更新
+        </button>
+        <div class="form-group">
+            <label for="name">イベント名</label>
+            <input
+                id="name"
+                class="form-control form-control-lg"
+                type="text"
+                placeholder="イベント名を入力してください"
+                :value="event.name"
+            >
+        </div>
+        <div class="form-group">
+            <label for="start-date" class="col-2 col-form-label">公開開始日</label>
+            <div class="col-10">
+                <input
+                    id="start-date"
+                    class="form-control form-control-lg"
+                    type="date"
+                    :value="event.start_date"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="end-date" class="col-2 col-form-label">公開終了日</label>
+            <div class="col-10">
+                <input
+                    id="end-date"
+                    class="form-control form-control-lg" 
+                    type="date"
+                    :value="event.end_date"
+                >
+            </div>
+        </div>
+        <div
+            class="event-photos"
+            v-for="photo in photos"
+            :key="photo.id"
+        >
+            {{ photo.image_path }}
+            <!-- 
+                // TODO: 写真一枚一枚に削除ボタン追加
+            -->
+        </div>
     </div>
 </template>
 
@@ -119,4 +168,7 @@ export default {
 </script>
 
 <style scoped>
+#event-edit {
+    position: relative;
+}
 </style>
