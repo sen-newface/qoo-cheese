@@ -4,16 +4,6 @@
 </template>
 
 <script>
-/**
- * [イベント編集] - イベント情報の更新と写真の追加・削除が可能
- * * 必要な情報
- *  * 単一のイベント情報
- *   * created内でstoreにあるeventsからルートパラメータのイベントを取得
- *   * 更新時に参照するため、eventに格納
- *  * イベントに紐づく写真情報
- *   * イベントのリレーションから取得
- *   * 削除時に参照するため、photosに格納
- */
 // ! 本来はルートコンポーネントでログイン確認後に
 // ! ユーザーと紐づくイベント一覧を取得しているはずなので必要なし
 const events = [
@@ -83,21 +73,47 @@ const events = [
             }
         ]
     }
-]
+];
+/**
+ * [イベント編集] - イベント情報の更新と写真の追加・削除が可能
+ * * 必要な情報
+ *  * 単一のイベント情報
+ *   * created内でstoreにあるeventsからルートパラメータのイベントを取得
+ *   * 更新時に参照するため、eventに格納
+ *  * イベントに紐づく写真情報
+ *   * イベントのリレーションから取得
+ *   * 削除時に参照するため、photosに格納
+ * * 動作
+ *   1. dataのeventとphotosを表示
+ * 
+ */
 export default {
     name: 'EventEdit',
     data() {
         return {
-            events: null
+            events: null,
+            event: null,
+            photos: null
         }
     },
     methods: {
         getEvents() {
             return events;
+        },
+        setPhotos(event) {
+            if (Array.isArray(event.photos)) {
+                this.photos = event.photos;
+            }
         }
     },
     created() {
-        this.events = getEvents();
+        this.events = this.getEvents();
+        const event_id = Number.parseInt(this.$route.params.id);
+        const event = this.events.filter((event) => {
+            return event.id === event_id;
+        });
+        this.event = event;
+        this.setPhotos(this.event);
     }
 }
 </script>
