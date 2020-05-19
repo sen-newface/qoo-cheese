@@ -18,7 +18,6 @@
                     id="name"
                     class="form-control form-control-lg"
                     type="text"
-                    placeholder="イベント名を入力してください"
                     :value="event.name"
                 >
             </div>
