@@ -23,14 +23,20 @@ export default {
   watch: {
     code: {
       handler(val) {
-        if (val === 500) {
-          this.$router.push("/500");
-        } else if (val === 404) {
-          this.$router.push("/404");
-        } else if (val === 403) {
-          this.$router.push("/403");
-        } else if (val === 401) {
-          this.$router.push("/login");
+        switch (val) {
+          case 500:
+            this.$router.push("/500");
+            break;
+          case 404:
+            this.$router.push("/404");
+            break;
+          case 403:
+            this.$router.push("/403");
+            break;
+          case 401:
+            this.$router.push("/login");
+            break;
+          default:
         }
       }
     }
