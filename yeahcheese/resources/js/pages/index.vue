@@ -43,7 +43,7 @@ export default {
     async checkAuthKey() {
     this.delValidation();
       if(this.authKey.trim() === "") {
-        console.log("メールアドレスとパスワードを入力してください");
+        this.validationMessages.push("メールアドレスとパスワードを入力してください");
         return false
       }
       const response = await api.eventAuth(this.authKey)
