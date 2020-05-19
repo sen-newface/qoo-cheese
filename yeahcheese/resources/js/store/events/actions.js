@@ -12,5 +12,15 @@ export default {
     } else {
       return response.errors;
     }
-  }
+  },
+  async eventUpdate({ commit }, { id, event }) {
+    const response = await api.eventUpdate(id, event);
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      commit("updateEvent", response);
+      return response;
+    } else {
+      return response.errors;
+    }
+  } 
 }
