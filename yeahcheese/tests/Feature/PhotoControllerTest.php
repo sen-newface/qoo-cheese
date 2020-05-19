@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\User;
 use App\Event;
-use App\Photo;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -23,21 +22,13 @@ class PhotoControllerTest extends TestCase
     {
         parent::setUp();
 
-        $user = new User();
-        $user->name = 'TEST';
-        $user->email = 'test@gmail.com';
-        $user->password = 'TESTTESTTEST';
-        $user->save();
+        $user = factory(User::class)->create();
 
         $this->actingAs($user);
 
-        $event = new Event();
-        $event->name = 'XXX';
-        $event->key = 'XYZOPQRSTU';
-        $event->start_date = '2020-09-21';
-        $event->end_date = '2020-10-21';
-        $event->user_id = $user->id;
-        $event->save();
+        $event = factory(Event::class)->create([
+            'user_id' => $user->id
+        ]);
 
         $this->event = $event;
     }
