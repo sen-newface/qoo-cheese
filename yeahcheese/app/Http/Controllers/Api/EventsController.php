@@ -54,12 +54,12 @@ class EventsController extends Controller
      */
     public function update(Event $event, StoreEventRequest $request)
     {
-        $event->name = $request['name'];
-        $event->start_date = $request['start_date'];
-        $event->end_date = $request['end_date'];
-        $event->save();
-        // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
-        return response(new EventResource($event), 201);
+        if ($request->user()->id == $event->user_id) {
+            $form = $request->all();
+            $event->fill($form)->save();
+            return response(new EventResource($event), 201);
+        }
+        return response(null, 403);
     }
 
     /**
