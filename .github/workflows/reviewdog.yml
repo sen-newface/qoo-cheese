@@ -16,12 +16,13 @@ jobs:
       - name: eslint install
         run: npm install
         working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
-      - name: eslint review
-        uses: reviewdog/action-eslint@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review # Change reporter.
-          eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
       - name: eslint
         run: npm run lint
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
+      - name: eslint review
+          uses: reviewdog/action-eslint@v1
+          with:
+            github_token: ${{ secrets.github_token }}
+            reporter: github-pr-review # Change reporter.
+            eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
         working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
