@@ -20,5 +20,8 @@ export default {
   },
   setNowEvent(state, event) {
     state.event = event;
+  },
+  delEvents(state) {
+    state.events = []
   }
 }

@@ -33,16 +33,25 @@ export default {
       return response.errors;
     }
   },
+  
   async eventUpdate({ commit }, { id, event }) {
     const response = await api.eventUpdate(id, event);
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       commit("updateEvent", response);
       return response;
+
+  async setEventForId(context, event_id) {
+    let response = await api.eventShow(event_id)
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      context.commit("setEvent", response);
+      return response
     } else {
       return response.errors;
     }
   },
+    
   async eventShow({ commit }, { id }) {
     const response = await api.eventShow(id);
     const isSuccess = store.getters["status/isApiSuccess"];
@@ -52,5 +61,17 @@ export default {
     } else {
       return response.errors;
     }
+
+  async getEventsAndPhotosIfNotExits({ dispatch, getters }, event_id) {
+    let event = getters.getEventForId(event_id)
+    if (!event) {
+      event = await dispatch("setEventForId", event_id)
+    }
+    if (event) await store.dispatch("photos/getPhotosIfNotExits", event_id);
+  },
+
+  resetEventAndPhotos({ context }) {
+    store.commit("photos/delPhotos")
+    store.commit("events/resetEvent")
   }
 }

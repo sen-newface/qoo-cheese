@@ -11,6 +11,22 @@ export default {
       return response;
     } else {
       return response.errors;
+    },
+  async setPhotosForEventId(context, event_id) {
+    let response = await api.eventPhotos(event_id)
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      const data = { event_id: event_id, photos: response }
+      context.commit("setEventPhotos", data);
+      return response
+    } else {
+      return response.errors;
+    }
+  },
+  async getPhotosIfNotExits({ dispatch, commit, getters }, event_id) {
+    let photos = getters.getPhotosForEvnetId(event_id)
+    if (!photos) {
+      photos = await dispatch("setPhotosForEventId", event_id)
     }
   }
 }
