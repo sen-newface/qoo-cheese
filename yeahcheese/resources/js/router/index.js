@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store';
 
+import EventsIndex from '../pages/eventsIndex.vue';
+import EventsShow from '../pages/eventShow.vue';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -33,6 +35,15 @@ const routes = [
   {
     path: '/500',
     component: E500
+  },
+  {
+    path: '/events',
+    component: EventsIndex
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
   },
   {
     path: '/login',
