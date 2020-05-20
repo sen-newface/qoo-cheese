@@ -39,6 +39,7 @@ export default {
   async logout(context) {
     let res = await api.userLogout();
     context.commit("deleteUser")
+    store.commit("events/resetEvent")
     context.commit("flashMessage/setTextAndClass",{text: "ログアウトに成功しました", cls: "success"}, {root: true});
     return true;
   },
