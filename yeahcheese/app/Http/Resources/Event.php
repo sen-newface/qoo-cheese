@@ -16,11 +16,13 @@ class Event extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'photos' => PhotoResource::collection($this->photos)
+        'id' => $this->id,
+        'user_id' => $this->user->id,
+        'name' => $this->name,
+        'key' => $this->key,
+        'start_date' => $this->start_date,
+        'end_date' => $this->end_date,
+        'photos' => PhotoResource::collection($this->photos->take(2))
         ];
     }
 }

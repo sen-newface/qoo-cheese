@@ -56,6 +56,7 @@ export default {
     }),
     logout() {
       this.userLogout();
+      this.$router.push("/");
     }
   },
   computed: {
