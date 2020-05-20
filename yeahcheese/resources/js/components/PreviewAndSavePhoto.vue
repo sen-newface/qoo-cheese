@@ -28,7 +28,7 @@ export default {
       canAdd: true,
       file: null,
       preview: null,
-      error: null // ! のちにエラー表示させる
+      error: null
     };
   },
   computed: {
@@ -70,6 +70,11 @@ export default {
         this.file = null;
         this.preview = null;
       };
+    },
+    upCancel() {
+      this.canAdd = true;
+      this.file = null;
+      this.preview = null;
     }
   }
 };
