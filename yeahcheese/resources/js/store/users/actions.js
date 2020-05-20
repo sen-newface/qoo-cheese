@@ -37,6 +37,7 @@ export default {
   async logout(context) {
     let res = await api.userLogout();
     context.commit("deleteUser")
+    store.dispatch("events/resetEventAndPhotos")
     return true;
   },
 }

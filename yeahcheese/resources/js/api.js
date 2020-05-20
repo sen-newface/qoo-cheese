@@ -105,12 +105,22 @@ export default {
   eventAuth(key) {
     setLoding("イベントのkeyを照合しています")
     let param = { key: key }
-    httpWithToken.post("/api/events/auth", param).then(
+    return httpWithToken.post("/api/events/auth", param).then(
       res => {
-        setToken(res.data.key, res.data.event_id);
+        const key = "event-" + res.data.id
+        setToken(res.data.key, key);
+        setApiStatus(res.status);
         return res.data;
       }
       , onError)
+  },
+
+  // イベント一覧
+  // 必要 なし
+  // 返却値 events json
+  // イベント取得、取得後
+  eventIndex() {
+    return httpWithToken.get("/api/events/").then(onSuccess, onError);
   },
 
   // イベント詳細
@@ -118,7 +128,7 @@ export default {
   // 返却値 event json
   // イベント取得、取得後 eventPhotosやるといいかな
   eventShow(id) {
-    let key = getToken(id)
+    let key = getToken("event-" + id)
     setLoding("イベント読み込み中です")
     return httpWithToken.get("/api/events/" + id + "?key=" + key).then(onSuccess, onError);
   },

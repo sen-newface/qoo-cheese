@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Photo extends Model
 {
-  /**
-   * 写真のイベントを取得
-   */
-  public function event()
-  {
-    return $this->belongsTo('App\Event');
-  }
+    /**
+     * 写真のイベントを取得
+     */
+    public function event()
+    {
+        return $this->belongsTo('App\Event');
+    }
 
-  protected $fillable = [
+    protected $fillable = [
     'image_path', 'event_id'
-  ];
+    ];
 }
