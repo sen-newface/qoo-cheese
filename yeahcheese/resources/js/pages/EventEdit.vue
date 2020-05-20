@@ -9,7 +9,7 @@
         </button>
         <div id="event-form-wrapper">
             <validation-messages
-                :errors="errors"
+                :errors="valiMessages"
             >
             </validation-messages>
             <div class="form-group">
@@ -18,7 +18,8 @@
                     id="name"
                     class="form-control form-control-lg"
                     type="text"
-                    :value="event.name"
+                        :value="event ? event.name : eventName"
+                        @input="eventName = $event.target.value"
                 >
             </div>
             <div class="form-group">
@@ -28,7 +29,8 @@
                         id="start-date"
                         class="form-control form-control-lg"
                         type="date"
-                        :value="event.start_date"
+                        :value="event ? event.start_date : eventStartDate"
+                        @input="eventStartDate = $event.target.value"
                     >
                 </div>
             </div>
@@ -39,10 +41,17 @@
                         id="end-date"
                         class="form-control form-control-lg" 
                         type="date"
-                        :value="event.end_date"
+                        :value="event ? event.end_date : eventEndDate"
+                        @input="eventEndDate = $event.target.value"
                     >
                 </div>
             </div>
+            <preview-and-save-photo
+                v-if="event"
+                :event-id="event.id"
+                @photo-errors="pushErrors($event)"
+            >
+            </preview-and-save-photo>
             <div class="event-photos">
                 <div
                     class="photos"
@@ -79,15 +88,20 @@
  */
 import { mapGetters, mapActions } from 'vuex';
 import validationMessages from "../components/validationMessages";
+import PreviewAndSavePhoto from '../components/PreviewAndSavePhoto';
 export default {
     name: 'EventEdit',
     components: {
-        validationMessages
+        validationMessages,
+        PreviewAndSavePhoto
     },
     data() {
         return {
             event: null,
             photos: null,
+            eventName: '',
+            eventStartDate: '',
+            eventEndDate: '',
             validationMessages: []
         }
     },
@@ -102,7 +116,7 @@ export default {
                 : "";
             };
         },
-        errors() {
+        valiMessages() {
             var response = [];
             Object.values(this.validationMessages).forEach(val => {
                 if (Array.isArray(val)) {
@@ -121,27 +135,34 @@ export default {
             'eventUpdate',
             'eventShow'
         ]),
-        getEvents() {
-            return events;
+        async getEvent(event_id) {
+            const response = await this.eventShow({ id: event_id });
+            if (this.isSuccess) {
+                this.event = response;
+                this.eventName = response.name;
+                this.eventStartDate = response.start_date;
+                this.eventEndDate = response.end_date;
+                this.setPhotos(this.event);
+            }
+            return false;
         },
         setPhotos(event) {
-            console.log(event);
             if (Array.isArray(event.photos)) {
                 this.photos = event.photos;
             }
         },
-        updateEvent() {
+        async updateEvent() {
             // TODO: 定義したアクションを呼び出し、結果を再度eventに挿入
             const payload = {
-                id: this.event,
-                event: this.event
+                id: this.event.id,
+                event: {
+                    name: this.eventName,
+                    start_date: this.eventStartDate,
+                    end_date: this.eventEndDate
+                }
             };
-            const response = this.eventUpdate(payload);
-            this.validate(response);
-        },
-        validate(response) {
+            const response = await this.eventUpdate(payload);
             if (this.isSuccess === false) {
-                console.log(response);
                 this.validationMessages = response;
             } else {
                 this.$router.push({
@@ -151,17 +172,14 @@ export default {
                     }
                 });
             }
+        },
+        pushErrors(errors) {
+            this.validationMessages = errors;
         }
     },
-    created() {
+    mounted() {
         const event_id = Number.parseInt(this.$route.params.id);
-        const response = this.eventShow(event_id);
-        if (this.isSuccess) {
-            this.event = response;
-            this.setPhotos(this.event);
-        } else {
-            console.log("イベントを取得できませんでした");
-        }
+        this.getEvent(event_id);
     }
 }
 </script>
