@@ -118,8 +118,8 @@ export default {
   // イベント編集
   // 必要 param $event_id , $event = {event: {name,start_date,end_date,}}
   // 返却値 event json
-  eventUpdate(id, $event) {
-    return httpWithToken.put("/api/events/" + id, $event).then(onSuccess, onError);
+  eventUpdate(id, event) {
+    return httpWithToken.put("/api/events/" + id, event).then(onSuccess, onError);
   },
 
   // イベント削除
