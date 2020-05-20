@@ -39,7 +39,6 @@ class EventControllerTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
-                        'key',
                         'name',
                         'start_date',
                         'end_date',
