@@ -83,21 +83,21 @@ class EventControllerTest extends TestCase
         $res = $this->actingAs($user)->json('get', 'api/events');
         $res->assertJsonStructure(
             [
-                'data' => [
-                    '*' => [
-                        'id',
-                        'key',
-                        'name',
-                        'start_date',
-                        'end_date',
-                        'photos' => [
-                            '*' => [
-                                'id',
-                                'image_path'
-                            ]
-                        ]
-                    ]
-                ]
+            'data' => [
+            '*' => [
+            'id',
+            'key',
+            'name',
+            'start_date',
+            'end_date',
+            'photos' => [
+              '*' => [
+                'id',
+                'image_path'
+              ]
+            ]
+            ]
+            ]
             ]
         );
         $res->assertJsonCount(3, 'data');
@@ -107,21 +107,19 @@ class EventControllerTest extends TestCase
     public function testStore()
     {
         $data = [
-            'name' => 'test',
-            'start_date' => '2020-11-11',
-            'end_date' => '2020-12-12',
+        'name' => 'test',
+        'start_date' => '2020-11-11',
+        'end_date' => '2020-12-12',
         ];
         $user = factory(User::class)->create();
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
         $res->assertJsonStructure(
             [
-                'data' => [
-                    'id',
-                    'name',
-                    'start_date',
-                    'end_date',
-                    'photos',
-                ]
+            'id',
+            'name',
+            'start_date',
+            'end_date',
+            'photos',
             ]
         );
         $res->assertStatus(201);
