@@ -10,7 +10,6 @@ jobs:
   eslint:
 
     name: runner / eslint
-    working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -20,3 +19,4 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter.
           eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
