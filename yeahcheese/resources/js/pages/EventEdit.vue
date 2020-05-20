@@ -17,9 +17,9 @@
                 <input
                     id="name"
                     class="form-control form-control-lg"
+                    :class="isValid('name')"
                     type="text"
-                        :value="event ? event.name : eventName"
-                        @input="eventName = $event.target.value"
+                    v-model="eventForm.name"
                 >
             </div>
             <div class="form-group">
@@ -28,9 +28,9 @@
                     <input
                         id="start-date"
                         class="form-control form-control-lg"
+                        :class="isValid('start_date')"
                         type="date"
-                        :value="event ? event.start_date : eventStartDate"
-                        @input="eventStartDate = $event.target.value"
+                        v-model="eventForm.start_date"
                     >
                 </div>
             </div>
@@ -39,16 +39,15 @@
                 <div class="col-10">
                     <input
                         id="end-date"
-                        class="form-control form-control-lg" 
+                        class="form-control form-control-lg"
+                        :class="isValid('end_date')"
                         type="date"
-                        :value="event ? event.end_date : eventEndDate"
-                        @input="eventEndDate = $event.target.value"
+                        v-model="eventForm.end_date"
                     >
                 </div>
             </div>
             <preview-and-save-photo
-                v-if="event"
-                :event-id="event.id"
+                :event-id="eventForm.id"
                 @photo-errors="pushErrors($event)"
             >
             </preview-and-save-photo>
@@ -97,11 +96,12 @@ export default {
     },
     data() {
         return {
-            event: null,
-            photos: null,
-            eventName: '',
-            eventStartDate: '',
-            eventEndDate: '',
+            photos: [],
+            eventForm: {
+                name: '',
+                start_date: '',
+                end_date: ''
+            },
             validationMessages: []
         }
     },
@@ -138,11 +138,8 @@ export default {
         async getEvent(event_id) {
             const response = await this.eventShow({ id: event_id });
             if (this.isSuccess) {
-                this.event = response;
-                this.eventName = response.name;
-                this.eventStartDate = response.start_date;
-                this.eventEndDate = response.end_date;
-                this.setPhotos(this.event);
+                this.eventForm = response;
+                this.setPhotos(this.eventForm);
             }
             return false;
         },
@@ -154,11 +151,11 @@ export default {
         async updateEvent() {
             // TODO: 定義したアクションを呼び出し、結果を再度eventに挿入
             const payload = {
-                id: this.event.id,
+                id: this.eventForm.id,
                 event: {
-                    name: this.eventName,
-                    start_date: this.eventStartDate,
-                    end_date: this.eventEndDate
+                    name: this.eventForm.name,
+                    start_date: this.eventForm.start_date,
+                    end_date: this.eventForm.end_date
                 }
             };
             const response = await this.eventUpdate(payload);
@@ -168,7 +165,7 @@ export default {
                 this.$router.push({
                     'name': 'eventShow',
                     'params': {
-                        id: this.event.id
+                        id: this.eventForm.id
                     }
                 });
             }
