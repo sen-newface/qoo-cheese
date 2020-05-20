@@ -16,4 +16,6 @@ jobs:
         with:
           node-version: 12
       - run: npm install
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
       - run: npm run lint
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
