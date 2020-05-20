@@ -124,4 +124,32 @@ class EventControllerTest extends TestCase
         );
         $res->assertStatus(201);
     }
+
+    public function testUpdate()
+    {
+        $user = factory(User::class)->create();
+        $event = factory(Event::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $event_id = $event->id;
+        $event->name = '更新したイベント名';
+        $event->start_date = '2020-09-21';
+        $event->end_date = '2020-10-21';
+        $event = $event->toArray();
+
+        $URL = route('events.update', ['event' => $event_id]);
+        $response = $this->actingAs($user)->put($URL, $event);
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'name',
+                'start_date',
+                'end_date',
+                'user_id',
+                'key',
+                'id',
+                'photos'
+            ]);
+    }
 }
