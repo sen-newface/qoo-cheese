@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store';
 
+import EventsIndex from '../pages/eventsIndex.vue';
+import EventsShow from '../pages/eventShow.vue';
+import EventStore from '../pages/eventStore.vue'
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -9,7 +12,6 @@ import E401 from '../pages/401.vue';
 import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
-import EventStore from '../pages/eventStore.vue'
 
 Vue.use(Router);
 
@@ -35,8 +37,18 @@ const routes = [
     component: E500
   },
   {
+    path: '/events',
+    component: EventsIndex
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
+  },
+  {
     path: '/login',
-    component: Login
+    component: Login,
+    meta: { requiresNotAuth: true }
   },
   {
     path: '/register',
@@ -45,7 +57,13 @@ const routes = [
   },
   {
     path: '/events/new',
-    component: EventStore
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
   },
   {
     path: '*',
