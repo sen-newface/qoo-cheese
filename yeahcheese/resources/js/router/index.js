@@ -36,7 +36,8 @@ const routes = [
   },
   {
     path: '/login',
-    component: Login
+    component: Login,
+    meta: { requiresNotAuth: true }
   },
   {
     path: '/register',
@@ -45,7 +46,8 @@ const routes = [
   },
   {
     path: '/events/new',
-    component: EventStore
+    component: EventStore,
+    meta: { requiresAuth: true }
   },
   {
     path: '*',
