@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - run: npm install
+          working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
       - name: eslint
         uses: reviewdog/action-eslint@v1
         with:
