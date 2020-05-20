@@ -11,6 +11,53 @@ class EventControllerTest extends TestCase
 {
     use RefreshDatabase; //マイグレーションが実行されテーブルが作成される
 
+    public function testShow()
+    {
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $event1 = $user->events()->save(
+            factory(\App\Event::class)->make(
+                [
+                    'user_id' => $user->id,
+                ]
+            )
+        );
+
+        $res = $this->actingAs($user)->json('get', 'api/events/' . $event1->id);
+        $res->assertJsonStructure(
+            [
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
+            ]
+        );
+        $res->assertStatus(200);
+    }
+
+    public function testShowNotLogin()
+    {
+        $user = factory(User::class)->create();
+        $event1 = $user->events()->save(
+            factory(\App\Event::class)->make(
+                [
+                    'user_id' => $user->id,
+                ]
+            )
+        );
+        $res = $this->json('get', 'api/events/' . $event1->id . '?key=' . $event1->key);
+        $res->assertJsonStructure(
+            [
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
+            ]
+        );
+    }
+
     public function testIndex()
     {
         $user = factory(User::class)->create();
@@ -39,6 +86,7 @@ class EventControllerTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
+                        'key',
                         'name',
                         'start_date',
                         'end_date',
@@ -67,13 +115,11 @@ class EventControllerTest extends TestCase
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
         $res->assertJsonStructure(
             [
-                'data' => [
-                    'id',
-                    'name',
-                    'start_date',
-                    'end_date',
-                    'photos',
-                ]
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
             ]
         );
         $res->assertStatus(201);
