@@ -26,6 +26,11 @@ export default {
   async eventShow({ commit }, { id }) {
     const response = await api.eventShow(id);
     const isSuccess = store.getters["status/isApiSuccess"];
-    return response;
+    if (isSuccess) {
+      commit("setNowEvent", response);
+      return response;
+    } else {
+      return response.errors;
+    }
   }
 }

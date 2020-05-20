@@ -4,7 +4,8 @@ import actions from './actions';
 
 const state = {
   events: [],
-  validationMessage: []
+  validationMessage: [],
+  event: null,
 }
 
 export default {
