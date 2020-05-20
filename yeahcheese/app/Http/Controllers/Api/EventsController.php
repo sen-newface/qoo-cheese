@@ -16,19 +16,21 @@ class EventsController extends Controller
         $this->middleware('auth:sanctum')
             ->except(['auth', 'show']);
     }
-
-    public function auth()
-    {
-        // TODO: トークンを利用して認証キーをあれこれ照合して、認証キーに紐づくイベントを取得し、リソースクラスに渡す
-        // return new EventResource($event)
-    }
-
     /**
      * イベント一覧取得
      */
     public function index(Request $request)
     {
         return EventResource::collection($request->user()->events);
+    }
+
+    public function auth(Request $request)
+    {
+        $event = Event::all()->where("key", $request->key)->first();
+        if (!$event) {
+            return response("認証キーが間違っています", 406);
+        }
+        return response($event, 200);
     }
 
     /**
@@ -46,11 +48,9 @@ class EventsController extends Controller
                 return response(null, 403);
             }
         }
-
         if ($event->key == $key) {
             return response(new EventResource($event), 200);
         }
-
         return response(false, 403);
     }
 
