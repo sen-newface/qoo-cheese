@@ -8,8 +8,8 @@ $factory->define(
     Photo::class,
     function (Faker $faker) {
         return [
-            'image_path' => $faker->url,
-            'event_id' => Event::inRandomOrder()->first()->id
+            'image_path' => $faker->imageUrl,
+            'event_id' => $faker->numberBetween(1, 10)
         ];
     }
 );

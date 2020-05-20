@@ -11,6 +11,26 @@ use App\Http\Resources\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
+<<<<<<< HEAD
+=======
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')
+            ->except(['index']);
+    }
+
+    /**
+     * イベントに紐づく写真の取得
+     *
+     * @return void
+     */
+    public function index(Event $event)
+    {
+        // TODO: Vueから受け取ったevent_idを含む、新規に保存したPhotoインスタンスをリソースクラスに渡す
+        return response(PhotoResource::collection($event->photos, 200));
+    }
+
+>>>>>>> master
     public function store(StorePhotoRequest $request)
     {
         $post_data = $request->except('image_path');
@@ -29,4 +49,5 @@ class PhotosController extends Controller
         $photo->delete();
         return response('status', 204);
     }
+
 }

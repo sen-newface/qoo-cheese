@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEventRequest;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
+use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
 {
@@ -15,7 +16,6 @@ class EventsController extends Controller
         $this->middleware('auth:sanctum')
             ->except(['auth', 'show']);
     }
-
     /**
      * イベント一覧取得
      */
@@ -24,9 +24,6 @@ class EventsController extends Controller
         return EventResource::collection($request->user()->events);
     }
 
-    /**
-     * 認証キーと紐づくイベント取得
-     */
     public function auth(Request $request)
     {
         $event = Event::all()->where("key", $request->key)->first();
@@ -39,16 +36,28 @@ class EventsController extends Controller
     /**
      * 単一イベント取得
      */
-    public function show(Event $event)
+    public function show(Request $request, Event $event)
     {
-        //
+        $user = auth('sanctum')->user();
+        $key = $request->key;
+        if ($user && !$key) {
+            //TODO ポリシーでやる
+            if (intval($event->user_id) === intval($user->id)) {
+                return response(new EventResource($event), 200);
+            } else {
+                return response(null, 403);
+            }
+        }
+        if ($event->key == $key) {
+            return response(new EventResource($event), 200);
+        }
+        return response(false, 403);
     }
 
     public function store(StoreEventRequest $request)
     {
         $request->merge(['user_id' => $request->user()->id]);
-
-        return EventResource::make(Event::create($request->toArray()));
+        return response(EventResource::make(Event::create($request->toArray())), 201);
     }
 
     /**
@@ -71,7 +80,7 @@ class EventsController extends Controller
     {
         // TODO: イベント削除の処理
         return [
-        'status' => 204
+            'status' => 204
         ];
     }
 }
