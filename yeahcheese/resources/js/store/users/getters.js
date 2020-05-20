@@ -1,4 +1,3 @@
-import userStore from "./index"
 const getters = {
   user: state => state.user,
   isLogin: state => state.user && state.user.name ? true : false,
