@@ -13,11 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: npm install
-          working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
       - name: eslint
+      - run: npm install
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter.
           eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
+      - name: eslint
+          run: yarn lint
