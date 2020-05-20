@@ -72,6 +72,7 @@ export default {
       };
     },
     upCancel() {
+      document.getElementById("add-button").value = "";
       this.canAdd = true;
       this.file = null;
       this.preview = null;
