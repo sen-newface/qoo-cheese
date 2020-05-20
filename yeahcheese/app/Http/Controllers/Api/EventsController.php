@@ -39,9 +39,9 @@ class EventsController extends Controller
      */
     public function show(Event $event)
     {
-
-        //
+        return $event;
     }
+
     public function store(StoreEventRequest $request)
     {   
         $request->merge(['user_id' => $request->user()->id]);
@@ -52,10 +52,14 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event)
+    public function update(Event $event, StoreEventRequest $request)
     {
+        $event->name = $request['name'];
+        $event->start_date = $request['start_date'];
+        $event->end_date = $request['end_date'];
+        $event->save();
         // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
-        // return new EventResource($event);
+        return response(new EventResource($event), 201);
     }
 
     /**

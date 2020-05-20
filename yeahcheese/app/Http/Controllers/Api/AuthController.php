@@ -14,7 +14,7 @@ class AuthController extends Controller
   {
     $user = $request->user();
     $user->setToken();
-    return response($user, 200);
+    return response($user, 200)->header('authtoken', $user->token);
   }
 
   public function signup(CreateUserRequest $request)
@@ -23,16 +23,16 @@ class AuthController extends Controller
     $form = $request->all();
     $user->fill($form)->save();
     $user->setToken();
-    return response($user, 201);
+    return response($user, 201)->header('authtoken', $user->token);
   }
 
   public function login(Request $request)
   {
     $user = User::all()->where("email", $request->email)->first();
     if (!$user || $user->password != $request->password) {
-      return response("passwordかemailが間違っています", 401);
+      return response(null, 401);
     }
     $user->setToken();
-    return response($user, 200);
+    return response($user, 200)->header('authtoken', $user->token);
   }
 }
