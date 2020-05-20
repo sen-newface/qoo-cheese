@@ -11,7 +11,6 @@ use App\Http\Resources\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
-
     public function store(StorePhotoRequest $request)
     {
         $post_data = $request->except('image_path');

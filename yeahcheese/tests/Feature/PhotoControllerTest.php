@@ -26,9 +26,11 @@ class PhotoControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $event = factory(Event::class)->create([
-            'user_id' => $user->id
-        ]);
+        $event = factory(Event::class)->create(
+            [
+                'user_id' => $user->id
+            ]
+        );
 
         $this->event = $event;
     }
@@ -50,10 +52,12 @@ class PhotoControllerTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonCount(2)
-            ->assertJsonStructure([
-                'id',
-                'image_path'
-            ]);
+            ->assertJsonStructure(
+                [
+                    'id',
+                    'image_path'
+                ]
+            );
     }
 
     /**
@@ -75,5 +79,4 @@ class PhotoControllerTest extends TestCase
         $response
             ->assertStatus(204);
     }
-
 }
