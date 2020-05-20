@@ -19,19 +19,21 @@ class EventsController extends Controller
     /**
      * イベント一覧取得
      */
-    public function index()
+    public function index(Request $request)
     {
-        // TODO: ユーザーに紐づくイベントを複数取得
-        // return EventResource::collection($events);
+        return EventResource::collection($request->user()->events);
     }
 
     /**
      * 認証キーと紐づくイベント取得
      */
-    public function auth()
+    public function auth(Request $request)
     {
-        // TODO: トークンを利用して認証キーをあれこれ照合して、認証キーに紐づくイベントを取得し、リソースクラスに渡す
-        // return new EventResource($event);
+        $event = Event::all()->where("key", $request->key)->first();
+        if (!$event) {
+            return response("認証キーが間違っています", 406);
+        }
+        return response($event, 200);
     }
 
     /**
@@ -39,7 +41,7 @@ class EventsController extends Controller
      */
     public function show(Event $event)
     {
-        return $event;
+        //
     }
 
     public function store(StoreEventRequest $request)
@@ -69,7 +71,7 @@ class EventsController extends Controller
     {
         // TODO: イベント削除の処理
         return [
-            'status' => 204
+        'status' => 204
         ];
     }
 }

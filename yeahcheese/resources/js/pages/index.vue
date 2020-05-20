@@ -1,28 +1,60 @@
 <template>
-    <div class="mx-auto col-md-6">
-        <p>認証キー：<input type="text" class="form-control" v-model="authKey" @keyup.enter="findAuthKey()" placeholder="認証キーを入力してください"></p>
-        <button @click="findAuthKey()" class="btn btn-outline-primary">送信する</button>
+  <form @submit.prevent="checkAuthKey">
+    <validationMessages :errors="validationMessages" />
+    <div class="form-group">
+      <label for="key">認証キー</label>
+      <input
+        type="text"
+        class="form-control"
+        id="key"
+        placeholder="認証キーを入力してください"
+        v-model="authKey"
+      />
     </div>
+    <button type="submit" class="btn btn-primary">送信</button>
+  </form>
 </template>
 
 <script>
+import api from "../api";
+import { mapGetters } from "vuex";
+import validationMessages from "../components/validationMessages";
+
 export default {
-    data() {
-        return {
-            authKey: ""
-        };
+  components: {
+    validationMessages
+  },
+  data() {
+    return {
+      authKey: "",
+      validationMessages: []
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isApiSuccess: "status/isApiSuccess"
+    }),
+  },
+  methods: {
+    async checkAuthKey() {
+    this.delValidation();
+      if(this.authKey.trim() === "") {
+        this.validationMessages.push("認証キーを入力してください");
+        return false
+      }
+      const response = await api.eventAuth(this.authKey)
+      if (this.isApiSuccess) {
+        this.$router.push({ path: `/events/event-${response.id}`});
+      } else {
+        this.validationMessages.push(response)
+      }
     },
-    methods: {
-        findAuthKey() {  // ボタンを押した時に呼び出される
-            if(this.authKey.trim() === "") {
-                console.log("入力してください");
-            }
-            else console.log(this.authKey);
-        }
+    delValidation() {
+      this.validationMessages = [];
     }
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

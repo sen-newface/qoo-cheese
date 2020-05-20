@@ -1,8 +1,15 @@
 import * as types from '../mutation-types';
 
 export default {
-  setEventValidationMessage(state, mes) {
-    state.validationMessage = mes
+  setEvents(state, events) {
+    state.events = events
+  },
+  setInitLoad(state, bool) {
+    state.initLoad = bool
+  },
+  resetEvent(state) {
+    state.events = []
+    state.initLoad = true
   },
   setEvent(state, event) {
     state.events.push(event)
