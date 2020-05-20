@@ -42,6 +42,11 @@ const routes = [
     component: EventsIndex
   },
   {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/events/event-:id',
     name: "eventShow",
     component: EventsShow,
@@ -55,11 +60,6 @@ const routes = [
     path: '/register',
     component: Register,
     meta: { requiresNotAuth: true }
-  },
-  {
-    path: '/events/new',
-    component: EventStore,
-    meta: { requiresAuth: true }
   },
   {
     path: '/events/:id/edit',

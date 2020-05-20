@@ -40,10 +40,8 @@
       <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
       <div class="event-photos">
         <div class="photos" v-for="photo in photos" :key="photo.id">
-          {{ photo.image_path }}
-          <!-- 
-                        // TODO: 写真一枚一枚に削除ボタン追加
-          -->
+          <img :src="photo.image_path" :alt="eventForm.name" />
+          <button @click="delPhoto(evenForm.id, photo.id)">削除</button>
         </div>
       </div>
     </div>
@@ -115,6 +113,7 @@ export default {
   },
   methods: {
     ...mapActions("events", ["eventUpdate", "eventShow"]),
+    ...mapActions("photos", ["deleteOnePhoto"]),
     async getEvent(event_id) {
       const response = await this.eventShow({ id: event_id });
       if (this.isSuccess) {
@@ -150,6 +149,10 @@ export default {
         });
       }
     },
+    async delPhoto(event_id, photo_id) {
+      console.log("DELPHOTO");
+      const response = await deleteOnePhoto({ event_id, photo_id });
+    },
     pushErrors(errors) {
       this.validationMessages = errors;
     }
@@ -170,5 +173,9 @@ export default {
 }
 #event-edit button {
   margin-bottom: 80px;
+}
+#event-edit .photos {
+  width: 25vw;
+  object-fit: cover;
 }
 </style>
