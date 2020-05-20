@@ -12,6 +12,7 @@ import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
 import EventStore from '../pages/eventStore.vue'
+import EventsShow from '../pages/eventShow.vue';
 
 Vue.use(Router);
 
@@ -59,6 +60,11 @@ const routes = [
     path: '/events/new',
     component: EventStore,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
   },
   {
     path: '*',
