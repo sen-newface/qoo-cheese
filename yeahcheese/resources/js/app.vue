@@ -34,7 +34,7 @@ export default {
             this.$router.push("/403");
             break;
           case 401:
-            this.$router.push("/login");
+            if (this.$route.path !== "/login") this.$router.push("/login");
             break;
           default:
         }
