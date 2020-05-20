@@ -99,6 +99,14 @@ export default {
       , onError)
   },
 
+  // イベント一覧
+  // 必要 なし
+  // 返却値 events json
+  // イベント取得、取得後
+  eventIndex() {
+    return httpWithToken.get("/api/events/").then(onSuccess, onError);
+  },
+
   // イベント詳細
   // 必要 param eventのid
   // 返却値 event json

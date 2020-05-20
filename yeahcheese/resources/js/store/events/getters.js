@@ -1,3 +1,4 @@
+
 import store from '../../store'
 const getters = {
   events: state => state.events,
@@ -13,4 +14,5 @@ const getters = {
     return false;
   },
 }
+
 export default getters
