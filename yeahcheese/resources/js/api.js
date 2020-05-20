@@ -7,6 +7,14 @@ const setApiStatus = (code = "200") => {
   return store.commit("status/setCode", code);
 };
 
+const delLoding = () => {
+  store.commit("load/delText");
+};
+
+const setLoding = (text = "ロード中です") => {
+  store.commit("load/setText", text);
+};
+
 const getToken = (key = AUTH_KEY) => {
   return localStorage.getItem(key) || "";
 };
@@ -30,7 +38,7 @@ const httpWithToken = axios.create({
 
 httpWithToken.interceptors.request.use(request => {
   setApiStatus(200);
-  return request
+  return request;
 })
 
 // トークン保存・更新が必要な場合はここで行う
@@ -38,6 +46,7 @@ httpWithToken.interceptors.response.use(
   (response) => {
     if (response.headers.authtoken) { setToken(response.headers.authtoken); }
     setApiStatus(response.status);
+    delLoding();
     return response;
   },
 );
@@ -48,6 +57,7 @@ const onSuccess = (response) => {
 
 const onError = (e) => {
   setApiStatus(e.response.status);
+  delLoding();
   return e.response.status == 422 ? e.response.data : e;
 };
 
@@ -58,6 +68,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   getMe() {
+    setLoding("ユーザー取得中です")
     return httpWithToken.get("/api/user/").then(onSuccess, onError);
   },
 
@@ -66,6 +77,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   userSignup(user) {
+    setLoding("アカウント作成中です")
     return httpWithToken.post("/api/signup/", user).then(onSuccess, onError);
   },
 
@@ -74,6 +86,7 @@ export default {
   // 返却値 user json
   // トークン保存の必要あり
   userLogin(user) {
+    setLoding("ログイン中です")
     return httpWithToken.post("/api/login/", user).then(onSuccess, onError);
   },
 
@@ -90,13 +103,24 @@ export default {
   // 返却値 event: {"id", "key"}
   // イベントの認証のみを行う,返却値 id をkey 返却値 keyをvalueにしてlocalstrageに保存
   eventAuth(key) {
+    setLoding("イベントのkeyを照合しています")
     let param = { key: key }
-    httpWithToken.post("/api/events/auth", param).then(
+    return httpWithToken.post("/api/events/auth", param).then(
       res => {
-        setToken(res.data.key, res.data.event_id);
+        const key = "event-" + res.data.id
+        setToken(res.data.key, key);
+        setApiStatus(res.status);
         return res.data;
       }
       , onError)
+  },
+
+  // イベント一覧
+  // 必要 なし
+  // 返却値 events json
+  // イベント取得、取得後
+  eventIndex() {
+    return httpWithToken.get("/api/events/").then(onSuccess, onError);
   },
 
   // イベント詳細
@@ -104,7 +128,8 @@ export default {
   // 返却値 event json
   // イベント取得、取得後 eventPhotosやるといいかな
   eventShow(id) {
-    let key = getToken(id)
+    let key = getToken("event-" + id)
+    setLoding("イベント読み込み中です")
     return httpWithToken.get("/api/events/" + id + "?key=" + key).then(onSuccess, onError);
   },
 
@@ -112,6 +137,7 @@ export default {
   // 必要 param $event = {event: {name,start_date,end_date,}}
   // 返却値 event json
   eventPost(event) {
+    setLoding("イベント登録中です")
     return httpWithToken.post("/api/events/", event).then(onSuccess, onError);
   },
 
@@ -119,6 +145,7 @@ export default {
   // 必要 param $event_id , $event = {event: {name,start_date,end_date,}}
   // 返却値 event json
   eventUpdate(id, $event) {
+    setLoding("イベントアップデート中です")
     return httpWithToken.put("/api/events/" + id, $event).then(onSuccess, onError);
   },
 
@@ -126,6 +153,7 @@ export default {
   // 必要 param $event_id
   // 返却値 event json
   eventDestroy(id) {
+    setLoding("イベント削除中です")
     return httpWithToken.delete("/api/events/" + id).then(onSuccess, onError);
   },
 
@@ -134,6 +162,7 @@ export default {
   // 返却値 写真の json配列
   // イベントに紐付く写真を取得
   eventPhotos(id) {
+    setLoding("イベントの写真を取得しています")
     return httpWithToken.get(`/api/events/${id}/photos`).then(onSuccess, onError);
   },
 
@@ -142,6 +171,7 @@ export default {
   // 返却値 写真の json配列
   // イベントに紐付く写真を取得
   eventPhotosPost(id, photo) {
+    setLoding("イベントに写真を登録しています")
     return httpWithToken.post(`/api/events/${id}/photos`, photo).then(onSuccess, onError);
   },
 
@@ -150,6 +180,7 @@ export default {
   // 返却値 写真の json配列
   // イベントに紐付く写真を削除
   eventPhotosDestroy(id, photo_id) {
+    setLoding("イベントの写真を削除しています")
     return httpWithToken.delete(`/api/events/${id}/photos/${photo_id}`).then(onSuccess, onError);
   },
 };
