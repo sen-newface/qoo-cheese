@@ -39,11 +39,14 @@ class EventsController extends Controller
   public function show(Event $event)
   {
 
-    //
-  }
-  public function store(StoreEventRequest $request)
-  {
-    $request->merge(['user_id' => $request->user()->id]);
+        //
+    }
+    public function store(StoreEventRequest $request)
+    {
+        $request->merge(['user_id' => $request->user()->id]);
+
+        return EventResource::make(Event::create($request->toArray()));
+    }
 
     return EventResource::make(Event::create($request->toArray()));
   }
