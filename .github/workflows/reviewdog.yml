@@ -22,4 +22,4 @@ jobs:
           reporter: github-pr-review # Change reporter.
           eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
       - name: eslint
-          run: yarn lint
+        run: npm run lint
