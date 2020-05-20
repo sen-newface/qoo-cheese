@@ -1,0 +1,19 @@
+name: js-syntax
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  js-syntax:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm lint
