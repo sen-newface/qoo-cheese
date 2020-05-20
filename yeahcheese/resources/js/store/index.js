@@ -4,7 +4,8 @@ import users from './users';
 import events from './events';
 import photos from './photos';
 import status from './status';
-import load from './load'
+import load from './load';
+import storage from './storage'
 
 Vue.use(Vuex);
 
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
     events,
     photos,
     status,
-    load
+    load,
+    storage
   }
 });
 
