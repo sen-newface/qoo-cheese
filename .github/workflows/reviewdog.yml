@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: eslint
+      - name: eslint install
         run: npm install
         working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
       - name: eslint review
@@ -24,3 +24,4 @@ jobs:
           eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
       - name: eslint
         run: npm run lint
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
