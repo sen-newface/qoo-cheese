@@ -12,8 +12,8 @@ import E401 from '../pages/401.vue';
 import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
-import EventStore from '../pages/eventStore.vue';
-import EventEdit from '../pages/EventEdit.vue';
+import EventStore from '../pages/eventStore.vue'
+import EventEdit from '../pages/EventEdit.vue'
 
 Vue.use(Router);
 
@@ -66,7 +66,11 @@ const routes = [
     path: '/events/:id/edit',
     name: 'eventEdit',
     component: EventEdit
+<<<<<<< HEAD
   },
+=======
+  }
+>>>>>>> origin/feature/edit_event_frontend
   {
     path: '/events/event-:id',
     name: "eventShow",

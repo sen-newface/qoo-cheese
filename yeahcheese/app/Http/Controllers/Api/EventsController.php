@@ -78,6 +78,7 @@ class EventsController extends Controller
      */
     public function destroy(Event $event): array
     {
+        $event->delete();
         // TODO: イベント削除の処理
         return [
             'status' => 204

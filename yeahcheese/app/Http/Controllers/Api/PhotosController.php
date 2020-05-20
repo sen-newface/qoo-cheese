@@ -11,8 +11,6 @@ use App\Http\Resources\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
-<<<<<<< HEAD
-=======
     public function __construct()
     {
         $this->middleware('auth:sanctum')
@@ -30,7 +28,6 @@ class PhotosController extends Controller
         return response(PhotoResource::collection($event->photos, 200));
     }
 
->>>>>>> master
     public function store(StorePhotoRequest $request)
     {
         $post_data = $request->except('image_path');
@@ -49,5 +46,4 @@ class PhotosController extends Controller
         $photo->delete();
         return response('status', 204);
     }
-
 }
