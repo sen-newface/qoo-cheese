@@ -115,13 +115,11 @@ class EventControllerTest extends TestCase
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
         $res->assertJsonStructure(
             [
-                'data' => [
-                    'id',
-                    'name',
-                    'start_date',
-                    'end_date',
-                    'photos',
-                ]
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
             ]
         );
         $res->assertStatus(201);
