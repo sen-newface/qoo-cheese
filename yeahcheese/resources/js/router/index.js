@@ -66,11 +66,7 @@ const routes = [
     path: '/events/:id/edit',
     name: 'eventEdit',
     component: EventEdit
-<<<<<<< HEAD
   },
-=======
-  }
->>>>>>> origin/feature/edit_event_frontend
   {
     path: '/events/event-:id',
     name: "eventShow",

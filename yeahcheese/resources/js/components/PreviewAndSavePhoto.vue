@@ -6,6 +6,7 @@
     </label>
     <label v-show="!canAdd">
       <button id="save-button" class="btn btn-primary btn-lg" @click="upPhoto">保存</button>
+      <button id="cancel-button" class="btn btn-secondary btn-lg" @click="upCancel">キャンセル</button>
     </label>
     <div id="preview-photo">
       <img :src="preview" />
@@ -38,13 +39,11 @@ export default {
   methods: {
     ...mapActions("photos", ["postPhoto"]),
     async loadPhoto(e) {
-      // TODO: プレビューを表示させるまでの処理
       const files = e.target.files || e.DataTransfer.files;
       this.file = files[0];
       const response = await this.createPhoto(this.file);
     },
     async upPhoto() {
-      // TODO: 写真を保存するまでの処理
       let data = new FormData();
       data.append("event_id", this.eventId);
       data.append("image_path", this.file);
