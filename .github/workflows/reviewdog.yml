@@ -11,6 +11,7 @@ jobs:
 
     name: runner / eslint
     runs-on: ubuntu-latest
+    working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
     steps:
       - uses: actions/checkout@v1
       - name: eslint
