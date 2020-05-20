@@ -42,7 +42,7 @@ class EventsController extends Controller
         $key = $request->key;
         if ($user && !$key) {
             //TODO ポリシーでやる
-            if ($event->user_id === $user->id) {
+            if (intval($event->user_id) === intval($user->id)) {
                 return response(new EventResource($event), 200);
             } else {
                 return response(null, 403);
