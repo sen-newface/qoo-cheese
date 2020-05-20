@@ -11,7 +11,8 @@ class EventControllerTest extends TestCase
 {
     use RefreshDatabase; //マイグレーションが実行されテーブルが作成される
 
-    public function testStore(){
+    public function testStore()
+    {
         $data = [
             'name' => 'test',
             'start_date' => '2020-11-11',
@@ -19,7 +20,8 @@ class EventControllerTest extends TestCase
         ];
         $user = factory(User::class)->create();
         $res = $this->actingAs($user)->json('POST', 'api/events', $data);
-        $res->assertJsonStructure([
+        $res->assertJsonStructure(
+            [
             'data' => [
                 'id',
                 'name',
@@ -27,7 +29,8 @@ class EventControllerTest extends TestCase
                 'end_date',
                 'photos',
                 ]
-            ]);
+            ]
+        );
         $res->assertStatus(201);
     }
 }

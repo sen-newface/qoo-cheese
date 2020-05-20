@@ -32,7 +32,7 @@ class StoreEventRequest extends FormRequest
 
     public function messages()
     {
-      return [
+        return [
         'name.required' => 'イベント名を入力してください',
         'name.string' => '名前は文字列で入力してください',
         'name.max' => '名前は255文字以内で入力してください',
@@ -43,6 +43,6 @@ class StoreEventRequest extends FormRequest
         'end_date.required' => '公開終了日を入力してください',
         'end_date.date' => '日付の入力が不適切です',
         'end_date.after_or_equal' => '公開開始日以後に設定してください'
-      ];
+        ];
     }
 }
