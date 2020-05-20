@@ -40,6 +40,7 @@ export default {
     let res = await api.userLogout();
     context.commit("deleteUser")
     store.commit("events/resetEvent")
+    store.dispatch("events/resetEventAndPhotos")
     context.commit("flashMessage/setTextAndClass",{text: "ログアウトに成功しました", cls: "success"}, {root: true});
     return true;
   },

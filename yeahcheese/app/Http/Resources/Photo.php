@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Photo extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -15,8 +16,8 @@ class Photo extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'image_path' => $this->image_path
+        'id' => $this->id,
+        'image_path' => $this->image_path
         ];
     }
 }
