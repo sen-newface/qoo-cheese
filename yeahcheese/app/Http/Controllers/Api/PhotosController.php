@@ -3,34 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePhotoRequest;
+use App\Event;
 use App\Photo;
+use Illuminate\Http\Request;
 use App\Http\Resources\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
-    /**
-     * イベントに紐づく写真の追加
-     *
-     * @return void
-     */
-    public function store()
+
+    public function store(StorePhotoRequest $request)
     {
-        // TODO: Vueから受け取ったevent_idを含む、新規に保存したPhotoインスタンスをリソースクラスに渡す
-        // return new PhotoResource($photo);
+        $post_data = $request->except('image_path');
+        $imagefile = $request->file('image_path');
+        $filename = time() . '_' . $imagefile->getClientOriginalName();
+        $path = $imagefile->storeAs('public/images', $filename);
+        $photo = new Photo();
+        $photo->event_id = $post_data['event_id'];
+        $photo->image_path = str_replace('public/', 'storage/', $path);
+        $photo->save();
+        return response(new PhotoResource($photo), 201);
     }
 
-    /**
-     * イベントに紐づく写真の削除
-     *
-     * @param App\Photo
-     * @return void
-     */
-    public function delete(Photo $photo)
+    public function destroy(Event $event, Photo $photo)
     {
-        // TODO: イベントに紐づく写真削除の処理
-        return [
-            'status' => 204
-        ];
+        $photo->delete();
+        return response('status', 204);
     }
 }

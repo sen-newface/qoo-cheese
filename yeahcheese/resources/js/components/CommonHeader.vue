@@ -1,6 +1,5 @@
 <template>
   <header id="header">
-    <router-link to="/events">イベント一覧</router-link>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <router-link class="top-link" to="/">
         <span class="title h3">Yeahcheese</span>
