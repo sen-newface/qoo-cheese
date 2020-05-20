@@ -10,29 +10,29 @@ use App\User;
 class AuthController extends Controller
 {
 
-  public function me(Request $request)
-  {
-    $user = $request->user();
-    $user->setToken();
-    return response($user, 200)->header('authtoken', $user->token);
-  }
-
-  public function signup(CreateUserRequest $request)
-  {
-    $user = new User;
-    $form = $request->all();
-    $user->fill($form)->save();
-    $user->setToken();
-    return response($user, 201)->header('authtoken', $user->token);
-  }
-
-  public function login(Request $request)
-  {
-    $user = User::all()->where("email", $request->email)->first();
-    if (!$user || $user->password != $request->password) {
-      return response(null, 401);
+    public function me(Request $request)
+    {
+        $user = $request->user();
+        $user->setToken();
+        return response($user, 200)->header('authtoken', $user->token);
     }
-    $user->setToken();
-    return response($user, 200)->header('authtoken', $user->token);
-  }
+
+    public function signup(CreateUserRequest $request)
+    {
+        $user = new User;
+        $form = $request->all();
+        $user->fill($form)->save();
+        $user->setToken();
+        return response($user, 201)->header('authtoken', $user->token);
+    }
+
+    public function login(Request $request)
+    {
+        $user = User::all()->where("email", $request->email)->first();
+        if (!$user || $user->password != $request->password) {
+            return response(null, 401);
+        }
+        $user->setToken();
+        return response($user, 200)->header('authtoken', $user->token);
+    }
 }
