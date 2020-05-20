@@ -11,11 +11,11 @@ jobs:
 
     name: runner / eslint
     runs-on: ubuntu-latest
-    working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
     steps:
       - uses: actions/checkout@v1
       - name: eslint
         uses: reviewdog/action-eslint@v1
+        working-directory: /home/runner/work/qoo-cheese/qoo-cheese/yeahcheese
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter.
