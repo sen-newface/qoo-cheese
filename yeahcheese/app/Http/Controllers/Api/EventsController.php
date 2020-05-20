@@ -43,14 +43,14 @@ class EventsController extends Controller
         //
     }
     public function store(StoreEventRequest $request)
-    {   
+    {
         $request->merge(['user_id' => $request->user()->id]);
-        
+
         return EventResource::make(Event::create($request->toArray()));
     }
 
     /**
-     * イベント情報更新（写真を除く）
+     * イベント情報更新（写真を除く）<pp></pp>
      */
     public function update(Event $event)
     {
@@ -61,11 +61,13 @@ class EventsController extends Controller
     /**
      * イベント削除
      */
-    public function destroy(Event $event): array
+    public function destroy(Event $event, Request $request)
     {
         // TODO: イベント削除の処理
-        return [
-            'status' => 204
-        ];
+        if ($request->user()->id == $event->user_id) {
+            $event->delete();
+            return response(null, 204);
+        }
+        return response(null, 403);
     }
 }
