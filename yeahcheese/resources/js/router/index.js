@@ -4,7 +4,8 @@ import store from '../store';
 
 import EventsIndex from '../pages/eventsIndex.vue';
 import EventsShow from '../pages/eventShow.vue';
-import EventStore from '../pages/eventStore.vue'
+import EventStore from '../pages/eventStore.vue';
+import EventEdit from '../pages/EventEdit.vue';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -12,8 +13,6 @@ import E401 from '../pages/401.vue';
 import E403 from '../pages/403.vue';
 import E404 from '../pages/404.vue';
 import E500 from '../pages/500.vue';
-import EventStore from '../pages/eventStore.vue'
-import EventEdit from '../pages/EventEdit.vue'
 
 Vue.use(Router);
 
