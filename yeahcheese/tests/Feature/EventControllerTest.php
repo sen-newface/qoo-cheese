@@ -103,7 +103,7 @@ class EventControllerTest extends TestCase
         $res->assertJsonCount(3, 'data');
         $res->assertStatus(200);
     }
-  
+
     public function testStore()
     {
         $data = [
@@ -136,8 +136,17 @@ class EventControllerTest extends TestCase
             )
         );
 
+        $photo = $event->photos()->save(
+            factory(\App\Photo::class)->make(
+                [
+                'event_id' => $event->id,
+                ]
+            )
+        );
+
         $res = $this->actingAs($user)->json("DELETE", 'api/events/' . $event->id);
         $res->assertStatus(204);
         $this->assertEquals(0, count($user->events));
+        $this->assertEquals(0, count(\App\Photo::all()));
     }
 }
