@@ -30,9 +30,5 @@ export default {
     if (!photos) {
       photos = await dispatch("setPhotosForEventId", event_id)
     }
-  },
-  async deleteOnePhoto({ commit }, { event_id, photo_id }) {
-    const response = await api.eventPhotosDestroy(event_id, photo_id);
-    commit('deleteOnePhoto', { event_id, photo_id });
   }
 }

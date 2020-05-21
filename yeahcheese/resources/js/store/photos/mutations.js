@@ -10,14 +10,5 @@ export default {
   },
   delPhotos(state) {
     state.eventPhotos = []
-  },
-  deleteOnePhoto(state, { event_id, photo_id }) {
-    console.log(state.eventPhotos);
-    // state.eventPhotos = state.eventPhotos.map((event) => {
-    //   if (event.id == event_id) {
-    //     console.log('event', event);
-    //     //event.photosで取得する
-    //   }
-    // });
   }
 }
