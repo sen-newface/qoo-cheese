@@ -153,7 +153,6 @@ class EventControllerTest extends TestCase
                 'photos'
             ]);
     }
-
     public function testDestory()
     {
         $user = factory(User::class)->create();
