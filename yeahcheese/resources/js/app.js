@@ -1,17 +1,17 @@
-require('./bootstrap');11
-import Vue from 'vue';1
-import store from './store';1
-import router from './router';1
-import App from './app.vue';1
+require('./bootstrap');
+import Vue from 'vue';
+import store from './store';
+import router from './router';
+import App from './app.vue';
 
 const createApp = async () => {
-  await store.dispatch('users/getMe')
+  await store.dispatch('users/getMe');
   new Vue({
     el: '#app',
     store,
     router,
     components: { App },
-    template: '<App/>';a
+    template: '<App/>',
   });
-}
+};
 createApp()
