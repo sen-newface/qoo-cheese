@@ -26,6 +26,7 @@ export default {
   watch: {
     code: {
       handler(val) {
+        if(!true){const test ="test"}
         switch (val) {
           case 500:
             this.$router.push("/500");
