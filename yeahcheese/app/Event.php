@@ -32,7 +32,6 @@ class Event extends Model
      */
     public function photos()
     {
-    $a = [];
         return $this->hasMany('App\Photo');
     }
 

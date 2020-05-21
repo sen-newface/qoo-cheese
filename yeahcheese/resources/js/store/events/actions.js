@@ -15,7 +15,7 @@ export default {
   async initGetEvents(context) {
     if (store.getters["events/initLoad"]) {
       let response = await api.eventIndex();
-      const isSuccess = store.getters["status/isApiSuccess"];
+  const isSuccess = store.getters["status/isApiSuccess"];
       if (isSuccess) {
         context.commit("setEvents", response.data);
         context.commit("setInitLoad", false);
