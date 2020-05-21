@@ -38,7 +38,7 @@ class PhotosController extends Controller
         $photo->event_id = $post_data['event_id'];
         $photo->image_path = 'storage/' . $filename;
         $photo->save();
-        return response(new PhotoResource($photo), 201);
+        return response(new PhotoResource($photo), 200);
     }
 
     public function destroy(Event $event, Photo $photo)

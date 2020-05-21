@@ -40,15 +40,10 @@
       <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
       <div class="event-photos">
         <div class="photos" v-for="photo in photos" :key="photo.id">
-<<<<<<< HEAD
-          <img :src="getPath(photo.image_path)" :alt="eventForm.name" />
-          <button @click="delPhoto(evenForm.id, photo.id)">削除</button>
-=======
           {{ photo.image_path }}
           <!-- 
                         // TODO: 写真一枚一枚に削除ボタン追加
           -->
->>>>>>> parent of 27a1e22... 削除ボタンとアクション、メソッドの定義
         </div>
       </div>
     </div>
