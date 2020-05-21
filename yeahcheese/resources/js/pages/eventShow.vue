@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -67,8 +67,9 @@ export default {
     }
   },
   methods: {
-    deletePhoto(event_id, photo_id) {
-      // ! TODO: ここでaction実行
+    ...mapActions("photos", ["deleteEventPhoto"]),
+    async deletePhoto(event_id, photo_id) {
+      await this.deleteEventPhoto({ event_id, photo_id });
     }
   },
   async created() {
