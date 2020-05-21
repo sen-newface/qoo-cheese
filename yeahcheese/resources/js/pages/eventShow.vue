@@ -28,6 +28,7 @@
           :alt="alt(image.id)"
           :src="image.image_path"
           class="img-thumbnail"
+          @click="deletePhoto(event.id, image.id)"
         />
         <p
           v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
@@ -63,6 +64,11 @@ export default {
       return function(id) {
         return this.event.name + "の写真" + id;
       };
+    }
+  },
+  methods: {
+    deletePhoto(event_id, photo_id) {
+      // ! TODO: ここでaction実行
     }
   },
   async created() {
