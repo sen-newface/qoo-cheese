@@ -11,7 +11,7 @@
         >{{ sortText }}</button>
       </div>
       <select class="custom-select" id="inputGroupSelect03" v-model="selected">
-        <option v-for="op in options" :key="op.text" :value="op.num">{{op.text}}</option>
+        <option v-for="op in options" :key="op.text" :value="op.num">{{ op.text }}</option>
       </select>
     </div>
     <event-list
