@@ -6,6 +6,7 @@ import photos from './photos';
 import status from './status';
 import load from './load';
 import storage from './storage'
+import flashMessage from './flashMessage';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const store = new Vuex.Store({
     status,
     load,
     storage
+    flashMessage,
   }
 });
 

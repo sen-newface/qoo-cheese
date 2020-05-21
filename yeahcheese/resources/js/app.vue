@@ -2,6 +2,7 @@
   <div id="app">
     <loader />
     <common-header />
+    <flash-message></flash-message>
     <div class="container mt-5">
       <router-view></router-view>
     </div>
@@ -10,12 +11,14 @@
 
 <script>
 import CommonHeader from "./components/CommonHeader.vue";
+import FlashMessage from "./components/flashMessage.vue";
 import Loader from "./components/Load.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "App",
   components: {
     CommonHeader,
+    FlashMessage,
     Loader
   },
   computed: {
