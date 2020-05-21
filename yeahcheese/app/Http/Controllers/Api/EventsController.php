@@ -61,7 +61,7 @@ class EventsController extends Controller
     }
 
     /**
-     * イベント情報更新（写真を除く）<pp></pp>
+     * イベント情報更新（写真を除く）
      */
     public function update(Event $event)
     {
