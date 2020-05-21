@@ -5,6 +5,8 @@ jobs:
     name: runner / eslint
     runs-on: ubuntu-latest
     steps:
+      - name: copy package.json
+        run: cp yeahcheese/package.json package.json
       - uses: actions/checkout@v1
       - name: eslint
         uses: reviewdog/action-eslint@v1
