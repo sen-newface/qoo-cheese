@@ -1,11 +1,5 @@
 name: reviewdog
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+on: [pull_request]
 jobs:
   eslint:
     name: runner / eslint
@@ -15,6 +9,5 @@ jobs:
       - name: eslint
         uses: reviewdog/action-eslint@v1
         with:
-          github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Change reporter.
-          eslint_flags: 'yeahcheese/**/*.{ts,tsx,vue,js}'
+          eslint_flags: 'yeahcheese/resources/js'
