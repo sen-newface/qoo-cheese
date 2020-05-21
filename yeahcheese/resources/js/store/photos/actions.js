@@ -5,7 +5,6 @@ import store from "../../store";
 export default {
   async postPhoto({ commit }, { id, data }) {
     const response = await api.eventPhotosPost(id, data);
-    console.log('action.response', response);
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       // commit("appendPhoto", response);
