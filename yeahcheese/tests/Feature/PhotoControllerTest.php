@@ -39,7 +39,7 @@ class PhotoControllerTest extends TestCase
         $event2 = $this->user->events()->save(
             factory(\App\Event::class)->make(
                 [
-                'user_id' => $this->user->id,
+                    'user_id' => $this->user->id,
                 ]
             )
         );
@@ -48,7 +48,7 @@ class PhotoControllerTest extends TestCase
             $this->event->photos()->save(
                 factory(\App\Photo::class)->make(
                     [
-                    'event_id' => $this->event->id,
+                        'event_id' => $this->event->id,
                     ]
                 )
             );
@@ -57,7 +57,7 @@ class PhotoControllerTest extends TestCase
         $event2->photos()->save(
             factory(\App\Photo::class)->make(
                 [
-                'event_id' => $event2->id,
+                    'event_id' => $event2->id,
                 ]
             )
         );
@@ -66,10 +66,10 @@ class PhotoControllerTest extends TestCase
         $res->assertJsonCount(3);
         $res->assertJsonStructure(
             [
-            '*' => [
-            'id',
-            'image_path'
-            ]
+                '*' => [
+                    'id',
+                    'image_path'
+                ]
             ]
         );
         $res->assertStatus(200);
@@ -84,13 +84,13 @@ class PhotoControllerTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpeg');
         $url = '/api/events/' . $this->event->id . '/photos';
         $data = [
-        'event_id' => $this->event->id,
-        'image_path' => $file,
+            'event_id' => $this->event->id,
+            'image_path' => $file,
         ];
         $response = $this->post($url, $data);
         Storage::disk('images')->exists($file->name);
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonCount(2)
             ->assertJsonStructure(
                 [
@@ -109,14 +109,14 @@ class PhotoControllerTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpeg');
         $url = '/api/events/' . $this->event->id . '/photos';
         $data = [
-        'event_id' => $this->event->id,
-        'image_path' => $file,
+            'event_id' => $this->event->id,
+            'image_path' => $file,
         ];
         $url = '/api/events/' . $this->event->id . '/photos';
         $response = $this->post($url, $data);
         $url .= '/' . $response['id'];
         $response = $this->delete($url, [$this->event, $response['id']]);
         $response
-        ->assertStatus(204);
+            ->assertStatus(204);
     }
 }
