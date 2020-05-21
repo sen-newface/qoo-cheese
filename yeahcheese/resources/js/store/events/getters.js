@@ -1,6 +1,8 @@
 import store from '../../store'
 const getters = {
-  events: state => state.events.slice().sort(function (a, b) { return (a.id > b.id ? 1 : -1) }),
+  events: state => state.events.slice().sort(function (a, b) {
+    return (a.id > b.id ? 1 : -1)
+  }),
   eventsSortById: state => (change_sort) => {
     return state.events.slice().sort(function (a, b) {
       if (change_sort) {
