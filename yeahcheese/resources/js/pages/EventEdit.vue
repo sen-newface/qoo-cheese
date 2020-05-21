@@ -40,7 +40,7 @@
       <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
       <div class="event-photos">
         <div class="photos" v-for="photo in photos" :key="photo.id">
-          {{ photo.image_path }}
+          <img :src="transformImgPath(photo.image_path)" />
           <!-- 
                         // TODO: 写真一枚一枚に削除ボタン追加
           -->
@@ -117,7 +117,6 @@ export default {
     ...mapActions("events", ["eventUpdate", "eventShow"]),
     async getEvent(event_id) {
       const response = await this.eventShow({ id: event_id });
-      console.log("res: ", response);
       if (this.isSuccess) {
         this.eventForm = response;
         this.setPhotos(this.eventForm);
@@ -154,8 +153,8 @@ export default {
     pushErrors(errors) {
       this.validationMessages = errors;
     },
-    getPath(image_path) {
-      return image_path;
+    transformImgPath(image_path) {
+      return image_path.replace("public", "");
     }
   },
   mounted() {
