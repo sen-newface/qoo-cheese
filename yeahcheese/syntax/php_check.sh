@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -n "$GITHUB_WORKFLOW" ]; then
-    LIST=`git diff --name-only --diff-filter=d origin/master...HEAD -- '*.php'`
+    LIST=`git diff --name-only --diff-filter=d origin/master...HEAD`
 
     if [ -z "$LIST" ]; then
         echo "PHP file not changed."
@@ -9,13 +9,13 @@ if [ -n "$GITHUB_WORKFLOW" ]; then
     fi
 
     PHPCS_ERRORS=`echo $LIST \
-    | xargs laravel/vendor/bin/phpcs -n --report=emacs --standard=laravel/syntax/phpcs.rule.xml \
+    | xargs yeahcheese/vendor/bin/phpcs -n --report=emacs --standard=yeahcheese/syntax/phpcs.rule.xml \
     | tmp/bin/reviewdog -efm="%f:%l:%c: %m" -diff="git diff --diff-filter=d origin/master...HEAD" -reporter=github-pr-review`
 
     # Todo: PHPMDの結果を標準出力だけでなくreviewdogでもコメントする
     PHPMD_ERRORS=()
     for FILE in $LIST; do
-        PHPMD_ERROR=`laravel/vendor/bin/phpmd "$FILE" text laravel/syntax/phpmd.rule.xml`
+        PHPMD_ERROR=`yeahcheese/vendor/bin/phpmd "$FILE" text yeahcheese/syntax/phpmd.rule.xml`
         if [ -n "$PHPMD_ERROR" ]; then
             PHPMD_ERRORS+=$PHPMD_ERROR
         fi
