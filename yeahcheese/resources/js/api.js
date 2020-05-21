@@ -21,11 +21,11 @@ const getToken = (key = AUTH_KEY) => {
 };
 
 const deleteToken = (key = AUTH_KEY) => {
-  return store.commit("storage/delDate", key)
+  return store.commit("storage/delData", key)
 };
 
 const setToken = (token = "", key = AUTH_KEY) => {
-  return store.commit("storage/setDate", { key: key, value: token })
+  return store.commit("storage/setData", { key: key, value: token })
 };
 
 

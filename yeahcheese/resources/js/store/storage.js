@@ -10,18 +10,18 @@ const getters = {
 }
 
 const mutations = {
-  delDate(state, key) {
+  delData(state, key) {
     state.datas = state.datas.filter((data) => data.key !== key);
     localStorage.removeItem(key)
   },
 
-  setDate(state, { key = "key", value = "value" }) {
+  setData(state, { key = "key", value = "value" }) {
     let data = { key: key, value: value }
     state.datas.push(data)
     localStorage.setItem(key, value);
   },
 
-  setAllDates(state) {
+  setAllDatas(state) {
     Object.keys(localStorage).forEach(function (key) {
       state.datas.push({ key: key, value: localStorage.getItem(key) })
     });
