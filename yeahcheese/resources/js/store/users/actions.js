@@ -18,7 +18,7 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       context.commit("setUser", response);
-      context.commit("flashMessage/setTextAndClass",{text: "アカウント作成に成功しました", cls: "success"}, {root: true});
+      context.commit("flashMessage/setTextAndClass", { text: "アカウント作成に成功しました", cls: "success" }, { root: true });
       return response
     } else {
       return response.errors;
@@ -30,7 +30,7 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       context.commit("setUser", response);
-      context.commit("flashMessage/setTextAndClass",{text: "ログインに成功しました", cls: "success"}, {root: true});
+      context.commit("flashMessage/setTextAndClass", { text: "ログインに成功しました", cls: "success" }, { root: true });
       return response;
     }
     return response;
@@ -39,9 +39,8 @@ export default {
   async logout(context) {
     let res = await api.userLogout();
     context.commit("deleteUser")
-    store.commit("events/resetEvent")
     store.dispatch("events/resetEventAndPhotos")
-    context.commit("flashMessage/setTextAndClass",{text: "ログアウトに成功しました", cls: "success"}, {root: true});
+    context.commit("flashMessage/setTextAndClass", { text: "ログアウトに成功しました", cls: "success" }, { root: true });
     return true;
   },
 }

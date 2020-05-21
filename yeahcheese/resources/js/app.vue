@@ -18,7 +18,7 @@ export default {
   name: "App",
   components: {
     CommonHeader,
-    FlashMessage
+    FlashMessage,
     Loader
   },
   computed: {

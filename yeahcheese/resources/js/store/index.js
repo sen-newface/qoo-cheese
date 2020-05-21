@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     events,
     photos,
     status,
-    flashMessage
+    flashMessage,
     load
   }
 });
