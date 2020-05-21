@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Event;
+use App\Photo;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -128,21 +129,8 @@ class EventControllerTest extends TestCase
     public function testDestory()
     {
         $user = factory(User::class)->create();
-        $event = $user->events()->save(
-            factory(\App\Event::class)->make(
-                [
-                'user_id' => $user->id,
-                ]
-            )
-        );
-
-        $photo = $event->photos()->save(
-            factory(\App\Photo::class)->make(
-                [
-                'event_id' => $event->id,
-                ]
-            )
-        );
+        $event = factory(Event::class)->create(['user_id' => $user->id]);
+        $photo = factory(Photo::class)->create(['event_id' => $event->id]);
 
         $res = $this->actingAs($user)->json("DELETE", 'api/events/' . $event->id);
         $res->assertStatus(204);
