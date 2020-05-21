@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -n "$GITHUB_WORKFLOW" ]; then
-    LIST=`git diff --name-only --diff-filter=d origin/master...HEAD`
+    LIST=`git diff --name-only --diff-filter=d origin/master...HEAD -- '*.php'`
 
     if [ -z "$LIST" ]; then
         echo "PHP file not changed."
