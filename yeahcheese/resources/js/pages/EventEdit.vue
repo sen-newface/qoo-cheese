@@ -40,7 +40,7 @@
       <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
       <div class="event-photos">
         <div class="photos" v-for="photo in photos" :key="photo.id">
-          <img :src="photo.image_path" :alt="eventForm.name" />
+          <img :src="getPath(photo.image_path)" :alt="eventForm.name" />
           <button @click="delPhoto(evenForm.id, photo.id)">削除</button>
         </div>
       </div>
@@ -116,6 +116,7 @@ export default {
     ...mapActions("photos", ["deleteOnePhoto"]),
     async getEvent(event_id) {
       const response = await this.eventShow({ id: event_id });
+      console.log("res: ", response);
       if (this.isSuccess) {
         this.eventForm = response;
         this.setPhotos(this.eventForm);
@@ -155,6 +156,9 @@ export default {
     },
     pushErrors(errors) {
       this.validationMessages = errors;
+    },
+    getPath(image_path) {
+      return image_path;
     }
   },
   mounted() {
