@@ -68,7 +68,7 @@ class EventsController extends Controller
         if ($request->user()->id == $event->user_id) {
             $form = $request->all();
             $event->fill($form)->save();
-            return response(new EventResource($event), 201);
+            return response(new EventResource($event), 200);
         }
         return response(null, 403);
     }
