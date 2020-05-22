@@ -16,7 +16,7 @@ export default {
     }
   },
   async getPhotosIfNotExits({ dispatch, commit, getters }, event_id) {
-    let photos = getters.getPhotosForEvnetId(event_id)
+    let photos = getters.getPhotosForEventId(event_id)
     if (!photos) {
       photos = await dispatch("setPhotosForEventId", event_id)
     }
