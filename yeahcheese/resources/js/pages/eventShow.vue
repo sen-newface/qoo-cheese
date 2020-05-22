@@ -57,7 +57,7 @@ export default {
       getEventForId: "events/getEventForId",
       events: "events/events",
       isMyEventByEventId: "events/isMyEventByEventId",
-      getPhotosForEventId: "photos/getPhotosForEvnetId",
+      getPhotosForEventId: "photos/getPhotosForEventId",
       isLogin: "users/isLogin"
     }),
     alt() {
