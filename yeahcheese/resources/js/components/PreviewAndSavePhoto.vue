@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "PreviewAndSavePhoto",
   props: {
@@ -37,7 +37,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions("photos", ["postPhoto"]),
+    ...mapActions("photos", ["postPhoto", "setPhotosForEventId"]),
     async loadPhoto(e) {
       const files = e.target.files || e.DataTransfer.files;
       this.file = files[0];
