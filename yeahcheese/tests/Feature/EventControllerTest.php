@@ -141,7 +141,7 @@ class EventControllerTest extends TestCase
         $URL = route('events.update', ['event' => $event_id]);
         $response = $this->actingAs($user)->put($URL, $event);
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure([
                 'name',
                 'start_date',
