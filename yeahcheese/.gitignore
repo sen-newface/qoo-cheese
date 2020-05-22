@@ -1,6 +1,7 @@
 /node_modules
 /public/*
 !/public/image
+/storage/*
 /storage/*.key
 /vendor
 .env
