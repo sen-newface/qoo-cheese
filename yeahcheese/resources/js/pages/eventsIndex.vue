@@ -4,14 +4,15 @@
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <button
+          v-if="changeSort"
           class="btn btn-outline-secondary"
           type="button"
-          :value="sortText"
           @click="changeSortText"
-        >{{ sortText }}</button>
+        >昇順</button>
+        <button v-else class="btn btn-outline-secondary" type="button" @click="changeSortText">降順</button>
       </div>
       <select class="custom-select" id="inputGroupSelect03" v-model="selected">
-        <option v-for="op in options" :key="op.text" :value="op.num">{{ op.text }}</option>
+        <option v-for="op in options" :key="op.text" :value="op.const">{{ op.text }}</option>
       </select>
     </div>
     <event-list
@@ -31,13 +32,12 @@ export default {
   components: { eventList },
   data() {
     return {
-      sortText: "昇順",
-      changeSort: false,
-      selected: "1",
+      changeSort: true,
+      selected: "CREATE_AT",
       options: [
-        { text: "イベント作成順(既定)", num: "1" },
-        { text: "イベント名順", num: "2" },
-        { text: "公開開始日順", num: "3" }
+        { text: "イベント作成順(既定)", const: "CREATE_AT" },
+        { text: "イベント名順", const: "NAME" },
+        { text: "公開開始日順", const: "START_DATE" }
       ]
     };
   },
@@ -49,28 +49,28 @@ export default {
       const vue = this;
       let results = [];
       switch (this.selected) {
-        case "1":
+        case "CREATE_AT":
           return (results = this.events.slice().sort(function(a, b) {
             if (vue.changeSort) {
-              return a.id < b.id ? 1 : -1;
+              return a.created_at > b.created_at ? 1 : -1;
             }
-            return a.id > b.id ? 1 : -1;
+            return a.created_at < b.created_at ? 1 : -1;
           }));
           break;
-        case "2":
+        case "NAME":
           return (results = this.events.slice().sort(function(a, b) {
             if (vue.changeSort) {
-              return a.name < b.name ? 1 : -1;
+              return a.name > b.name ? 1 : -1;
             }
-            return a.name > b.name ? 1 : -1;
+            return a.name < b.name ? 1 : -1;
           }));
           break;
-        case "3":
+        case "START_DATE":
           return (results = this.events.slice().sort(function(a, b) {
             if (vue.changeSort) {
-              return a.start_date < b.start_date ? 1 : -1;
+              return a.start_date > b.start_date ? 1 : -1;
             }
-            return a.start_date > b.start_date ? 1 : -1;
+            return a.start_date < b.start_date ? 1 : -1;
           }));
           break;
         default:
@@ -81,7 +81,6 @@ export default {
   methods: {
     changeSortText() {
       this.changeSort = !this.changeSort;
-      this.changeSort ? (this.sortText = "降順") : (this.sortText = "昇順");
     }
   },
   async created() {
