@@ -6,10 +6,22 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+
+    public static function boot()
+    {
+        parent::boot();
+        //イベント作成時にkeyにランダムな文字列を挿入
+        User::creating(
+            function ($user) {
+                $user->password = Hash::make($user->password);
+            }
+        );
+    }
 
     /**
      * イベントの写真を取得
