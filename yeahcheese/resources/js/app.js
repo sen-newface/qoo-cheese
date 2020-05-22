@@ -5,6 +5,7 @@ import router from './router';
 import App from './app.vue';
 
 const createApp = async () => {
+  await store.commit("storage/setAllDatas")
   await store.dispatch('users/getMe')
   new Vue({
     el: '#app',
