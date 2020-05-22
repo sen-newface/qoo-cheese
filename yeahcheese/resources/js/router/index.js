@@ -21,6 +21,31 @@ const routes = [
     component: Index
   },
   {
+    path: '/login',
+    component: Login,
+    meta: { requiresNotAuth: true }
+  },
+  {
+    path: '/register',
+    component: Register,
+    meta: { requiresNotAuth: true }
+  },
+  {
+    path: '/events',
+    component: EventsIndex,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
+  },
+  {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/401',
     component: E401
   },
@@ -35,35 +60,6 @@ const routes = [
   {
     path: '/500',
     component: E500
-  },
-  {
-    path: '/events',
-    component: EventsIndex
-  },
-  {
-    path: '/events/event-:id',
-    name: "eventShow",
-    component: EventsShow,
-  },
-  {
-    path: '/login',
-    component: Login,
-    meta: { requiresNotAuth: true }
-  },
-  {
-    path: '/register',
-    component: Register,
-    meta: { requiresNotAuth: true }
-  },
-  {
-    path: '/events/new',
-    component: EventStore,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/events/event-:id',
-    name: "eventShow",
-    component: EventsShow,
   },
   {
     path: '*',
