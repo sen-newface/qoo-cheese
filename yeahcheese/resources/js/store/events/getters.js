@@ -1,7 +1,8 @@
-
 import store from '../../store'
 const getters = {
-  events: state => state.events,
+  events: state => state.events.slice().sort(function (a, b) {
+    return (a.id > b.id ? 1 : -1)
+  }),
   initLoad: state => state.initLoad,
   getEventForId: state => (id) => {
     return state.events.find(event => event.id == id)
