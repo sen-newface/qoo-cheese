@@ -15,9 +15,6 @@ export default {
       return response.errors;
     }
   },
-
-  // ! 後で消すコメント
-  // ! event.photos [{id:...,image_path:...}, {id:..}]
   async getPhotosIfNotExits({ dispatch, commit, getters }, event_id) {
     let photos = getters.getPhotosForEvnetId(event_id)
     if (!photos) {
