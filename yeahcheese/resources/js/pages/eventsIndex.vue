@@ -18,8 +18,8 @@
       </div>
     </section>
     <event-list
-      v-show="getEventsForPageId(page).length"
-      v-for="event in getEventsForPageId(page)"
+      v-show="showEvents.length"
+      v-for="event in showEvents"
       :key="event.key"
       :eventInfo="event"
     ></event-list>
@@ -47,7 +47,11 @@ export default {
       getEventsForPageId: "events/getEventsForPageId",
       curretEventPage: "events/curretEventPage",
       page_per_events: "events/page_per_events"
-    })
+    }),
+    showEvents() {
+      let results = this.getEventsForPageId(this.page);
+      return results;
+    }
   },
   async created() {
     await this.$store.dispatch("events/initGetEvents");
