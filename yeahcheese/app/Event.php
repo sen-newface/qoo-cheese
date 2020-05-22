@@ -11,7 +11,6 @@ class Event extends Model
     public static function boot()
     {
         parent::boot();
-        //イベント作成時にkeyにランダムな文字列を挿入
         Event::creating(
             function ($event) {
                 $event->key = Str::random(30);
