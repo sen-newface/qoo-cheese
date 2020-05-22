@@ -17,5 +17,9 @@ export default {
 
   delEvents(state) {
     state.events = []
+  },
+
+  deleteEventForId(state, id) {
+    state.events = state.events.filter((v) => v.id !== id);
   }
 }

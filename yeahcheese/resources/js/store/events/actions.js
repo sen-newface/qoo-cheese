@@ -28,7 +28,7 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       context.commit("setEvent", response);
-      context.commit("flashMessage/setTextAndClass",{text: "イベント作成に成功しました", cls: "success"}, {root: true});
+      context.commit("flashMessage/setTextAndClass", { text: "イベント作成に成功しました", cls: "success" }, { root: true });
       return response
     } else {
       return response.errors;
@@ -52,6 +52,20 @@ export default {
       event = await dispatch("setEventForId", event_id)
     }
     if (event) await store.dispatch("photos/getPhotosIfNotExits", event_id);
+  },
+
+  async deleteEventByID(context, event_id) {
+    let event = context.getters.getEventForId(event_id)
+    if (!event) return false;
+    let response = await api.eventDestroy(event.id);
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      context.commit("deleteEventForId", event.id);
+      context.commit("flashMessage/setTextAndClass", { text: "イベント削除に成功しました", cls: "success" }, { root: true });
+      return response
+    } else {
+      return response.errors;
+    }
   },
 
   resetEventAndPhotos({ context }) {

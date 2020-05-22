@@ -7,7 +7,7 @@
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
         <a href="#" class="btn btn-primary">編集</a>
-        <button type="button" class="btn btn-danger">削除</button>
+        <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
     </div>
@@ -69,6 +69,15 @@ export default {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.event = this.getEventForId(event_id);
+  },
+  methods: {
+    deleteEvent: async function() {
+      var result = confirm("本当にイベントを削除してよろしいですか？");
+      if (result) {
+        await this.$store.dispatch("events/deleteEventByID", this.event.id);
+        this.$router.push({ path: "/events" });
+      }
+    }
   }
 };
 </script>
