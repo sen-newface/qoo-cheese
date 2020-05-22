@@ -4,7 +4,8 @@ import store from '../store';
 
 import EventsIndex from '../pages/eventsIndex.vue';
 import EventsShow from '../pages/eventShow.vue';
-import EventStore from '../pages/eventStore.vue'
+import EventStore from '../pages/eventStore.vue';
+import EventEdit from '../pages/EventEdit.vue';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -39,6 +40,11 @@ const routes = [
     path: '/events/event-:id',
     name: "eventShow",
     component: EventsShow,
+  },
+    {
+    path: '/events/:id/edit',
+    name: 'eventEdit',
+    component: EventEdit
   },
   {
     path: '/events/new',
