@@ -81,9 +81,7 @@ export default {
   methods: {
     changeSortText() {
       this.changeSort = !this.changeSort;
-      this.sortText === "昇順"
-        ? (this.sortText = "降順")
-        : (this.sortText = "昇順");
+      this.changeSort ? (this.sortText = "降順") : (this.sortText = "昇順");
     }
   },
   async created() {
