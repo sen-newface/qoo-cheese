@@ -56,16 +56,6 @@ export default {
       return response.errors;
     }
   },
-  async eventShow({ commit }, { id }) {
-    const response = await api.eventShow(id);
-    const isSuccess = store.getters["status/isApiSuccess"];
-    if (isSuccess) {
-      commit("setNowEvent", response);
-      return response;
-    } else {
-      return response.errors;
-    }
-  },
   async getEventsAndPhotosIfNotExits({ dispatch, getters }, event_id) {
     let event = getters.getEventForId(event_id)
     if (!event) {
