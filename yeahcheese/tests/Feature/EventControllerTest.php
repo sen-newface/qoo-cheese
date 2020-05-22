@@ -15,7 +15,6 @@ class EventControllerTest extends TestCase
     public function testShow()
     {
         $user = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
         $event1 = $user->events()->save(
             factory(\App\Event::class)->make(
                 [
@@ -157,7 +156,7 @@ class EventControllerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $event = factory(Event::class)->create(['user_id' => $user->id]);
-        $photo = factory(Photo::class)->create(['event_id' => $event->id]);
+        factory(Photo::class)->create(['event_id' => $event->id]);
 
         $res = $this->actingAs($user)->json("DELETE", 'api/events/' . $event->id);
         $res->assertStatus(204);
