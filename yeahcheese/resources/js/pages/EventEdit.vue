@@ -41,7 +41,7 @@
       <div class="event-photos">
         <div class="photos" v-for="photo in photos" :key="photo.id">
           <img :src="photo.image_path" />
-          <!-- 
+          <!--
                         // TODO: 写真一枚一枚に削除ボタン追加
           -->
         </div>
@@ -139,15 +139,15 @@ export default {
         }
       };
       const response = await this.eventUpdate(payload);
-      if (this.isSuccess === false) {
-        this.validationMessages = response;
-      } else {
+      if (this.isSuccess) {
         this.$router.push({
           name: "eventShow",
           params: {
             id: this.eventForm.id
           }
         });
+      } else {
+        this.validationMessages = response;
       }
     },
     pushErrors(errors) {
