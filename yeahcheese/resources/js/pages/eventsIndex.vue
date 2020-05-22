@@ -17,6 +17,20 @@
         </div>
       </div>
     </section>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button
+          v-if="changeSort"
+          class="btn btn-outline-secondary"
+          type="button"
+          @click="changeSortText"
+        >昇順</button>
+        <button v-else class="btn btn-outline-secondary" type="button" @click="changeSortText">降順</button>
+      </div>
+      <select class="custom-select" id="inputGroupSelect03" v-model="selected">
+        <option v-for="op in options" :key="op.text" :value="op.const">{{ op.text }}</option>
+      </select>
+    </div>
     <event-list
       v-show="showEvents.length"
       v-for="event in showEvents"
@@ -38,7 +52,14 @@ export default {
     return {
       page: this.$route.query.page || 1,
       numberOfPage: this.events_per_page,
-      numberOfPageList: [3, 5, 10]
+      numberOfPageList: [3, 5, 10],
+      changeSort: false,
+      selected: "CREATE_AT",
+      options: [
+        { text: "イベント作成順(既定)", const: "CREATE_AT" },
+        { text: "イベント名順", const: "NAME" },
+        { text: "公開開始日順", const: "START_DATE" }
+      ]
     };
   },
   computed: {
@@ -49,8 +70,41 @@ export default {
       events_per_page: "events/events_per_page"
     }),
     showEvents() {
+      const vue = this;
       let results = this.getEventsForPageId(this.page);
-      return results;
+      switch (this.selected) {
+        case "CREATE_AT":
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.created_at > b.created_at ? 1 : -1;
+            }
+            return a.created_at < b.created_at ? 1 : -1;
+          }));
+          break;
+        case "NAME":
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.name > b.name ? 1 : -1;
+            }
+            return a.name < b.name ? 1 : -1;
+          }));
+          break;
+        case "START_DATE":
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.start_date > b.start_date ? 1 : -1;
+            }
+            return a.start_date < b.start_date ? 1 : -1;
+          }));
+          break;
+        default:
+          return this.events;
+      }
+    }
+  },
+  methods: {
+    changeSortText() {
+      this.changeSort = !this.changeSort;
     }
   },
   async created() {
