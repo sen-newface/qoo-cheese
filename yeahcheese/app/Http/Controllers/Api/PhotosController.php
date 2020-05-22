@@ -8,6 +8,7 @@ use App\Event;
 use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Resources\Photo as PhotoResource;
+use Illuminate\Support\Facades\Storage;
 
 class PhotosController extends Controller
 {
@@ -32,13 +33,12 @@ class PhotosController extends Controller
     {
         $post_data = $request->except('image_path');
         $imagefile = $request->file('image_path');
-        $filename = time() . '_' . $imagefile->getClientOriginalName();
-        $path = $imagefile->storeAs('public/images', $filename);
+        $filepath = Storage::disk('public')->putFile('images', $imagefile, 'public');
         $photo = new Photo();
         $photo->event_id = $post_data['event_id'];
-        $photo->image_path = str_replace('public/', 'storage/', $path);
+        $photo->image_path = $filepath;
         $photo->save();
-        return response(new PhotoResource($photo), 201);
+        return response(new PhotoResource($photo), 200);
     }
 
     public function destroy(Event $event, Photo $photo)
@@ -46,5 +46,4 @@ class PhotosController extends Controller
         $photo->delete();
         return response('status', 204);
     }
-
 }

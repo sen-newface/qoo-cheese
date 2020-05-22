@@ -63,10 +63,14 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event)
+    public function update(Event $event, StoreEventRequest $request)
     {
-        // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
-        // return new EventResource($event);
+        if ($request->user()->id == $event->user_id) {
+            $form = $request->all();
+            $event->fill($form)->save();
+            return response(new EventResource($event), 201);
+        }
+        return response(null, 403);
     }
 
     /**
@@ -74,6 +78,7 @@ class EventsController extends Controller
      */
     public function destroy(Event $event, Request $request)
     {
+        $event->delete();
         // TODO: イベント削除の処理
         if (intval($request->user()->id) === intval($event->user_id)) {
             $event->delete();
