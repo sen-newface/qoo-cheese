@@ -16,27 +16,29 @@ const setLoding = (text = "ロード中です") => {
 };
 
 const getToken = (key = AUTH_KEY) => {
-  return localStorage.getItem(key) || "";
+  let val = store.getters["storage/getValueForkey"](key)
+  return val || "";
 };
 
 const deleteToken = (key = AUTH_KEY) => {
-  return localStorage.removeItem(key);
+  return store.commit("storage/delData", key)
 };
 
 const setToken = (token = "", key = AUTH_KEY) => {
-  return localStorage.setItem(key, token);
+  return store.commit("storage/setData", { key: key, value: token })
 };
 
 
 // axios
 axios.defaults.headers.common['Accept'] = "application/json";
 const httpWithToken = axios.create({
-  headers: {
-    Authorization: "Bearer " + getToken()
-  }
+  // headers: {
+  //   Authorization: "Bearer " + getToken()
+  // }
 });
 
 httpWithToken.interceptors.request.use(request => {
+  request.headers['Authorization'] = "Bearer " + getToken();
   setApiStatus(200);
   return request;
 })
