@@ -8,7 +8,6 @@ export default {
     if (!state.eventPhotos.find(event => event.id == event_id)) return false
     state.eventPhotos.find(event => event.id == event_id).push(photo)
   },
-
   delPhotos(state) {
     state.eventPhotos = []
   }

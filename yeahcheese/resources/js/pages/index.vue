@@ -33,27 +33,27 @@ export default {
   computed: {
     ...mapGetters({
       isApiSuccess: "status/isApiSuccess"
-    }),
+    })
   },
   methods: {
     async checkAuthKey() {
-    this.delValidation();
-      if(this.authKey.trim() === "") {
+      this.delValidation();
+      if (this.authKey.trim() === "") {
         this.validationMessages.push("認証キーを入力してください");
-        return false
+        return false;
       }
-      const response = await api.eventAuth(this.authKey)
+      const response = await api.eventAuth(this.authKey);
       if (this.isApiSuccess) {
-        this.$router.push({ path: `/events/event-${response.id}`});
+        this.$router.push({ path: `/events/event-${response.id}` });
       } else {
-        this.validationMessages.push(response)
+        this.validationMessages.push("認証キーが間違っています");
       }
     },
     delValidation() {
       this.validationMessages = [];
     }
   }
-}
+};
 </script>
 
 <style scoped>
