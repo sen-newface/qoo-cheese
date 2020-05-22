@@ -13,6 +13,10 @@ const getters = {
     if (target && target.user_id == user.id) return true;
     return false;
   },
+  searchEventsByInputText: state => (searchText) => {
+    return state.events.filter(function (item) {
+      return (item.name).indexOf(searchText) >= 0;
+    });
+  }
 }
-
 export default getters
