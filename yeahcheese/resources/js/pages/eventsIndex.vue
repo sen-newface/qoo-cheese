@@ -11,13 +11,13 @@
     </div>
     <router-link class="btn btn-outline-info mb-5" :to="{ path: '/events/new'}">新規作成</router-link>
     <event-list
-      v-show="searchEvents.length"
-      v-for="event in searchEvents"
+      v-show="showEvents.length"
+      v-for="event in showEvents"
       :key="event.key"
       :eventInfo="event"
     ></event-list>
-    <p v-show="!events.length">イベントは一つも登録されていません。</p>
-    <p v-show="events.length && !searchEvents.length">ヒットしませんでした</p>
+    <p v-show="!showEvents.length && !searchText">イベントは一つも登録されていません。</p>
+    <p v-show="!showEvents.length && searchText">ヒットしませんでした</p>
   </div>
 </template>
 
@@ -33,11 +33,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      events: "events/events",
-      searchEventsByInputText: "events/searchEventsByInputText"
+      events: "events/events"
     }),
-    searchEvents() {
-      return this.searchEventsByInputText(this.searchText);
+    showEvents() {
+      const vue = this;
+      let results = [];
+      return (results = this.events.filter(function(item) {
+        return item.name.indexOf(vue.searchText) >= 0;
+      }));
     }
   },
   async created() {
