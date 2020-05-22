@@ -62,7 +62,8 @@ class PhotoControllerTest extends TestCase
             )
         );
 
-        $res = $this->json('get', 'api/events/' . $this->event->id . '/photos');
+        $url = route('events.photos.index', $this->event->id);
+        $res = $this->json('get', $url);
         $res->assertJsonCount(3);
         $res->assertJsonStructure(
             [
@@ -82,7 +83,7 @@ class PhotoControllerTest extends TestCase
     {
         Storage::fake('images');
         $file = UploadedFile::fake()->image('test.jpeg');
-        $url = '/api/events/' . $this->event->id . '/photos';
+        $url = route('events.photos.store', $this->event->id);
         $data = [
             'event_id' => $this->event->id,
             'image_path' => $file,
@@ -107,7 +108,7 @@ class PhotoControllerTest extends TestCase
     {
         Storage::fake('images');
         $file = UploadedFile::fake()->image('test.jpeg');
-        $url = '/api/events/' . $this->event->id . '/photos';
+        $url = route('events.photos.destroy', $this->event->id);
         $data = [
             'event_id' => $this->event->id,
             'image_path' => $file,
