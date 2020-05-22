@@ -9,7 +9,7 @@ export default {
     state.curretEventPage = parseInt(page)
   },
   setNumberOfPage(state, num) {
-    state.page_per_events = num
+    state.events_per_page = num
   },
 
   setInitLoad(state, bool) {

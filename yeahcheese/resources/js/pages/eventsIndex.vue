@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       page: this.$route.query.page || 1,
-      numberOfPage: this.page_per_events,
+      numberOfPage: this.events_per_page,
       numberOfPageList: [3, 5, 10]
     };
   },
@@ -46,7 +46,7 @@ export default {
       events: "events/events",
       getEventsForPageId: "events/getEventsForPageId",
       curretEventPage: "events/curretEventPage",
-      page_per_events: "events/page_per_events"
+      events_per_page: "events/events_per_page"
     }),
     showEvents() {
       let results = this.getEventsForPageId(this.page);
@@ -55,7 +55,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch("events/initGetEvents");
-    this.numberOfPage = this.page_per_events;
+    this.numberOfPage = this.events_per_page;
   },
   watch: {
     "$route.query.page": {

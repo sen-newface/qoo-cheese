@@ -3,16 +3,16 @@ import store from '../../store'
 const getters = {
   events: state => state.events.slice().sort(function (a, b) { return (a.id < b.id ? 1 : -1) }),
   last_page: (state, getters) => {
-    let page = Math.floor(state.events.length / getters.page_per_events);
-    let add = state.events.length % getters.page_per_events;
+    let page = Math.floor(state.events.length / getters.events_per_page);
+    let add = state.events.length % getters.events_per_page;
     return add ? page + 1 : page
   },
-  page_per_events: state => state.page_per_events,
+  events_per_page: state => state.events_per_page,
   curretEventPage: state => state.curretEventPage,
   initLoad: state => state.initLoad,
   getEventsForPageId: (state, getters) => (page = 1) => {
-    let end_index = getters.page_per_events * page
-    let start_index = end_index - getters.page_per_events
+    let end_index = getters.events_per_page * page
+    let start_index = end_index - getters.events_per_page
     return state.events.slice(start_index, end_index)
   },
   getEventForId: state => (id) => {
