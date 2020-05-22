@@ -6,7 +6,7 @@
       <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
-        <a href="#" class="btn btn-primary">編集</a>
+        <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger">削除</button>
       </div>
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>

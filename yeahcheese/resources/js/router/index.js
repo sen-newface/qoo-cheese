@@ -42,11 +42,6 @@ const routes = [
     component: EventsIndex
   },
   {
-    path: '/events/event-:id',
-    name: "eventShow",
-    component: EventsShow,
-  },
-  {
     path: '/login',
     component: Login,
     meta: { requiresNotAuth: true }
@@ -62,7 +57,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/events/:id/edit',
+    path: '/events/event-:id/edit',
     name: 'eventEdit',
     component: EventEdit
   },
