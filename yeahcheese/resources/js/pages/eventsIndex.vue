@@ -15,12 +15,12 @@
       </select>
     </div>
     <event-list
-      v-show="events.length"
+      v-show="showEvents.length"
       v-for="event in showEvents"
       :key="event.key"
       :eventInfo="event"
     ></event-list>
-    <p v-show="!events.length">イベントは一つも登録されていません。</p>
+    <p v-show="!showEvents.length">イベントは一つも登録されていません。</p>
   </div>
 </template>
 
@@ -43,19 +43,36 @@ export default {
   },
   computed: {
     ...mapGetters({
-      events: "events/events",
-      eventsSortById: "events/eventsSortById",
-      eventsSortByName: "events/eventsSortByName",
-      eventsSortByStartDate: "events/eventsSortByStartDate"
+      events: "events/events"
     }),
     showEvents() {
+      const vue = this;
+      let results = [];
       switch (this.selected) {
         case "1":
-          return this.eventsSortById(this.changeSort);
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.id < b.id ? 1 : -1;
+            }
+            return a.id > b.id ? 1 : -1;
+          }));
+          break;
         case "2":
-          return this.eventsSortByName(this.changeSort);
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.name < b.name ? 1 : -1;
+            }
+            return a.name > b.name ? 1 : -1;
+          }));
+          break;
         case "3":
-          return this.eventsSortByStartDate(this.changeSort);
+          return (results = this.events.slice().sort(function(a, b) {
+            if (vue.changeSort) {
+              return a.start_date < b.start_date ? 1 : -1;
+            }
+            return a.start_date > b.start_date ? 1 : -1;
+          }));
+          break;
         default:
           return this.events;
       }
