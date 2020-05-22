@@ -5,8 +5,8 @@ export default {
     state.events = state.events.concat(events);
   },
 
-  setCurretEventPage(state, page) {
-    state.curretEventPage = parseInt(page)
+  setcurrentEventPage(state, page) {
+    state.currentEventPage = parseInt(page)
   },
   setNumberOfPage(state, num) {
     state.events_per_page = num
@@ -20,7 +20,7 @@ export default {
     state.events = []
     state.initLoad = true
     state.last_page = 1
-    state.curretEventPage = 1
+    state.currentEventPage = 1
   },
   setEvent(state, event) {
     state.events.unshift(event)

@@ -8,7 +8,7 @@ const getters = {
     return add ? page + 1 : page
   },
   events_per_page: state => state.events_per_page,
-  curretEventPage: state => state.curretEventPage,
+  currentEventPage: state => state.currentEventPage,
   initLoad: state => state.initLoad,
   getEventsForPageId: (state, getters) => (page = 1) => {
     let end_index = getters.events_per_page * page

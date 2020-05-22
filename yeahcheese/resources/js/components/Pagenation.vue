@@ -35,12 +35,12 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      curretEventPage: "events/curretEventPage",
+      currentEventPage: "events/currentEventPage",
       last_page: "events/last_page"
     }),
     isCurrent() {
       return function(num) {
-        return this.curretEventPage == num ? "active" : "";
+        return this.currentEventPage == num ? "active" : "";
       };
     },
     numbers() {
@@ -51,17 +51,17 @@ export default {
       }
 
       //現在ページが1から3 1~5を出す
-      if (this.curretEventPage <= 3) {
+      if (this.currentEventPage <= 3) {
         return this.createNumbers(1, 5);
       }
       //現在ページが 最終ページ手前から3番目以内 last -4 から last まで
-      if (this.last_page - 2 <= this.curretEventPage) {
+      if (this.last_page - 2 <= this.currentEventPage) {
         return this.createNumbers(this.last_page - 4, this.last_page);
       }
       //上記以外 現在ページを中心に前後２つずつ表示
       return this.createNumbers(
-        this.curretEventPage - 2,
-        this.curretEventPage + 2
+        this.currentEventPage - 2,
+        this.currentEventPage + 2
       );
     }
   },

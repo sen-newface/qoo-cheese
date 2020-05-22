@@ -45,7 +45,7 @@ export default {
     ...mapGetters({
       events: "events/events",
       getEventsForPageId: "events/getEventsForPageId",
-      curretEventPage: "events/curretEventPage",
+      currentEventPage: "events/currentEventPage",
       events_per_page: "events/events_per_page"
     }),
     showEvents() {
@@ -61,9 +61,9 @@ export default {
     "$route.query.page": {
       handler(val) {
         if (val) {
-          this.$store.commit("events/setCurretEventPage", val);
+          this.$store.commit("events/setcurrentEventPage", val);
         }
-        const page = this.curretEventPage;
+        const page = this.currentEventPage;
         this.page = page;
         if (this.events.length && !this.getEventsForPageId(page).length) {
           this.$router.push({ path: "/events", query: { page: 1 } });
