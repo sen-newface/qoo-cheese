@@ -20,7 +20,7 @@ export default {
 
 <style>
 .load_warpper {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   width: 100vw;
   height: 100vh;
