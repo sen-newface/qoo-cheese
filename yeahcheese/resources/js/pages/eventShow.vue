@@ -32,7 +32,6 @@
 <script>
 import { mapGetters } from "vuex";
 import photoList from "../components/PhotoList";
-import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     photoList

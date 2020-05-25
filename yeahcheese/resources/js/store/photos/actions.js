@@ -8,7 +8,7 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       // commit("appendPhoto", response);
-      commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEvnetId(event_id) }, { root: true });
+      // commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEvnetId(event_id) }, { root: true });
       return response;
     } else {
       return response.errors;
@@ -39,7 +39,7 @@ export default {
     if (isSuccess) {
       let photo_index = getters.getPhotoIndexForEvnetId(event_id, photo_id)
       commit("delPhotoByEventId", { event_id: event_id, photo_index: photo_index });
-      commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEvnetId(event_id) }, { root: true });
+      commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEventId(event_id) }, { root: true });
       commit("flashMessage/setTextAndClass", { text: "写真の削除に成功しました", cls: "success" }, { root: true });
       return response
     } else {
