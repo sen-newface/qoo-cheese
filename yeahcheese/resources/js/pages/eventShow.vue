@@ -19,6 +19,7 @@
           type="button"
           class="btn btn-outline-success ml-4"
         >写真追加</button>
+        <change-columns></change-columns>
       </div>
       <div class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
@@ -57,7 +58,9 @@ export default {
       events: "events/events",
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEvnetId",
-      isLogin: "users/isLogin"
+      isLogin: "users/isLogin",
+      selectedColumns: "display/selectedColumns",
+      accessDevice: "display/accessDevice"
     }),
     alt() {
       return function(id) {
