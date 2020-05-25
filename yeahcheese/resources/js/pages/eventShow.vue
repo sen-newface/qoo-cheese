@@ -91,7 +91,7 @@ export default {
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
-    await this.event = this.getEventForId(event_id);
+    this.event = this.getEventForId(event_id);
     this.getAccessingUserDevice();
   }
 };
