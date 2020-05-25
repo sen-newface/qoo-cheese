@@ -20,26 +20,22 @@
           class="btn btn-outline-success ml-4"
         >写真追加</button>
       </div>
-      <div class="d-flex align-items-start flex-wrap mb-5 img-area">
-        <img
-          v-show="getPhotosForEventId(event.id) && getPhotosForEventId(event.id).length"
-          v-for=" image in getPhotosForEventId(event.id)"
-          :key="image.id"
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          class="img-thumbnail"
-        />
-        <p
-          v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
-        >写真はまだありません</p>
-      </div>
+      <photo-list
+        :photos="getPhotosForEventId(event.id) || []"
+        :event="this.event"
+        :isMyEvent="isMyEventByEventId(event.id)"
+      />
     </section>
   </article>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import photoList from "../components/PhotoList";
 export default {
+  components: {
+    photoList
+  },
   data() {
     return {
       event: {
@@ -58,12 +54,7 @@ export default {
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEvnetId",
       isLogin: "users/isLogin"
-    }),
-    alt() {
-      return function(id) {
-        return this.event.name + "の写真" + id;
-      };
-    }
+    })
   },
   async created() {
     let event_id = this.$route.params["id"];
@@ -81,18 +72,3 @@ export default {
   }
 };
 </script>
-
-
-<style scoped>
-.img-area img {
-  max-width: 48%;
-}
-@media screen and (max-width: 767px) {
-  .img-area {
-    display: block !important;
-  }
-  .img-area img {
-    max-width: 100%;
-  }
-}
-</style>
