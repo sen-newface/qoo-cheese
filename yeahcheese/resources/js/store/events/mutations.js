@@ -35,4 +35,28 @@ export default {
   delEvents(state) {
     state.events = []
   },
+  sortByCreated(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.created_at > b.created_at ? 1 : -1;
+      }
+      return a.created_at < b.created_at ? 1 : -1;
+    });
+  },
+  sortByName(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.name > b.name ? 1 : -1;
+      }
+      return a.name < b.name ? 1 : -1;
+    });
+  },
+  sortByStartDate(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.start_date > b.start_date ? 1 : -1;
+      }
+      return a.start_date < b.start_date ? 1 : -1;
+    });
+  }
 }
