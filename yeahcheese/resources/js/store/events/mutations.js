@@ -30,6 +30,10 @@ export default {
     const targetIdx = state.events.findIndex((e) => e.id == event.id);
     state.events.splice(targetIdx, 1, event);
   },
+  updateEventPreviews(state, { event_id, photos }) {
+    const targetIdx = state.events.findIndex((e) => e.id == event_id);
+    state.events[targetIdx].photos = photos.slice(0, 2)
+  },
   setNowEvent(state, event) {
     state.event = event;
   },
