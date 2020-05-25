@@ -14,11 +14,7 @@
     <section>
       <div class="d-flex mb-2">
         <h3>写真一覧</h3>
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success ml-4"
-        >写真追加</button>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
       <div class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
@@ -39,7 +35,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
 export default {
+  components: {
+    PreviewAndSavePhoto
+  },
   data() {
     return {
       event: {
@@ -74,7 +74,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 .img-area img {
   max-width: 48%;
 }
