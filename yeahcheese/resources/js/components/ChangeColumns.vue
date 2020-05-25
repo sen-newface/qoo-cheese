@@ -33,11 +33,6 @@ export default {
       // * アクセスしてきたデバイスの種類（未使用）
       type: Boolean,
       default: true
-    },
-    dispStyle: {
-      // * 何列で表示するかの情報
-      type: Number,
-      default: 2
     }
   },
   methods: {
