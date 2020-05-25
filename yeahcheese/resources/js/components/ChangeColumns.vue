@@ -8,6 +8,7 @@
         :id="radioId(idx)"
         :value="idx"
         @change="changeColumn(idx)"
+        :checked="isSelected(idx)"
       />
       <label class="form-check-label" :for="radioId(idx)">{{ idx }}</label>
     </div>
@@ -33,6 +34,23 @@ export default {
       // * アクセスしてきたデバイスの種類（未使用）
       type: Boolean,
       default: true
+    },
+    selected: {
+      // * 現在選択中のカラム数
+      type: Number,
+      default: 2
+    }
+  },
+  computed: {
+    radioId() {
+      return idx => {
+        return "radio" + idx;
+      };
+    },
+    isSelected() {
+      return idx => {
+        return idx === this.selected ? "checked" : "";
+      };
     }
   },
   methods: {
