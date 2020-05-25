@@ -28,6 +28,7 @@
           :alt="alt(image.id)"
           :src="image.image_path"
           class="img-thumbnail"
+          @click="deletePhoto(event.id, image.id)"
         />
         <p
           v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -56,13 +57,19 @@ export default {
       getEventForId: "events/getEventForId",
       events: "events/events",
       isMyEventByEventId: "events/isMyEventByEventId",
-      getPhotosForEventId: "photos/getPhotosForEvnetId",
+      getPhotosForEventId: "photos/getPhotosForEventId",
       isLogin: "users/isLogin"
     }),
     alt() {
       return function(id) {
         return this.event.name + "の写真" + id;
       };
+    }
+  },
+  methods: {
+    ...mapActions("photos", ["deleteEventPhoto"]),
+    async deletePhoto(event_id, photo_id) {
+      await this.deleteEventPhoto({ event_id, photo_id });
     }
   },
   async created() {

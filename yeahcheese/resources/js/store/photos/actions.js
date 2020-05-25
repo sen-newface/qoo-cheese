@@ -25,9 +25,12 @@ export default {
     }
   },
   async getPhotosIfNotExits({ dispatch, commit, getters }, event_id) {
-    let photos = getters.getPhotosForEvnetId(event_id)
+    let photos = getters.getPhotosForEventId(event_id)
     if (!photos) {
       photos = await dispatch("setPhotosForEventId", event_id)
     }
+  },
+  async deleteEventPhoto({ commit }, { event_id, photo_id }) {
+    const response = await api.eventPhotosDestroy(event_id, photo_id);
   }
 }
