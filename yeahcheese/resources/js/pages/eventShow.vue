@@ -19,7 +19,12 @@
           type="button"
           class="btn btn-outline-success ml-4"
         >写真追加</button>
-        <change-columns></change-columns>
+        <change-columns
+          :min="minColumn"
+          :max="maxColumn"
+          :device="accessDevice"
+          :disp-style="selectedColumns"
+        ></change-columns>
       </div>
       <div class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
@@ -66,6 +71,16 @@ export default {
       return function(id) {
         return this.event.name + "の写真" + id;
       };
+    },
+    minColumn() {
+      // * PCの場合は最小列数は2
+      const min = this.accessDevice ? 2 : 1;
+      return min;
+    },
+    maxColumn() {
+      // * PCの場合は最大列数は5
+      const max = this.accessDevice ? 5 : 2;
+      return max;
     }
   },
   async created() {
