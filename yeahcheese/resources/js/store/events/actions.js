@@ -65,6 +65,20 @@ export default {
     if (event) await store.dispatch("photos/getPhotosIfNotExits", event_id);
   },
 
+  async deleteEvent(context, event_id) {
+    let event = context.getters.getEventForId(event_id)
+    if (!event) return false;
+    let response = await api.eventDestroy(event.id);
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      context.commit("deleteEventForId", event.id);
+      context.commit("flashMessage/setTextAndClass", { text: "イベント削除に成功しました", cls: "success" }, { root: true });
+      return response
+    } else {
+      return response.errors;
+    }
+  },
+
   resetEventAndPhotos({ context }) {
     store.commit("photos/delPhotos")
     store.commit("events/resetEvent")
