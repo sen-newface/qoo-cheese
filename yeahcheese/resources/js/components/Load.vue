@@ -24,8 +24,7 @@ export default {
   z-index: 100;
   width: 100vw;
   height: 100vh;
-  background-color: gray;
-  opacity: 0.4;
+  background: rgba(45, 45, 45, 0.5);
 }
 
 .box {
