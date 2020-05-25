@@ -19,12 +19,7 @@
           type="button"
           class="btn btn-outline-success ml-4"
         >写真追加</button>
-        <change-columns
-          :min="minColumn"
-          :max="maxColumn"
-          :device="accessDevice"
-          :disp-style="selectedColumns"
-        ></change-columns>
+        <change-columns :min="minColumn" :max="maxColumn" :device="accessDevice"></change-columns>
       </div>
       <div class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
