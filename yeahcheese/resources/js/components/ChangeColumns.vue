@@ -7,7 +7,7 @@
         name="inlineRadioOptions"
         :id="radioId(idx)"
         :value="idx"
-        @change="changeColumn"
+        @change="changeColumn(idx)"
       />
       <label class="form-check-label" :for="radioId(idx)">{{ idx }}</label>
     </div>
