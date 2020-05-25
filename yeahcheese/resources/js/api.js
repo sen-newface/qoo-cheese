@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from "./store/";
-import Route from "./url";
+import { Route } from "./constants";
 
 const AUTH_KEY = "auth_key";
 

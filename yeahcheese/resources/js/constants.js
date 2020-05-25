@@ -1,4 +1,4 @@
-export default {
+export const Route = {
   AUTH_ME: '/api/user/',
   AUTH_SIGNUP: '/api/signup',
   AUTH_LOGIN: '/api/login',
@@ -11,4 +11,4 @@ export default {
   PHOTOS_INDEX: (id) => '/api/events/' + id + '/photos',
   PHOTOS_STORE: (id) => '/api/events/' + id + '/photos',
   PHOTOS_DESTROY: (event_id, photo_id) => '/api/events/' + event_id + '/photos/' + photo_id
-}
+};
