@@ -117,16 +117,16 @@ export default {
   max-width: 100%;
 }
 #img-thumbnail.img-area .img-thumbnail-size2 {
-  max-width: 48%;
+  max-width: 50%;
 }
 #img-thumbnail.img-area .img-thumbnail-size3 {
-  max-width: 33%;
+  max-width: 33.33333333%;
 }
 #img-thumbnail.img-area .img-thumbnail-size4 {
-  max-width: 24%;
+  max-width: 25%;
 }
 #img-thumbnail.img-area .img-thumbnail-size5 {
-  max-width: 19%;
+  max-width: 20%;
 }
 @media screen and (max-width: 767px) {
   .img-area {

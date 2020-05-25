@@ -84,7 +84,7 @@ export default {
   align-items: center;
   border-radius: 5px;
   padding: 0 0 0 8px;
-  margin-left: 16px;
+  margin: 0 16px;
   color: rgba(20, 20, 20, 0.7);
 }
 .is-selected-text {
