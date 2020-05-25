@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -83,10 +83,14 @@ export default {
       return max;
     }
   },
+  methods: {
+    ...mapActions("display", ["getAccessingUserDevice"])
+  },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
-    this.event = this.getEventForId(event_id);
+    await this.event = this.getEventForId(event_id);
+    this.getAccessingUserDevice();
   }
 };
 </script>
