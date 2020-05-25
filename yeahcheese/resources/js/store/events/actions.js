@@ -40,6 +40,7 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       commit("updateEvent", response);
+      commit("flashMessage/setTextAndClass", { text: "イベントの更新に成功しました", cls: "success" }, { root: true });
       return response;
     } else {
       return response.errors;

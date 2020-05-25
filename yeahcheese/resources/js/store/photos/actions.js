@@ -9,6 +9,7 @@ export default {
     if (isSuccess) {
       context.commit("addPhotoByEventId", { event_id: id, photo: response });
       context.commit("events/setEventPreview", { id: id, photo: response }, { root: true });
+      context.commit("flashMessage/setTextAndClass", { text: "写真の保存に成功しました", cls: "success" }, { root: true });
       return response;
     } else {
       return response.errors;
