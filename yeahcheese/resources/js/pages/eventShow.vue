@@ -42,7 +42,7 @@
 import { mapGetters, mapActions } from "vuex";
 import ChangeColumns from "../components/ChangeColumns";
 export default {
-  conponents: {
+  components: {
     ChangeColumns
   },
   data() {
