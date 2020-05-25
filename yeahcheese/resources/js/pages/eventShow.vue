@@ -34,6 +34,7 @@
           :alt="alt(image.id)"
           :src="image.image_path"
           class="img-thumbnail"
+          :class="imgThumbnailSize"
         />
         <p
           v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
@@ -87,6 +88,9 @@ export default {
       // * PCの場合は最大列数は5
       const max = this.accessDevice ? 5 : 2;
       return max;
+    },
+    imgThumbnailSize() {
+      return "img-thumbnail-size" + this.selectedColumns;
     }
   },
   methods: {
