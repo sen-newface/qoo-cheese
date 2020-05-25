@@ -87,7 +87,8 @@ export default {
   computed: {
     ...mapGetters({
       isSuccess: "status/isApiSuccess",
-      getEventForId: "events/getEventForId"
+      getEventForId: "events/getEventForId",
+      tmpEvent: "events/tmpEvent"
     }),
     isValid() {
       return function(form_name) {
@@ -126,9 +127,7 @@ export default {
       if (this.isSuccess) {
         this.$router.push({
           name: "eventShow",
-          params: {
-            id: this.eventForm.id
-          }
+          params: { id: this.eventForm.id }
         });
       } else {
         this.validationMessages = response;
@@ -139,7 +138,7 @@ export default {
     }
   },
   async created() {
-    let event_id = Number.parseInt(this.$route.params["id"]);
+    let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.eventForm = this.getEventForId(event_id);
   }
