@@ -1,5 +1,6 @@
 <template>
-  <div id="change-columns">
+  <div id="change-columns" class="border border-dark">
+    <span id="disp-columns-label">表示列数</span>
     <div v-for="idx in (min, max)" :key="idx" class="form-check form-check-inline">
       <input
         class="form-check-input"
