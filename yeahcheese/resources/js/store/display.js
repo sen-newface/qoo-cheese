@@ -11,6 +11,9 @@ const getters = {
 const mutations = {
   changeColumn(state, num) {
     state.column = num;
+  },
+  setDevice(state, device) {
+    state.device = device;
   }
 }
 
