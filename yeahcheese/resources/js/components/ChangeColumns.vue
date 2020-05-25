@@ -11,7 +11,7 @@
         @change="changeColumn(idx)"
         :checked="isSelected(idx)"
       />
-      <label class="form-check-label" :for="radioId(idx)">{{ idx }}</label>
+      <label class="form-check-label" :class="selectedNumberText(idx)" :for="radioId(idx)">{{ idx }}</label>
     </div>
   </div>
 </template>
@@ -51,6 +51,11 @@ export default {
     isSelected() {
       return idx => {
         return idx === this.selected ? "checked" : "";
+      };
+    },
+    selectedNumberText() {
+      return idx => {
+        return idx === this.selected ? "is-selected-text" : "";
       };
     }
   },
