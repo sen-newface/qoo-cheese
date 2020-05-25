@@ -123,6 +123,7 @@ export default {
   // 返却値 events json
   // イベント取得、取得後
   eventIndex() {
+    setLoding("イベントを取得しています")
     return httpWithToken.get(Route.EVENTS_INDEX).then(onSuccess, onError);
   },
 
