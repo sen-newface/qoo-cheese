@@ -72,7 +72,7 @@ export default {
     if (event) await store.dispatch("photos/getPhotosIfNotExits", event_id);
   },
 
-  async deleteEventByID(context, event_id) {
+  async deleteEvent(context, event_id) {
     let event = context.getters.getEventForId(event_id)
     if (!event) return false;
     let response = await api.eventDestroy(event.id);

@@ -74,7 +74,7 @@ export default {
     deleteEvent: async function() {
       var result = confirm("本当にイベントを削除してよろしいですか？");
       if (result) {
-        await this.$store.dispatch("events/deleteEventByID", this.event.id);
+        await this.$store.dispatch("events/deleteEvent", this.event.id);
         this.$router.push({ path: "/events" });
       }
     }

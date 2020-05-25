@@ -1,4 +1,5 @@
 import * as types from '../mutation-types';
+import Vue from 'vue'
 
 export default {
   setEvents(state, events) {
@@ -36,6 +37,6 @@ export default {
     state.events = []
   },
   deleteEventForId(state, id) {
-    state.events = state.events.filter((v) => v.id !== id);
+    Vue.delete(state.events, state.events.findIndex((e) => e.id == id))
   }
 }
