@@ -45,7 +45,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import ChangeColumns from "../components/ChangeColumns";
 export default {
+  conponents: {
+    ChangeColumns
+  },
   data() {
     return {
       event: {
