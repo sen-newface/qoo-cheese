@@ -31,10 +31,10 @@ class Event extends Model
      */
     public function photos()
     {
-        return $this->hasMany('App\Photo');
+        return $this->hasMany('App\Photo')->orderBy('created_at', 'desc');
     }
 
     protected $fillable = [
-        'name', 'start_date', 'end_date', 'user_id'
+    'name', 'start_date', 'end_date', 'user_id'
     ];
 }

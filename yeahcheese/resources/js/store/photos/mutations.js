@@ -6,7 +6,7 @@ export default {
   },
   addPhotoByEventId(state, { event_id, photo }) {
     if (!state.eventPhotos.find(event => Number(event.event_id) == event_id)) return false
-    state.eventPhotos.find(event => Number(event.event_id) == event_id).photos.push(photo)
+    state.eventPhotos.find(event => Number(event.event_id) == event_id).photos.unshift(photo)
   },
   delPhotos(state) {
     state.eventPhotos = []
