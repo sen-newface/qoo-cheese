@@ -25,6 +25,7 @@
         />
       </div>
     </div>
+    <p class="photo-count">( 写真の枚数：{{ countPhotos }} )</p>
   </div>
 </template>
 
@@ -42,12 +43,19 @@ export default {
       return function(id) {
         return this.eventInfo.name + "の写真" + id;
       };
+    },
+    countPhotos() {
+      return this.eventInfo.photos ? this.eventInfo.photos.length : 0;
     }
   }
 };
 </script>
 
 <style scoped>
+.photo-count {
+  text-align: right;
+  padding: 8px 16px 0;
+}
 @media screen and (max-width: 767px) {
   img {
     float: none !important;
