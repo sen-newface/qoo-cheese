@@ -23,7 +23,8 @@ class EventControllerTest extends TestCase
             )
         );
 
-        $res = $this->actingAs($user)->json('get', 'api/events/' . $event1->id);
+        $url = route('events.show', ['event' => $event1->id]);
+        $res = $this->actingAs($user)->json('get', $url);
         $res->assertJsonStructure(
             [
                 'id',
@@ -46,7 +47,9 @@ class EventControllerTest extends TestCase
                 ]
             )
         );
-        $res = $this->json('get', 'api/events/' . $event1->id . '?key=' . $event1->key);
+
+        $url = route('events.show', ['event' => $event1->id]) . '?key=' . $event1->key;
+        $res = $this->json('get', $url);
         $res->assertJsonStructure(
             [
                 'id',
@@ -80,7 +83,8 @@ class EventControllerTest extends TestCase
             )
         );
 
-        $res = $this->actingAs($user)->json('get', 'api/events');
+        $url = route('events.index');
+        $res = $this->actingAs($user)->json('get', $url);
         $res->assertJsonStructure(
             [
                 'data' => [
@@ -112,7 +116,9 @@ class EventControllerTest extends TestCase
             'end_date' => '2020-12-12',
         ];
         $user = factory(User::class)->create();
-        $res = $this->actingAs($user)->json('POST', 'api/events', $data);
+
+        $url = route('events.store');
+        $res = $this->actingAs($user)->json('POST', $url, $data);
         $res->assertJsonStructure(
             [
                 'id',
@@ -138,8 +144,8 @@ class EventControllerTest extends TestCase
         $event->end_date = '2020-10-21';
         $event = $event->toArray();
 
-        $URL = route('events.update', ['event' => $event_id]);
-        $response = $this->actingAs($user)->put($URL, $event);
+        $url = route('events.update', ['event' => $event_id]);
+        $response = $this->actingAs($user)->put($url, $event);
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
@@ -158,7 +164,8 @@ class EventControllerTest extends TestCase
         $event = factory(Event::class)->create(['user_id' => $user->id]);
         factory(Photo::class)->create(['event_id' => $event->id]);
 
-        $res = $this->actingAs($user)->json("DELETE", 'api/events/' . $event->id);
+        $url = route('events.destroy', ['event' => $event->id]);
+        $res = $this->actingAs($user)->json("DELETE", $url);
         $res->assertStatus(204);
         $this->assertEquals(0, count($user->events));
         $this->assertEquals(0, count(\App\Photo::all()));
