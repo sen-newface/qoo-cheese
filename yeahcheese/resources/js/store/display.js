@@ -14,6 +14,16 @@ const mutations = {
   }
 }
 
+const actions = {
+  getAccessingUserDevice({ commit }) {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+      commit('setDevice', 'SP');
+    } else {
+      commit('setDevice', 'PC');
+    }
+  }
+}
+
 export default {
   namespaced: true,
   state,
