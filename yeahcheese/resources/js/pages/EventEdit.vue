@@ -41,7 +41,6 @@
         </div>
       </div>
       <button type="button" class="btn btn-primary btn-lg" @click="updateEvent">更新</button>
-      <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
     </div>
   </div>
 </template>
