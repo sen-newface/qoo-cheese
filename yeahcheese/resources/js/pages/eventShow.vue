@@ -12,12 +12,13 @@
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
     </div>
     <section>
-      <div class="d-flex mb-2">
-        <h3>写真一覧</h3>
+      <div class="option" :class="isFlex">
+        <h3 :class="isFullWidth">写真一覧</h3>
         <button
           v-if="isMyEventByEventId(event.id)"
           type="button"
-          class="btn btn-outline-success ml-4"
+          class="btn btn-outline-success"
+          :class="isFullWidth"
         >写真追加</button>
         <change-columns
           :min="minColumn"
@@ -91,6 +92,16 @@ export default {
     },
     imgThumbnailSize() {
       return "img-thumbnail-size" + this.selectedColumns;
+    },
+    isFullWidth() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合は横幅をフルで取る
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
+    },
+    isFlex() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合はフレックス対応でないようにする
+      return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
   methods: {
@@ -107,6 +118,9 @@ export default {
 
 
 <style scoped>
+.d-flex.option * {
+  padding: 0 16px;
+}
 .img-area img {
   transition: 0.5s;
 }
@@ -128,6 +142,9 @@ export default {
 #img-thumbnail.img-area .img-thumbnail-size5 {
   max-width: 20%;
 }
+h3.is-full-width {
+  text-align: center;
+}
 @media screen and (max-width: 767px) {
   .img-area {
     display: block !important;
@@ -135,5 +152,17 @@ export default {
   .img-area img {
     max-width: 100%;
   }
+}
+</style>
+
+<style>
+.is-full-width {
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  padding: 32px;
+}
+.is-full-width * {
+  margin-left: 0;
 }
 </style>

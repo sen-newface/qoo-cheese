@@ -1,5 +1,5 @@
 <template>
-  <div id="change-columns" class="border border-dark">
+  <div id="change-columns" class="border border-dark columns-list" :class="isFullWidth">
     <span id="disp-columns-label">表示列数</span>
     <div v-for="idx in range(min, max)" :key="idx" class="form-check form-check-inline">
       <input
@@ -32,7 +32,7 @@ export default {
       default: 5
     },
     device: {
-      // * アクセスしてきたデバイスの種類（未使用）
+      // * アクセスしてきたデバイスの種類
       type: Boolean,
       default: true
     },
@@ -66,6 +66,9 @@ export default {
         }
         return rangeList;
       };
+    },
+    isFullWidth() {
+      return this.device ? "" : "is-full-width";
     }
   },
   methods: {
@@ -77,19 +80,26 @@ export default {
 <style scoped>
 #change-columns input[type="radio"] {
   display: inline-block;
-  margin-left: 16px;
 }
-#change-columns {
+.columns-list {
   display: flex;
   align-items: center;
   border-radius: 5px;
   padding: 0 0 0 8px;
-  margin: 0 16px;
+  margin: 0;
   color: rgba(20, 20, 20, 0.7);
 }
 .is-selected-text {
   color: cornflowerblue;
   font-weight: bold;
   text-shadow: 0 0 10px cornflowerblue 0 0 15px cornflowerblue;
+}
+div.columns-list.is-full-width {
+  margin-bottom: 16px;
+  padding: 16px;
+  font-size: 1.2rem;
+}
+div.columns-list.is-full-width input[type="radio"] {
+  margin-left: 16px;
 }
 </style>
