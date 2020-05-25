@@ -26,7 +26,7 @@
           :selected="selectedColumns"
         ></change-columns>
       </div>
-      <div class="d-flex align-items-start flex-wrap mb-5 img-area">
+      <div id="img-thumbnail" class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
           v-show="getPhotosForEventId(event.id) && getPhotosForEventId(event.id).length"
           v-for=" image in getPhotosForEventId(event.id)"
@@ -104,7 +104,25 @@ export default {
 
 <style scoped>
 .img-area img {
+  transition: 0.5s;
+}
+.img-area * {
+  transition: max-width 0.2s ease;
+}
+#img-thumbnail.img-area .img-thumbnail-size1 {
+  max-width: 100%;
+}
+#img-thumbnail.img-area .img-thumbnail-size2 {
   max-width: 48%;
+}
+#img-thumbnail.img-area .img-thumbnail-size3 {
+  max-width: 33%;
+}
+#img-thumbnail.img-area .img-thumbnail-size4 {
+  max-width: 24%;
+}
+#img-thumbnail.img-area .img-thumbnail-size5 {
+  max-width: 19%;
 }
 @media screen and (max-width: 767px) {
   .img-area {
