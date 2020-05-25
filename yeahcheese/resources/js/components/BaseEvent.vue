@@ -10,7 +10,9 @@
     <div class="row">
       <div class="col-md">
         <div class="card-body">
-          <h5 class="card-title">{{ eventInfo.start_date }} - {{ eventInfo.end_date }}</h5>
+          <h5
+            class="card-title"
+          >{{ dispTransformDeadline(eventInfo.start_date, eventInfo.end_date) }}</h5>
           <p class="card-text">認証キー：{{ eventInfo.key }}</p>
         </div>
       </div>
@@ -42,6 +44,25 @@ export default {
       return function(id) {
         return this.eventInfo.name + "の写真" + id;
       };
+    },
+    dispTransformDeadline() {
+      return function(release_start, release_end) {
+        return (
+          this.transformDate(release_start) +
+          "〜" +
+          this.transformDate(release_end)
+        );
+      };
+    }
+  },
+  methods: {
+    transformDate(date) {
+      const dateArr = date.split("-");
+      if (dateArr.length === 3) {
+        const jaDate =
+          dateArr[0] + "年" + dateArr[1] + "月" + dateArr[2] + "日";
+        return jaDate;
+      }
     }
   }
 };
