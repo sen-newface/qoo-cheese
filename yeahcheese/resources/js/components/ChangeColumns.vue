@@ -1,7 +1,7 @@
 <template>
   <div id="change-columns" class="border border-dark">
     <span id="disp-columns-label">表示列数</span>
-    <div v-for="idx in (min, max)" :key="idx" class="form-check form-check-inline">
+    <div v-for="idx in range(min, max)" :key="idx" class="form-check form-check-inline">
       <input
         class="form-check-input"
         type="radio"
@@ -56,6 +56,15 @@ export default {
     selectedNumberText() {
       return idx => {
         return idx === this.selected ? "is-selected-text" : "";
+      };
+    },
+    range() {
+      return (min, max) => {
+        let rangeList = [];
+        for (let i = min; i <= max; i++) {
+          rangeList.push(i);
+        }
+        return rangeList;
       };
     }
   },
