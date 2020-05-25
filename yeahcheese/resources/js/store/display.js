@@ -20,8 +20,10 @@ const mutations = {
 const actions = {
   getAccessingUserDevice({ commit }) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+      console.log('now accessing is smartphone');
       commit('setDevice', 'SP');
     } else {
+      console.log('now accessing is pc');
       commit('setDevice', 'PC');
     }
   }

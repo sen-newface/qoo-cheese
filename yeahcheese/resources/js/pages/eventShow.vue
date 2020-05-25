@@ -73,11 +73,13 @@ export default {
       };
     },
     minColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
       // * PCの場合は最小列数は2
       const min = this.accessDevice ? 2 : 1;
       return min;
     },
     maxColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
       // * PCの場合は最大列数は5
       const max = this.accessDevice ? 5 : 2;
       return max;
