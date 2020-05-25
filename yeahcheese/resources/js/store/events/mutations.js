@@ -14,6 +14,10 @@ export default {
   setEvent(state, event) {
     state.events.push(event)
   },
+  setEventPreview(state, { id, photo }) {
+    if (!state.events.find(event => Number(event.id) == id) || state.events.find(event => Number(event.id) == id).photos.length >= 2) return false
+    state.events.find(event => Number(event.id) == id).photos.push(photo)
+  },
   updateEvent(state, event) {
     const targetIdx = state.events.findIndex((e) => e.id == event.id);
     state.events.splice(targetIdx, 1, event);
