@@ -12,13 +12,13 @@
       />
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
-    <div class="lap" v-if="preview">
-      <div class="innner_lap">
+    <div class="wrap" v-if="preview" @click="preview=''">
+      <div class="inner_wrap">
         <div class="content">
-          <div class="preview_set">
+          <div class="preview_set" @click.stop>
             <div class="text-center" style="display: flex; align-items: center;">
               <i
-                class="fa fa-arrow-left allow_icon"
+                class="fa fa-arrow-left arrow_icon"
                 v-show="preview_index > 0"
                 @click="openPreview(preview_index - 1)"
               ></i>
@@ -26,7 +26,7 @@
                 <div class="d-flex preview_icons">
                   <i
                     class="fa fas fa-trash"
-                    style="color: red;margin-right: auto;margin-left: 6px;"
+                    style="color: red; margin-right: auto; margin-left: 6px;"
                     @click="delPhoto"
                     v-if="isMyEvent"
                   ></i>
@@ -44,14 +44,12 @@
                 <img :src="preview" class="preview-photo" />
               </div>
               <i
-                class="fa fa-arrow-right allow_icon"
+                class="fa fa-arrow-right arrow_icon"
                 v-show="preview_index !== photos.length - 1"
                 @click="openPreview(preview_index + 1)"
               ></i>
             </div>
           </div>
-
-          <!-- <span style="display: block; text-align: center;">{{preview_name}}</span> -->
         </div>
       </div>
     </div>
@@ -131,7 +129,7 @@ export default {
   }
 }
 
-.allow_icon {
+.arrow_icon {
   color: white;
   font-size: 41px;
   margin: 10px;
@@ -157,7 +155,7 @@ export default {
   max-width: 100%;
 }
 
-.lap {
+.wrap {
   width: 100vw;
   height: 100vh;
   background: gray;
@@ -167,7 +165,7 @@ export default {
   background: rgba(45, 45, 45, 0.9);
   position: fixed;
 }
-.innner_lap {
+.inner_wrap {
   position: absolute;
   top: 50%;
   left: 50%;
