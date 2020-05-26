@@ -6,7 +6,7 @@
       <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
-        <a href="#" class="btn btn-primary">編集</a>
+        <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
@@ -14,11 +14,7 @@
     <section>
       <div class="d-flex mb-2">
         <h3>写真一覧</h3>
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success ml-4"
-        >写真追加</button>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
       <div class="d-flex align-items-start flex-wrap mb-5 img-area">
         <img
@@ -39,8 +35,12 @@
 </template>
 
 <script>
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
 import { mapGetters, mapActions } from "vuex";
 export default {
+  components: {
+    PreviewAndSavePhoto
+  },
   data() {
     return {
       event: {
@@ -90,7 +90,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 .img-area img {
   max-width: 48%;
 }

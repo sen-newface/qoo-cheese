@@ -46,10 +46,16 @@ const routes = [
     name: "eventShow",
     component: EventsShow,
   },
-    {
-    path: '/events/:id/edit',
+  {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id/edit',
     name: 'eventEdit',
-    component: EventEdit
+    component: EventEdit,
+    meta: { requiresAuth: true }
   },
   {
     path: '/401',

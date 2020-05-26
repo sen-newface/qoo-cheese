@@ -1,6 +1,9 @@
 <template>
   <div id="event-edit">
-    <button type="button" class="btn btn-primary btn-lg" @click="updateEvent">更新</button>
+    <router-link
+      class="btn btn-outline-info mb-5"
+      :to="{ name: 'eventShow', params: { id: eventForm.id } }"
+    >詳細へ戻る</router-link>
     <div id="event-form-wrapper">
       <validation-messages :errors="valiMessages"></validation-messages>
       <div class="form-group">
@@ -37,15 +40,7 @@
           />
         </div>
       </div>
-      <preview-and-save-photo :event-id="eventForm.id" @photo-errors="pushErrors($event)"></preview-and-save-photo>
-      <div class="event-photos">
-        <div class="photos" v-for="photo in photos" :key="photo.id">
-          <img :src="photo.image_path" />
-          <!-- 
-                        // TODO: 写真一枚一枚に削除ボタン追加
-          -->
-        </div>
-      </div>
+      <button type="button" class="btn btn-primary btn-lg" @click="updateEvent">更新</button>
     </div>
   </div>
 </template>
@@ -90,7 +85,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isSuccess: "status/isApiSuccess"
+      isSuccess: "status/isApiSuccess",
+      getEventForId: "events/getEventForId",
+      tmpEvent: "events/tmpEvent"
     }),
     isValid() {
       return function(form_name) {
@@ -114,20 +111,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("events", ["eventUpdate", "eventShow"]),
-    async getEvent(event_id) {
-      const response = await this.eventShow({ id: event_id });
-      if (this.isSuccess) {
-        this.eventForm = response;
-        this.setPhotos(this.eventForm);
-      }
-      return false;
-    },
-    setPhotos(event) {
-      if (Array.isArray(event.photos)) {
-        this.photos = event.photos;
-      }
-    },
+    ...mapActions("events", ["eventUpdate"]),
     async updateEvent() {
       // TODO: 定義したアクションを呼び出し、結果を再度eventに挿入
       const payload = {
@@ -139,24 +123,23 @@ export default {
         }
       };
       const response = await this.eventUpdate(payload);
-      if (this.isSuccess === false) {
-        this.validationMessages = response;
-      } else {
+      if (this.isSuccess) {
         this.$router.push({
           name: "eventShow",
-          params: {
-            id: this.eventForm.id
-          }
+          params: { id: this.eventForm.id }
         });
+      } else {
+        this.validationMessages = response;
       }
     },
     pushErrors(errors) {
       this.validationMessages = errors;
     }
   },
-  mounted() {
-    const event_id = Number.parseInt(this.$route.params.id);
-    this.getEvent(event_id);
+  async created() {
+    let event_id = this.$route.params["id"];
+    await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
+    this.eventForm = this.getEventForId(event_id);
   }
 };
 </script>
