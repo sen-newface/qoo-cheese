@@ -10,11 +10,10 @@ const getters = {
   events_per_page: state => state.events_per_page,
   currentEventPage: state => state.currentEventPage,
   initLoad: state => state.initLoad,
-  getEventsForPageId: (state, getters) => (page = 1, searchedEvents) => {
-    console.log("getters", state.events)
+  getEventsForPageId: (state, getters) => (page = 1) => {
     let end_index = getters.events_per_page * page
     let start_index = end_index - getters.events_per_page
-    return searchedEvents.slice(start_index, end_index)
+    return state.events.slice(start_index, end_index)
   },
   getEventForId: state => (id) => {
     return state.events.find(event => event.id == id)
