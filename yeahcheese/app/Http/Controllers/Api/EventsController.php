@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
@@ -63,7 +64,7 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event, StoreEventRequest $request)
+    public function update(UpdateEventRequest $request, Event $event)
     {
         if ($request->user()->id == $event->user_id) {
             $form = $request->all();
