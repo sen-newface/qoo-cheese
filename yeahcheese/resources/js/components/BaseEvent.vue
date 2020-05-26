@@ -25,12 +25,11 @@
         />
       </div>
     </div>
-    <p class="photo-count">( 写真の枚数：{{ getNumberOfPhotosForEventId(eventInfo.id) }} )</p>
+    <p class="photo-count">( 写真の枚数：{{ eventInfo.photos_count }} )</p>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
   name: "BaseEvent",
   props: {
@@ -40,9 +39,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      getNumberOfPhotosForEventId: "photos/getNumberOfPhotosForEventId"
-    }),
     alt() {
       return function(id) {
         return this.eventInfo.name + "の写真" + id;
