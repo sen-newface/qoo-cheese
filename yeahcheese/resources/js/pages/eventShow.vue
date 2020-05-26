@@ -14,11 +14,7 @@
     <section>
       <div class="d-flex mb-2">
         <h3>写真一覧</h3>
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success ml-4"
-        >写真追加</button>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
       <photo-list
         :photos="getPhotosForEventId(event.id) || []"
@@ -31,10 +27,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
 import photoList from "../components/PhotoList";
 export default {
   components: {
-    photoList
+    photoList,
+    PreviewAndSavePhoto
   },
   data() {
     return {
