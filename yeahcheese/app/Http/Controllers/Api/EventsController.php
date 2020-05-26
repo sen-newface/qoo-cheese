@@ -15,6 +15,8 @@ class EventsController extends Controller
     {
         $this->middleware('auth:sanctum')
             ->except(['auth', 'show']);
+        $this->middleware('auth-event')
+            ->only(['auth']);
     }
     /**
      * イベント一覧取得
