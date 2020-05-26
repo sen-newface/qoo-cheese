@@ -62,6 +62,9 @@ class AuthenticateEvent
         return $request;
     }
 
+    /**
+     * ログインユーザーに紐づくイベントであるかによってレスポンス内容を変化させる
+     */
     private function hasUserEvent($request, $event)
     {
         if ($event) {
