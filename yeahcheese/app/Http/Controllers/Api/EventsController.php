@@ -33,11 +33,9 @@ class EventsController extends Controller
             $opt = $request->only('status', 'path');
             $resource = new EventResource($event);
             $resource->additional($opt);
-            dd($resource);
             return $resource;
         }
         $response = $request->only('errors', 'status', 'key');
-        dd($response);
         return response($response);
     }
 
