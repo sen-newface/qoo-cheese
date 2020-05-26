@@ -33,12 +33,7 @@ class AuthenticateEvent
     {
         $opt = null;
         if (is_null($event)) {
-            $opt = [
-                'errors' => ['認証キーが間違っています'],
-                'status' => 406,
-                'key' => $request->key
-            ];
-            $request->merge($opt);
+            $request = $this->createErrorResponse($request, ['認証キーが間違っています'], 406);
         } else {
             $request = $this->withinResponseOrOutsideResponse($request, $user, $event);
         }
@@ -51,24 +46,35 @@ class AuthenticateEvent
     private function withinResponseOrOutsideResponse($request, $user, $event)
     {
         // ログイン済みユーザーは公開期限に関わらず成功
+        // ユーザーが保持していないイベントにアクセスしようとした場合は403エラーを飛ばす
         if ($user) {
-            $request = $this->createSuccessResponse($request, $event);
+            $key = $request->key;
+            $event = $user->events()->where('key', $key)->first();
+            $request = $this->hasUserEvent($request, $event);
             return $request;
         }
         // ゲストユーザーの場合は、公開期限によって分岐させる
         if ($this->checkDeadline($event)) {
             $request = $this->createSuccessResponse($request, $event);
         } else {
-            $opt = [
-                'errors' => ['公開期限外のイベントです'],
-                'status' => 422,
-                'key' => $request->key,
-            ];
-            $request->merge($opt);
+            $request = $this->createErrorResponse($request, ['公開期限外のイベントです'], 422);
         }
         return $request;
     }
 
+    private function hasUserEvent($request, $event)
+    {
+        if ($event) {
+            $request = $this->createSuccessResponse($request, $event);
+        } else {
+            $request = $this->createErrorResponse($request, ['閲覧権限がありません'], 403);
+        }
+        return $request;
+    }
+
+    /**
+     * 成功時のレスポンスを作成
+     */
     private function createSuccessResponse($request, $event)
     {
         $path = $this->getPath($event);
@@ -77,6 +83,20 @@ class AuthenticateEvent
             'status' => 200,
             'event' => $event,
             'path' => $path,
+        ];
+        $request->merge($opt);
+        return $request;
+    }
+
+    /**
+     * エラー時のレスポンスを作成
+     */
+    private function createErrorResponse($request, $errors, $status)
+    {
+        $opt = [
+            'errors' => $errors,
+            'status' => $status,
+            'key' => $request->key,
         ];
         $request->merge($opt);
         return $request;
