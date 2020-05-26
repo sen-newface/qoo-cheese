@@ -37,18 +37,24 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/events/event-:id',
     name: "eventShow",
     component: EventsShow,
   },
-    {
-    path: '/events/:id/edit',
-    name: 'eventEdit',
-    component: EventEdit
-  },
   {
     path: '/events/new',
     component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id/edit',
+    name: 'eventEdit',
+    component: EventEdit,
     meta: { requiresAuth: true }
   },
   {

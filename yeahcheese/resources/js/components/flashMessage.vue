@@ -15,10 +15,8 @@ export default {
       getText: "flashMessage/getText",
       getClass: "flashMessage/getClass"
     }),
-    setClass() {
-      return {
-        "alert-primary": this.getClass
-      };
+    setClass: function() {
+      return this.getClass ? "alert-" + this.getClass : "";
     }
   }
 };
