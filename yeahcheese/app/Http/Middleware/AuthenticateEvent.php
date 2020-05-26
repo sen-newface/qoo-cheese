@@ -83,7 +83,7 @@ class AuthenticateEvent
     }
 
     /**
-     * ユーザーの種類に応じて、認証後の遷移先パスを変化させて返却
+     * 認証後の遷移先パスを変化させて返却
      */
     private function getPath($event)
     {
