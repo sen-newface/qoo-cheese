@@ -62,7 +62,7 @@ class AuthenticateEvent
         } else {
             $opt = [
                 'errors' => ['公開期限外のイベントです'],
-                'status' => 403,
+                'status' => 422,
                 'key' => $request->key,
             ];
             $request->merge($opt);
