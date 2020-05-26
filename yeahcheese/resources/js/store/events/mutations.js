@@ -6,6 +6,14 @@ export default {
     state.events = state.events.concat(events);
   },
 
+  setAuthedEvents(state, events) {
+    state.authedEvnets = state.authedEvnets.concat(events);
+  },
+
+  setAuthedEvent(state, event) {
+    state.authedEvnets.unshift(event);
+  },
+
   setcurrentEventPage(state, page) {
     state.currentEventPage = parseInt(page)
   },
