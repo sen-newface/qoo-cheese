@@ -91,7 +91,7 @@ class AuthenticateEvent
         if (is_null($user)) {
             $path = '/event/' . $event->id;
         } else {
-            $path = '/event/' . $event->id;
+            $path = '/events/' . $event->id;
         }
         return $path;
     }
