@@ -74,7 +74,9 @@ export default {
         { text: "イベント作成順(既定)", const: "CREATED_AT" },
         { text: "イベント名順", const: "NAME" },
         { text: "公開開始日順", const: "START_DATE" }
-      ]
+      ],
+      base_events: null,
+      searchedEvents: null
     };
   },
   computed: {
@@ -83,14 +85,27 @@ export default {
       getEventsForPageId: "events/getEventsForPageId",
       currentEventPage: "events/currentEventPage",
       events_per_page: "events/events_per_page"
+      // base_events: "events/base_events"
     }),
     showEvents() {
       let searchText = this.searchText;
-      let results = this.getEventsForPageId(this.page);
-      results = results.filter(function(item) {
+      this.searchedEvents = this.getEventsForPageId(
+        this.page,
+        this.searchedEvents
+      );
+      console.log("showEvents", this.searchedEvents);
+      this.searchedEvents = this.searchedEvents.filter(item => {
         return item.name.indexOf(searchText) >= 0;
       });
-      return results;
+      // if (searchText) {
+      //   this.searchedEvents = this.searchedEvents.filter(item => {
+      //     return item.name.indexOf(searchText) >= 0;
+      //   });
+      //   this.$store.commit("events/replaceEvents", this.searchedEvents);
+      // } else {
+      // }
+      // this.searchedEvents =
+      return this.searchedEvents;
     }
   },
   methods: {
@@ -106,7 +121,7 @@ export default {
           this.$store.commit("events/sortByStartDate", this.isOrderByAsc);
           break;
         default:
-          this.events;
+          this.searchedEvents;
           break;
       }
     },
@@ -118,6 +133,11 @@ export default {
   async created() {
     await this.$store.dispatch("events/initGetEvents");
     this.numberOfPage = this.events_per_page;
+    this.searchedEvents = this.getEventsForPageId(
+      this.page,
+      this.searchedEvents
+    );
+    console.log(this.searchedEvents);
   },
   watch: {
     "$route.query.page": {
@@ -127,15 +147,26 @@ export default {
         }
         const page = this.currentEventPage;
         this.page = page;
-        if (this.events.length && !this.getEventsForPageId(page).length) {
+        this.base_events = this.getEventsForPageId(this.page, this.events);
+        this.searchedEvents = this.getEventsForPageId(this.page, this.events);
+        console.log(this.searchedEvents);
+        if (
+          this.searchedEvents.length &&
+          !this.getEventsForPageId(page, this.searchedEvents).length
+        ) {
           this.$router.push({ path: "/events", query: { page: 1 } });
         }
       },
       immediate: true
     },
     numberOfPage: function(val) {
+      console.log(val);
       this.$store.commit("events/setNumberOfPage", val);
-      if (this.events.length && !this.getEventsForPageId(this.page).length) {
+      this.searchedEvents = this.base_events;
+      if (
+        this.searchedEvents.length &&
+        !this.getEventsForPageId(this.page, this.searchedEvents).length
+      ) {
         this.$router.push({ path: "/events", query: { page: 1 } });
       }
     }

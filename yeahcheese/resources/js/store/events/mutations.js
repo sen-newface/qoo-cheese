@@ -5,6 +5,14 @@ export default {
     state.events = state.events.concat(events);
   },
 
+  replaceEvents(state, events) {
+    state.events = events
+  },
+
+  setBaseEvents(state, events) {
+    state.base_events = events
+  },
+
   setcurrentEventPage(state, page) {
     state.currentEventPage = parseInt(page)
   },

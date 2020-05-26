@@ -1,6 +1,7 @@
 import store from '../../store'
 const getters = {
   events: state => state.events,
+  base_events: state => state.base_events,
   last_page: (state, getters) => {
     let page = Math.floor(state.events.length / getters.events_per_page);
     let add = state.events.length % getters.events_per_page;
@@ -9,10 +10,11 @@ const getters = {
   events_per_page: state => state.events_per_page,
   currentEventPage: state => state.currentEventPage,
   initLoad: state => state.initLoad,
-  getEventsForPageId: (state, getters) => (page = 1) => {
+  getEventsForPageId: (state, getters) => (page = 1, searchedEvents) => {
+    console.log("getters", state.events)
     let end_index = getters.events_per_page * page
     let start_index = end_index - getters.events_per_page
-    return state.events.slice(start_index, end_index)
+    return searchedEvents.slice(start_index, end_index)
   },
   getEventForId: state => (id) => {
     return state.events.find(event => event.id == id)
