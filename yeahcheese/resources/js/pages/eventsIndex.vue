@@ -87,20 +87,19 @@ export default {
       events_per_page: "events/events_per_page"
     }),
     showEvents() {
-      // let st = this.searchText;
-      // let res = [];
-      // this.$store.commit("events/replaceEvents", this.base_events);
-      // if (st) {
-      //   console.log("aaaa");
-      //   res = this.base_events.filter(item => {
-      //     return item.name.indexOf(st) >= 0;
-      //   });
-      //   this.$store.commit("events/replaceEvents", res);
-      // } else {
-      //   if (this.base_events && !this.base_events.empty) {
-      //     this.$store.commit("events/replaceEvents", this.base_events);
-      //   }
-      // }
+      let base_events = this.base_events;
+      let st = this.searchText;
+      let res = [];
+      if (st) {
+        res = this.base_events.filter(item => {
+          return item.name.indexOf(st) >= 0;
+        });
+        this.$store.commit("events/replaceEvents", res);
+      } else {
+        if (base_events.length) {
+          this.$store.commit("events/replaceEvents", base_events);
+        }
+      }
 
       return this.getEventsForPageId(this.page);
     }
