@@ -51,7 +51,7 @@ class AuthenticateEvent
     private function withinResponseOrOutsideResponse($request, $user, $event)
     {
         if ($this->checkDeadline($event)) {
-            $path = $this->getPath($user, $event);
+            $path = $this->getPath($event);
             $opt = [
                 'errors' => null,
                 'status' => 200,
@@ -85,14 +85,9 @@ class AuthenticateEvent
     /**
      * ユーザーの種類に応じて、認証後の遷移先パスを変化させて返却
      */
-    private function getPath($user, $event)
+    private function getPath($event)
     {
-        $path = null;
-        if (is_null($user)) {
-            $path = '/event/' . $event->id;
-        } else {
-            $path = '/events/' . $event->id;
-        }
+        $path = '/events/event-' . $event->id;
         return $path;
     }
 }
