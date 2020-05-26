@@ -11,7 +11,7 @@ class AuthenticateEvent
 {
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
         $key = $request->key;
         $event = Event::where('key', $key)->first();
         $request = $this->getRequest($request, $user, $event);
@@ -50,15 +50,14 @@ class AuthenticateEvent
      */
     private function withinResponseOrOutsideResponse($request, $user, $event)
     {
+        // ログイン済みユーザーは公開期限に関わらず成功
+        if ($user) {
+            $request = $this->createSuccessResponse($request, $event);
+            return $request;
+        }
+        // ゲストユーザーの場合は、公開期限によって分岐させる
         if ($this->checkDeadline($event)) {
-            $path = $this->getPath($event);
-            $opt = [
-                'errors' => null,
-                'status' => 200,
-                'event' => $event,
-                'path' => $path,
-            ];
-            $request->merge($opt);
+            $request = $this->createSuccessResponse($request, $event);
         } else {
             $opt = [
                 'errors' => ['公開期限外のイベントです'],
@@ -67,6 +66,19 @@ class AuthenticateEvent
             ];
             $request->merge($opt);
         }
+        return $request;
+    }
+
+    private function createSuccessResponse($request, $event)
+    {
+        $path = $this->getPath($event);
+        $opt = [
+            'errors' => null,
+            'status' => 200,
+            'event' => $event,
+            'path' => $path,
+        ];
+        $request->merge($opt);
         return $request;
     }
 
