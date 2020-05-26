@@ -11,7 +11,6 @@ class Event extends Model
     public static function boot()
     {
         parent::boot();
-        //イベント作成時にkeyにランダムな文字列を挿入
         Event::creating(
             function ($event) {
                 $event->key = Str::random(30);
@@ -32,10 +31,10 @@ class Event extends Model
      */
     public function photos()
     {
-        return $this->hasMany('App\Photo');
+        return $this->hasMany('App\Photo')->orderBy('created_at', 'desc');
     }
 
     protected $fillable = [
-    'name', 'start_date', 'end_date', 'user_id'
+        'name', 'start_date', 'end_date', 'user_id'
     ];
 }

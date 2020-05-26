@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from "./store/";
+import { Route } from "./constants";
 
 const AUTH_KEY = "auth_key";
 
@@ -71,7 +72,7 @@ export default {
   // トークン保存の必要あり
   getMe() {
     setLoding("ユーザー取得中です")
-    return httpWithToken.get("/api/user/").then(onSuccess, onError);
+    return httpWithToken.get(Route.AUTH_ME).then(onSuccess, onError);
   },
 
   // ユーザー作成
@@ -80,7 +81,7 @@ export default {
   // トークン保存の必要あり
   userSignup(user) {
     setLoding("アカウント作成中です")
-    return httpWithToken.post("/api/signup/", user).then(onSuccess, onError);
+    return httpWithToken.post(Route.AUTH_SIGNUP, user).then(onSuccess, onError);
   },
 
   // login
@@ -89,7 +90,7 @@ export default {
   // トークン保存の必要あり
   userLogin(user) {
     setLoding("ログイン中です")
-    return httpWithToken.post("/api/login/", user).then(onSuccess, onError);
+    return httpWithToken.post(Route.AUTH_LOGIN, user).then(onSuccess, onError);
   },
 
   // logout
@@ -107,7 +108,7 @@ export default {
   eventAuth(key) {
     setLoding("イベントのkeyを照合しています")
     let param = { key: key }
-    return httpWithToken.post("/api/events/auth", param).then(
+    return httpWithToken.post(Route.EVENTS_AUTH, param).then(
       res => {
         const key = "event-" + res.data.id
         setToken(res.data.key, key);
@@ -122,7 +123,8 @@ export default {
   // 返却値 events json
   // イベント取得、取得後
   eventIndex() {
-    return httpWithToken.get("/api/events/").then(onSuccess, onError);
+    setLoding("イベントを取得しています")
+    return httpWithToken.get(Route.EVENTS_INDEX).then(onSuccess, onError);
   },
 
   // イベント詳細
@@ -132,7 +134,7 @@ export default {
   eventShow(id) {
     let key = getToken("event-" + id)
     setLoding("イベント読み込み中です")
-    return httpWithToken.get("/api/events/" + id + "?key=" + key).then(onSuccess, onError);
+    return httpWithToken.get(Route.EVENTS_SHOW(id, key)).then(onSuccess, onError);
   },
 
   // イベント保存
@@ -140,7 +142,7 @@ export default {
   // 返却値 event json
   eventPost(event) {
     setLoding("イベント登録中です")
-    return httpWithToken.post("/api/events/", event).then(onSuccess, onError);
+    return httpWithToken.post(Route.EVENTS_STORE, event).then(onSuccess, onError);
   },
 
   // イベント編集
@@ -148,7 +150,7 @@ export default {
   // 返却値 event json
   eventUpdate(id, $event) {
     setLoding("イベントアップデート中です")
-    return httpWithToken.put("/api/events/" + id, $event).then(onSuccess, onError);
+    return httpWithToken.put(Route.EVENTS_UPDATE(id), $event).then(onSuccess, onError);
   },
 
   // イベント削除
@@ -156,7 +158,7 @@ export default {
   // 返却値 event json
   eventDestroy(id) {
     setLoding("イベント削除中です")
-    return httpWithToken.delete("/api/events/" + id).then(onSuccess, onError);
+    return httpWithToken.delete(Route.EVENTS_DESTROY(id)).then(onSuccess, onError);
   },
 
   // イベントの写真一覧
@@ -165,7 +167,7 @@ export default {
   // イベントに紐付く写真を取得
   eventPhotos(id) {
     setLoding("イベントの写真を取得しています")
-    return httpWithToken.get(`/api/events/${id}/photos`).then(onSuccess, onError);
+    return httpWithToken.get(Route.PHOTOS_INDEX(id)).then(onSuccess, onError);
   },
 
   // イベントの写真 追加
@@ -174,7 +176,7 @@ export default {
   // イベントに紐付く写真を取得
   eventPhotosPost(id, photo) {
     setLoding("イベントに写真を登録しています")
-    return httpWithToken.post(`/api/events/${id}/photos`, photo).then(onSuccess, onError);
+    return httpWithToken.post(Route.PHOTOS_STORE(id), photo).then(onSuccess, onError);
   },
 
   // イベントの写真 削除
@@ -183,6 +185,6 @@ export default {
   // イベントに紐付く写真を削除
   eventPhotosDestroy(id, photo_id) {
     setLoding("イベントの写真を削除しています")
-    return httpWithToken.delete(`/api/events/${id}/photos/${photo_id}`).then(onSuccess, onError);
+    return httpWithToken.delete(Route.PHOTOS_DESTROY(id, photo_id)).then(onSuccess, onError);
   },
 };

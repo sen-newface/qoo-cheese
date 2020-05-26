@@ -15,12 +15,11 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-5">
           <template v-if="isLogin">
             <li class="nav-item mr-3">
-              <router-link to="/events">イベント一覧</router-link>
+              <router-link :to="{ path: '/events', query: {page: 1 }}">イベント一覧</router-link>
             </li>
             <li class="nav-item mr-3">
               <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>

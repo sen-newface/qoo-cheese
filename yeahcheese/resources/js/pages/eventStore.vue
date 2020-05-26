@@ -1,41 +1,44 @@
 <template>
-  <form @submit.prevent="eventStore">
-    <validationMessages :errors="valiMessages" />
-    <div class="form-group">
-      <label for="name">名前</label>
-      <input
-        type="text"
-        class="form-control"
-        :class="isValid('name')"
-        id="name"
-        placeholder="名前"
-        v-model="eventStoreForm.name"
-      />
-    </div>
-    <div class="form-group">
-      <label for="exampleInputStartDate">公開開始日</label>
-      <input
-        type="date"
-        class="form-control"
-        :class="isValid('start_date')"
-        id="exampleInputStartDate"
-        placeholder="公開開始日"
-        v-model="eventStoreForm.start_date"
-      />
-    </div>
-    <div class="form-group">
-      <label for="exampleInputEndDate">公開終了日</label>
-      <input
-        type="date"
-        class="form-control"
-        :class="isValid('end_date')"
-        id="exampleInputEndDate"
-        placeholder="公開終了日"
-        v-model="eventStoreForm.end_date"
-      />
-    </div>
-    <button type="submit" class="btn btn-primary">登録</button>
-  </form>
+  <div>
+    <router-link class="btn btn-outline-info mb-5" :to="{ path: '/events/'}">一覧へ戻る</router-link>
+    <form @submit.prevent="eventStore">
+      <validationMessages :errors="valiMessages" />
+      <div class="form-group">
+        <label for="name">名前</label>
+        <input
+          type="text"
+          class="form-control"
+          :class="isValid('name')"
+          id="name"
+          placeholder="名前"
+          v-model="eventStoreForm.name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="exampleInputStartDate">公開開始日</label>
+        <input
+          type="date"
+          class="form-control"
+          :class="isValid('start_date')"
+          id="exampleInputStartDate"
+          placeholder="公開開始日"
+          v-model="eventStoreForm.start_date"
+        />
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEndDate">公開終了日</label>
+        <input
+          type="date"
+          class="form-control"
+          :class="isValid('end_date')"
+          id="exampleInputEndDate"
+          placeholder="公開終了日"
+          v-model="eventStoreForm.end_date"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">登録</button>
+    </form>
+  </div>
 </template>
 
 <script>

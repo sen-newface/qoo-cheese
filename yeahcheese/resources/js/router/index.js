@@ -4,7 +4,8 @@ import store from '../store';
 
 import EventsIndex from '../pages/eventsIndex.vue';
 import EventsShow from '../pages/eventShow.vue';
-import EventStore from '../pages/eventStore.vue'
+import EventStore from '../pages/eventStore.vue';
+import EventEdit from '../pages/EventEdit.vue';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -21,6 +22,42 @@ const routes = [
     component: Index
   },
   {
+    path: '/login',
+    component: Login,
+    meta: { requiresNotAuth: true }
+  },
+  {
+    path: '/register',
+    component: Register,
+    meta: { requiresNotAuth: true }
+  },
+  {
+    path: '/events',
+    component: EventsIndex,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id',
+    name: "eventShow",
+    component: EventsShow,
+  },
+  {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id/edit',
+    name: 'eventEdit',
+    component: EventEdit,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/401',
     component: E401
   },
@@ -35,35 +72,6 @@ const routes = [
   {
     path: '/500',
     component: E500
-  },
-  {
-    path: '/events',
-    component: EventsIndex
-  },
-  {
-    path: '/events/event-:id',
-    name: "eventShow",
-    component: EventsShow,
-  },
-  {
-    path: '/login',
-    component: Login,
-    meta: { requiresNotAuth: true }
-  },
-  {
-    path: '/register',
-    component: Register,
-    meta: { requiresNotAuth: true }
-  },
-  {
-    path: '/events/new',
-    component: EventStore,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/events/event-:id',
-    name: "eventShow",
-    component: EventsShow,
   },
   {
     path: '*',
