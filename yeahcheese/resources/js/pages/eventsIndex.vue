@@ -91,10 +91,13 @@ export default {
       let st = this.searchText;
       let res = [];
       if (st) {
-        res = this.base_events.filter(item => {
+        res = this.events.filter(item => {
           return item.name.indexOf(st) >= 0;
         });
         this.$store.commit("events/replaceEvents", res);
+        if (this.events.length && !this.getEventsForPageId(this.page).length) {
+          this.$router.push({ path: "/events", query: { page: 1 } });
+        }
       } else {
         if (base_events.length) {
           this.$store.commit("events/replaceEvents", base_events);
