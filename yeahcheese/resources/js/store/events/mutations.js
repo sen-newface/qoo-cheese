@@ -7,11 +7,11 @@ export default {
   },
 
   setAuthedEvents(state, events) {
-    state.authedEvnets = state.authedEvnets.concat(events);
+    state.authedEvents = state.authedEvents.concat(events);
   },
 
   setAuthedEvent(state, event) {
-    state.authedEvnets.unshift(event);
+    state.authedEvents.unshift(event);
   },
 
   setcurrentEventPage(state, page) {

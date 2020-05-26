@@ -1,7 +1,7 @@
 import store from '../../store'
 const getters = {
   events: state => state.events.slice().sort(function (a, b) { return (a.id < b.id ? 1 : -1) }),
-  authedEvnets: state => state.authedEvnets,
+  authedEvents: state => state.authedEvents,
   last_page: (state, getters) => {
     let page = Math.floor(state.events.length / getters.events_per_page);
     let add = state.events.length % getters.events_per_page;
@@ -17,11 +17,11 @@ const getters = {
   },
   getEventForId: state => (id) => {
     let res = state.events.find(event => event.id == id);
-    if (!res) res = state.authedEvnets.find(event => event.id == id);
+    if (!res) res = state.authedEvents.find(event => event.id == id);
     return res
   },
   getEventForkey: state => (key) => {
-    return state.authedEvnets.find(event => event.key == key);
+    return state.authedEvents.find(event => event.key == key);
   },
   isMyEventByEventId: (state, getters) => (event_id) => {
     let user = store.getters["users/user"];

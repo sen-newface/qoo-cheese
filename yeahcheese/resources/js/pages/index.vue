@@ -15,8 +15,8 @@
       <button type="submit" class="btn btn-primary">送信</button>
     </form>
     <event-list
-      v-show="authedEvnets.length"
-      v-for="event in authedEvnets"
+      v-show="authedEvents.length"
+      v-for="event in authedEvents"
       class="mt-4"
       :key="event.key"
       :eventInfo="event"
@@ -45,7 +45,7 @@ export default {
     ...mapGetters({
       isApiSuccess: "status/isApiSuccess",
       getEventForkey: "events/getEventForkey",
-      authedEvnets: "events/authedEvnets"
+      authedEvents: "events/authedEvents"
     })
   },
   methods: {
