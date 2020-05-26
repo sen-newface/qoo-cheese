@@ -29,9 +29,6 @@
                     style="color: red;margin-right: auto;margin-left: 6px;"
                     @click="delPhoto"
                     v-if="isMyEvent"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="写真の削除"
                   ></i>
                   <a
                     :href="this.photos[preview_index].image_path"
@@ -39,21 +36,9 @@
                     @click.stop
                     style="margin-top: auto;"
                   >
-                    <i
-                      class="fa fa-download mr-2"
-                      style="font-size: 27px;"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="写真のダウンロード"
-                    ></i>
+                    <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
                   </a>
-                  <i
-                    class="del_button fa fa-times"
-                    @click="preview=''"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="閉じる"
-                  ></i>
+                  <i class="del_button fa fa-times" @click="preview=''"></i>
                 </div>
 
                 <img :src="preview" class="preview-photo" />
