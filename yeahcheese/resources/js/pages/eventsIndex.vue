@@ -75,8 +75,7 @@ export default {
         { text: "イベント作成順(既定)", const: "CREATED_AT" },
         { text: "イベント名順", const: "NAME" },
         { text: "公開開始日順", const: "START_DATE" }
-      ],
-      base_events: []
+      ]
     };
   },
   computed: {
@@ -87,22 +86,10 @@ export default {
       events_per_page: "events/events_per_page"
     }),
     showEvents() {
-      // let st = this.searchText;
-      // let res = [];
-      // this.$store.commit("events/replaceEvents", this.base_events);
-      // if (st) {
-      //   console.log("aaaa");
-      //   res = this.base_events.filter(item => {
-      //     return item.name.indexOf(st) >= 0;
-      //   });
-      //   this.$store.commit("events/replaceEvents", res);
-      // } else {
-      //   if (this.base_events && !this.base_events.empty) {
-      //     this.$store.commit("events/replaceEvents", this.base_events);
-      //   }
-      // }
-
-      return this.getEventsForPageId(this.page);
+      if (searchText) {
+      } else {
+        return this.getEventsForPageId(this.page);
+      }
     }
   },
   methods: {
