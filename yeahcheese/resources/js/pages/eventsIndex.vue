@@ -51,7 +51,7 @@
       :key="event.key"
       :eventInfo="event"
     ></event-list>
-    <pagenation v-if="showEvents" />
+    <pagenation v-if="showEvents.length" />
     <p v-show="!showEvents.length && !searchText">イベントは一つも登録されていません。</p>
     <p v-show="!showEvents.length && searchText">ヒットしませんでした</p>
   </div>
