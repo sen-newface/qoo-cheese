@@ -134,12 +134,19 @@ export default {
     },
     pushErrors(errors) {
       this.validationMessages = errors;
+    },
+    registerReloadEvent() {
+      window.addEventListener("beforeunload", function(e) {
+        e.preventDefault();
+        e.returnValue = "chotomate";
+      });
     }
   },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.eventForm = this.getEventForId(event_id);
+    this.registerReloadEvent(); //リロード対策
   }
 };
 </script>
