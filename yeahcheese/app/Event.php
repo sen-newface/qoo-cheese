@@ -18,6 +18,12 @@ class Event extends Model
         );
     }
 
+    public static function myEvents()
+    {
+        $user = auth('sanctum')->user();
+        return $user ? Event::with(['photos'])->where('user_id', $user->id)->get() : [];
+    }
+
     /**
      * イベントの持ち主を取得
      */
@@ -34,7 +40,13 @@ class Event extends Model
         return $this->hasMany('App\Photo')->orderBy('created_at', 'desc');
     }
 
+    public function isOwner()
+    {
+        $user = auth('sanctum')->user();
+        return $user ? intval($this->user_id) === intval($user->id) : false;
+    }
+
     protected $fillable = [
-        'name', 'start_date', 'end_date', 'user_id'
+    'name', 'start_date', 'end_date', 'user_id'
     ];
 }
