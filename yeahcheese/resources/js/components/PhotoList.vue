@@ -20,7 +20,6 @@
               <i
                 class="fa fa-arrow-left arrow_icon"
                 :class="preview_index === 0 ? 'passive': ''"
-                å
                 @click="openPreview(preview_index - 1)"
               ></i>
               <div>
