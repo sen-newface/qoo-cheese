@@ -82,7 +82,10 @@ export default {
         start_date: "",
         end_date: ""
       },
-      validationMessages: []
+      validationMessages: [],
+      isUnsave: false,
+      openAlertModel: false,
+      transitionPath: null
     };
   },
   computed: {
@@ -112,6 +115,15 @@ export default {
       return response;
     }
   },
+  watch: {
+    eventForm: {
+      handler: function() {
+        // !入力があった場合はセーブしていない状態に変更
+        this.isUnsave = true;
+      },
+      deep: true
+    }
+  },
   methods: {
     ...mapActions("events", ["eventUpdate"]),
     async updateEvent() {
@@ -138,9 +150,13 @@ export default {
       this.validationMessages = errors;
     },
     registerReloadEvent() {
+      console.log("ok");
+      const self = this;
       window.addEventListener("beforeunload", function(e) {
-        e.preventDefault();
-        e.returnValue = "chotomate";
+        if (self.isUnsave) {
+          e.preventDefault();
+          e.returnValue = "chotomate";
+        }
       });
     }
   },
@@ -149,6 +165,16 @@ export default {
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.eventForm = this.getEventForId(event_id);
     this.registerReloadEvent(); //リロード対策
+  },
+  beforeRouteLeave(to, from, next) {
+    //!保存していないデータがある場合
+    if (this.isUnsave) {
+      //!モーダルを表示させる
+      this.openAlertModel = true;
+      this.transitionPath = to.fullPath;
+    } else {
+      next();
+    }
   }
 };
 </script>
