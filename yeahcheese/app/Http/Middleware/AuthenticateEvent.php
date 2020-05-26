@@ -78,7 +78,6 @@ class AuthenticateEvent
         $today = Carbon::now();
         $start_date = $event->start_date;
         $end_date = $event->end_date;
-        dd($today, $start_date, $end_date);
         $within = $today->between($start_date, $end_date);
         return $within;
     }

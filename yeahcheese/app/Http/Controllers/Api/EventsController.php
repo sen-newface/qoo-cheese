@@ -28,15 +28,16 @@ class EventsController extends Controller
 
     public function auth(Request $request)
     {
-        $event = Event::all()->where("key", $request->key)->first();
         if (is_null($request->errors)) {
             $event = $request->event;
             $opt = $request->only('status', 'path');
             $resource = new EventResource($event);
             $resource->additional($opt);
+            dd($resource);
             return $resource;
         }
         $response = $request->only('errors', 'status', 'key');
+        dd($response);
         return response($response);
     }
 
