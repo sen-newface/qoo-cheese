@@ -19,7 +19,8 @@
             <div class="text-center" style="display: flex; align-items: center;">
               <i
                 class="fa fa-arrow-left arrow_icon"
-                v-show="preview_index > 0"
+                :class="preview_index === 0 ? 'passive': ''"
+                å
                 @click="openPreview(preview_index - 1)"
               ></i>
               <div>
@@ -34,7 +35,7 @@
                     :href="this.photos[preview_index].image_path"
                     :download="this.photos[preview_index].image_path"
                     @click.stop
-                    style="margin-top: auto;"
+                    style="margin-top: auto; margin-left: auto;"
                   >
                     <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
                   </a>
@@ -45,7 +46,7 @@
               </div>
               <i
                 class="fa fa-arrow-right arrow_icon"
-                v-show="preview_index !== photos.length - 1"
+                :class="preview_index === photos.length - 1 ? 'passive': ''"
                 @click="openPreview(preview_index + 1)"
               ></i>
             </div>
@@ -88,8 +89,10 @@ export default {
   },
   methods: {
     openPreview(index) {
-      this.preview = this.photos[index].image_path;
-      this.preview_index = index;
+      if (this.photos[index]) {
+        this.preview = this.photos[index].image_path;
+        this.preview_index = index;
+      }
     },
     async delPhoto() {
       var result = confirm("本当に写真を削除してよろしいですか？");
@@ -134,6 +137,11 @@ export default {
   font-size: 41px;
   margin: 10px;
   cursor: pointer;
+}
+
+.passive {
+  cursor: initial;
+  color: gray;
 }
 .preview_set {
   display: inline-block;
