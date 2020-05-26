@@ -42,11 +42,12 @@ export default {
         this.validationMessages.push("認証キーを入力してください");
         return false;
       }
-      const response = await api.eventAuth(this.authKey);
+      let response = await api.eventAuth(this.authKey);
+      response = response;
       if (this.isApiSuccess) {
-        this.$router.push({ path: `/events/event-${response.id}` });
+        this.$router.push({ path: response.path });
       } else {
-        this.validationMessages.push("認証キーが間違っています");
+        this.validationMessages.push(...response.errors);
       }
     },
     delValidation() {

@@ -109,16 +109,19 @@ export default {
     setLoding("イベントのkeyを照合しています")
     let param = { key: key }
     // ! 後で消す！！！！！
-    const tmpResponse = httpWithToken.post(Route.EVENTS_AUTH, param);
-    console.log('api.response', tmpResponse);
-    // .then(
-    // res => {
-    //   const key = "event-" + res.data.id
-    //   setToken(res.data.key, key);
-    //   setApiStatus(res.status);
-    //   return res.data;
-    // }
-    // , onError)
+    const response = httpWithToken.post(Route.EVENTS_AUTH, param)
+      .then(
+        res => {
+          let response = res.data;
+          const status = response.status;
+          const key = response.id ? "event-" + response.id : null;
+          if (key) {
+            setToken(res.data.data.key, key);
+          }
+          setApiStatus(status);
+          return response;
+        })
+    return response;
   },
 
   // イベント一覧
