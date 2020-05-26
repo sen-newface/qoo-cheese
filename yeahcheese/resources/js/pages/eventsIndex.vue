@@ -51,7 +51,7 @@
       :key="event.key"
       :eventInfo="event"
     ></event-list>
-    <pagenation v-if="showEvents" />
+    <pagenation v-if="showEvents.length" />
     <p v-show="!showEvents.length && !searchText">イベントは一つも登録されていません。</p>
     <p v-show="!showEvents.length && searchText">ヒットしませんでした</p>
   </div>
@@ -75,7 +75,8 @@ export default {
         { text: "イベント作成順(既定)", const: "CREATED_AT" },
         { text: "イベント名順", const: "NAME" },
         { text: "公開開始日順", const: "START_DATE" }
-      ]
+      ],
+      base_events: []
     };
   },
   computed: {
@@ -86,10 +87,24 @@ export default {
       events_per_page: "events/events_per_page"
     }),
     showEvents() {
-      if (searchText) {
+      let base_events = this.base_events;
+      let st = this.searchText;
+      let res = [];
+      if (st) {
+        res = this.events.filter(item => {
+          return item.name.indexOf(st) >= 0;
+        });
+        this.$store.commit("events/replaceEvents", res);
+        if (this.events.length && !this.getEventsForPageId(this.page).length) {
+          this.$router.push({ path: "/events", query: { page: 1 } });
+        }
       } else {
-        return this.getEventsForPageId(this.page);
+        if (base_events.length) {
+          this.$store.commit("events/replaceEvents", base_events);
+        }
       }
+
+      return this.getEventsForPageId(this.page);
     }
   },
   methods: {
