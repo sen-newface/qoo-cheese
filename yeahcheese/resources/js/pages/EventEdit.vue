@@ -1,5 +1,6 @@
 <template>
   <div id="event-edit">
+    <!-- <alert-modal :isShow="openAlertModel" :to="transitionPath"></alert-modal> -->
     <router-link
       class="btn btn-outline-info mb-5"
       :to="{ name: 'eventShow', params: { id: eventForm.id } }"
@@ -66,6 +67,7 @@
 import { mapGetters, mapActions } from "vuex";
 import validationMessages from "../components/validationMessages";
 import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
+// import AlertModel from "../components/AlertModal";
 export default {
   name: "EventEdit",
   components: {
