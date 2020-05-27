@@ -24,6 +24,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import validationMessages from "../components/validationMessages";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   name: "PreviewAndSavePhoto",
   components: {
@@ -108,7 +109,19 @@ export default {
     delValidation() {
       this.validationMessages = [];
     }
-  }
+  },
+  watch: {
+    preview: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      }
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 

@@ -30,7 +30,7 @@ class EventsController extends Controller
         if (!$event) {
             return response("認証キーが間違っています", 406);
         }
-        return response($event, 200);
+        return response(new EventResource($event), 200);
     }
 
     /**

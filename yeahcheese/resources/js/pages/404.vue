@@ -5,7 +5,13 @@
 
 <script>
 export default {
-  name: "E404"
+  name: "E404",
+  created() {
+    this.$store.commit("flashMessage/setTextAndClass", {
+      text: "ページが見つかりませんでした。",
+      cls: "danger"
+    });
+  }
 };
 </script>
 
