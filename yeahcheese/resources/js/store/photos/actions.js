@@ -7,7 +7,6 @@ export default {
     const response = await api.eventPhotosPost(id, data);
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
-      // commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEvnetId(event_id) }, { root: true });
       context.commit("addPhotoByEventId", { event_id: id, photo: response });
       context.commit("events/setEventPreview", { id: id, photo: response }, { root: true });
       context.commit("flashMessage/setTextAndClass", { text: "写真の保存に成功しました", cls: "success" }, { root: true });

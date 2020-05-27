@@ -19,7 +19,7 @@
             <div class="text-center" style="display: flex; align-items: center;">
               <i
                 class="fa fa-arrow-left arrow_icon"
-                :class="preview_index === 0 ? 'passive': ''"
+                :class="isFirstArrow(preview_index)"
                 @click="openPreview(preview_index - 1)"
               ></i>
               <div>
@@ -45,7 +45,7 @@
               </div>
               <i
                 class="fa fa-arrow-right arrow_icon"
-                :class="preview_index === photos.length - 1 ? 'passive': ''"
+                :class="isLastArrow(preview_index)"
                 @click="openPreview(preview_index + 1)"
               ></i>
             </div>
@@ -83,6 +83,16 @@ export default {
     alt() {
       return function(id) {
         return this.event.name + "の写真" + id;
+      };
+    },
+    isFirstArrow() {
+      return function(index) {
+        return index === 0 ? "passive" : "";
+      };
+    },
+    isLastArrow() {
+      return function(index) {
+        return index === this.photos.length - 1 ? "passive" : "";
       };
     }
   },
