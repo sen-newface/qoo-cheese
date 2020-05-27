@@ -32,15 +32,29 @@ export default {
         switch (val) {
           case 500:
             this.$router.push("/500");
+            this.$store.commit("flashMessage/setTextAndClass", {
+              text: "システムエラーです。もう一度やり直してください。",
+              cls: "danger"
+            });
             break;
           case 404:
             this.$router.push("/404");
             break;
           case 403:
+            this.$store.commit("flashMessage/setTextAndClass", {
+              text: "その処理を行う権限がありません。",
+              cls: "danger"
+            });
             this.$router.push("/403");
             break;
           case 401:
-            if (this.$route.path !== "/login") this.$router.push("/login");
+            if (this.$route.path !== "/login") {
+              this.$store.commit("flashMessage/setTextAndClass", {
+                text: "ログインし直してください。",
+                cls: "danger"
+              });
+              this.$router.push("/login");
+            }
             break;
           default:
         }

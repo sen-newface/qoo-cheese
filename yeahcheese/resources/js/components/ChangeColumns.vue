@@ -81,6 +81,10 @@ export default {
 #change-columns input[type="radio"] {
   display: inline-block;
 }
+#disp-columns-label {
+  display: inline-block;
+  margin-right: 16px;
+}
 .columns-list {
   display: flex;
   align-items: center;
@@ -98,8 +102,5 @@ div.columns-list.is-full-width {
   margin-bottom: 16px;
   padding: 16px;
   font-size: 1.2rem;
-}
-div.columns-list.is-full-width input[type="radio"] {
-  margin-left: 16px;
 }
 </style>
