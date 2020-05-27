@@ -72,21 +72,35 @@ export default {
     ...mapActions("photos", ["deleteEventPhoto"]),
     async deletePhoto(event_id, photo_id) {
       await this.deleteEventPhoto({ event_id, photo_id });
-    }
-  },
-  async created() {
-    let event_id = this.$route.params["id"];
-    await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
-    this.event = this.getEventForId(event_id);
-  },
-  methods: {
+    },
     deleteEvent: async function() {
       var result = confirm("本当にイベントを削除してよろしいですか？");
       if (result) {
         await this.$store.dispatch("events/deleteEvent", this.event.id);
         this.$router.push({ path: "/events" });
       }
+    },
+    dispTransformDeadline(release_start, release_end) {
+      return;
+      this.transformDate(release_start) +
+        "〜" +
+        this.transformDate(release_end);
+    },
+    transformDate(date) {
+      const dateArr = date.split("-");
+      if (dateArr.length === 3) {
+        const jaDate =
+          dateArr[0] + "年" + dateArr[1] + "月" + dateArr[2] + "日";
+        return jaDate;
+      } else {
+        return date;
+      }
     }
+  },
+  async created() {
+    let event_id = this.$route.params["id"];
+    await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
+    this.event = this.getEventForId(event_id);
   }
 };
 </script>
