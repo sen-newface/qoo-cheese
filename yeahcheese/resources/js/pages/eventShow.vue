@@ -3,7 +3,13 @@
     <router-link v-if="isLogin" class="btn btn-outline-info mb-5" :to="{ path: '/events/'}">一覧へ戻る</router-link>
     <router-link v-else class="btn btn-outline-info mb-5" :to="{ path: '/'}">TOPへ</router-link>
     <div class="card text-center mb-5">
-      <div class="card-header">{{event.name}}</div>
+      <div class="card-header">
+        {{event.name}}
+        <span
+          class="badge"
+          :class="this.getLabelByDeadline(event.start_date, event.end_date).class"
+        >{{ this.getLabelByDeadline(event.start_date, event.end_date).text }}</span>
+      </div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
         <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
@@ -58,7 +64,8 @@ export default {
       events: "events/events",
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEventId",
-      isLogin: "users/isLogin"
+      isLogin: "users/isLogin",
+      getLabelByDeadline: "events/getLabelByDeadline"
     }),
     alt() {
       return function(id) {
