@@ -30,7 +30,7 @@ class EventsController extends Controller
         if (!$event) {
             return response("認証キーが間違っています", 406);
         }
-        return response($event, 200);
+        return response(new EventResource($event), 200);
     }
 
     /**
@@ -63,10 +63,14 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event)
+    public function update(Event $event, StoreEventRequest $request)
     {
-        // TODO: イベントを更新してから、そのインスタンスをリソースクラスに渡す
-        // return new EventResource($event);
+        if ($request->user()->id == $event->user_id) {
+            $form = $request->all();
+            $event->fill($form)->save();
+            return response(new EventResource($event), 200);
+        }
+        return response(null, 403);
     }
 
     /**
@@ -74,6 +78,7 @@ class EventsController extends Controller
      */
     public function destroy(Event $event, Request $request)
     {
+        $event->delete();
         // TODO: イベント削除の処理
         if (intval($request->user()->id) === intval($event->user_id)) {
             $event->delete();

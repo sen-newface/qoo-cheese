@@ -9,23 +9,36 @@
 
 <script>
 import { mapGetters } from "vuex";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   computed: {
     ...mapGetters({
       loadText: "load/text"
     })
-  }
+  },
+  watch: {
+    loadText: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      },
+      immediate: true
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 
 <style>
 .load_warpper {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   width: 100vw;
   height: 100vh;
-  background-color: gray;
-  opacity: 0.4;
+  background: rgba(45, 45, 45, 0.5);
 }
 
 .box {

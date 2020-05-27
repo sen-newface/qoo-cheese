@@ -15,23 +15,23 @@ class EventControllerTest extends TestCase
     public function testShow()
     {
         $user = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
         $event1 = $user->events()->save(
             factory(\App\Event::class)->make(
                 [
-                'user_id' => $user->id,
+                    'user_id' => $user->id,
                 ]
             )
         );
 
-        $res = $this->actingAs($user)->json('get', 'api/events/' . $event1->id);
+        $url = route('events.show', ['event' => $event1->id]);
+        $res = $this->actingAs($user)->json('get', $url);
         $res->assertJsonStructure(
             [
-            'id',
-            'name',
-            'start_date',
-            'end_date',
-            'photos',
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
             ]
         );
         $res->assertStatus(200);
@@ -43,18 +43,20 @@ class EventControllerTest extends TestCase
         $event1 = $user->events()->save(
             factory(\App\Event::class)->make(
                 [
-                'user_id' => $user->id,
+                    'user_id' => $user->id,
                 ]
             )
         );
-        $res = $this->json('get', 'api/events/' . $event1->id . '?key=' . $event1->key);
+
+        $url = route('events.show', ['event' => $event1->id]) . '?key=' . $event1->key;
+        $res = $this->json('get', $url);
         $res->assertJsonStructure(
             [
-            'id',
-            'name',
-            'start_date',
-            'end_date',
-            'photos',
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
             ]
         );
     }
@@ -67,7 +69,7 @@ class EventControllerTest extends TestCase
             $user->events()->save(
                 factory(\App\Event::class)->make(
                     [
-                    'user_id' => $user->id,
+                        'user_id' => $user->id,
                     ]
                 )
             );
@@ -76,29 +78,30 @@ class EventControllerTest extends TestCase
         $user2->events()->save(
             factory(\App\Event::class)->make(
                 [
-                'user_id' => $user2->id,
+                    'user_id' => $user2->id,
                 ]
             )
         );
 
-        $res = $this->actingAs($user)->json('get', 'api/events');
+        $url = route('events.index');
+        $res = $this->actingAs($user)->json('get', $url);
         $res->assertJsonStructure(
             [
-            'data' => [
-            '*' => [
-            'id',
-            'key',
-            'name',
-            'start_date',
-            'end_date',
-            'photos' => [
-              '*' => [
-                'id',
-                'image_path'
-              ]
-            ]
-            ]
-            ]
+                'data' => [
+                    '*' => [
+                        'id',
+                        'key',
+                        'name',
+                        'start_date',
+                        'end_date',
+                        'photos' => [
+                            '*' => [
+                                'id',
+                                'image_path'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         );
         $res->assertJsonCount(3, 'data');
@@ -108,31 +111,61 @@ class EventControllerTest extends TestCase
     public function testStore()
     {
         $data = [
-        'name' => 'test',
-        'start_date' => '2020-11-11',
-        'end_date' => '2020-12-12',
+            'name' => 'test',
+            'start_date' => '2020-11-11',
+            'end_date' => '2020-12-12',
         ];
         $user = factory(User::class)->create();
-        $res = $this->actingAs($user)->json('POST', 'api/events', $data);
+
+        $url = route('events.store');
+        $res = $this->actingAs($user)->json('POST', $url, $data);
         $res->assertJsonStructure(
             [
-            'id',
-            'name',
-            'start_date',
-            'end_date',
-            'photos',
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'photos',
             ]
         );
         $res->assertStatus(201);
     }
 
+    public function testUpdate()
+    {
+        $user = factory(User::class)->create();
+        $event = factory(Event::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $event_id = $event->id;
+        $event->name = '更新したイベント名';
+        $event->start_date = '2020-09-21';
+        $event->end_date = '2020-10-21';
+        $event = $event->toArray();
+
+        $url = route('events.update', ['event' => $event_id]);
+        $response = $this->actingAs($user)->put($url, $event);
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'name',
+                'start_date',
+                'end_date',
+                'user_id',
+                'key',
+                'id',
+                'photos'
+            ]);
+    }
     public function testDestory()
     {
         $user = factory(User::class)->create();
         $event = factory(Event::class)->create(['user_id' => $user->id]);
-        $photo = factory(Photo::class)->create(['event_id' => $event->id]);
+        factory(Photo::class)->create(['event_id' => $event->id]);
 
-        $res = $this->actingAs($user)->json("DELETE", 'api/events/' . $event->id);
+        $url = route('events.destroy', ['event' => $event->id]);
+        $res = $this->actingAs($user)->json("DELETE", $url);
         $res->assertStatus(204);
         $this->assertEquals(0, count($user->events));
         $this->assertEquals(0, count(\App\Photo::all()));

@@ -1,10 +1,27 @@
-
 import store from '../../store'
 const getters = {
-  events: state => state.events,
+  events: state => state.events.slice().sort(function (a, b) { return (a.id < b.id ? 1 : -1) }),
+  authedEvents: state => state.authedEvents,
+  last_page: (state, getters) => {
+    let page = Math.floor(state.events.length / getters.events_per_page);
+    let add = state.events.length % getters.events_per_page;
+    return add ? page + 1 : page
+  },
+  events_per_page: state => state.events_per_page,
+  currentEventPage: state => state.currentEventPage,
   initLoad: state => state.initLoad,
+  getEventsForPageId: (state, getters) => (page = 1) => {
+    let end_index = getters.events_per_page * page
+    let start_index = end_index - getters.events_per_page
+    return state.events.slice(start_index, end_index)
+  },
   getEventForId: state => (id) => {
-    return state.events.find(event => event.id == id)
+    let res = state.events.find(event => event.id == id);
+    if (!res) res = state.authedEvents.find(event => event.id == id);
+    return res
+  },
+  getEventForkey: state => (key) => {
+    return state.authedEvents.find(event => event.key == key);
   },
   isMyEventByEventId: (state, getters) => (event_id) => {
     let user = store.getters["users/user"];
