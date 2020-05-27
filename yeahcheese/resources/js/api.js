@@ -187,4 +187,23 @@ export default {
     setLoding("イベントの写真を削除しています")
     return httpWithToken.delete(Route.PHOTOS_DESTROY(id, photo_id)).then(onSuccess, onError);
   },
+
+  // イベントの写真 お気に入り
+  // 必要 param eventのid , photoのid
+  // 返却値 まだ分からない
+  // イベントに紐付く写真をお気に入り
+  eventPhotosAddLikes(id, photo_id) {
+    // setLoding("イベントの写真をお気に入り登録しています")
+    // putかpostかpatchかはバックエンド側と合わせる
+    return httpWithToken.put(Route.PHOTOS_ADD_LIKES(id, photo_id)).then(onSuccess, onError);
+  },
+
+  // イベントの写真 お気に入り
+  // 必要 param eventのid , photoのid
+  // 返却値 まだ分からない
+  // イベントに紐付く写真をお気に入り
+  eventPhotosDeleteLikes(id, photo_id) {
+    // setLoding("イベントの写真をお気に入り＊＊＊しています")
+    return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES(id, photo_id)).then(onSuccess, onError);
+  }
 };
