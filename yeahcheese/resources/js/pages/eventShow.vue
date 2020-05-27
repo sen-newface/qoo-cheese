@@ -15,12 +15,7 @@
       <div class="option" :class="isFlex">
         <h3 :class="isFullWidth">写真一覧</h3>
         <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success"
-          :class="isFullWidth"
-        >写真追加</button>
+
         <change-columns
           :min="minColumn"
           :max="maxColumn"
