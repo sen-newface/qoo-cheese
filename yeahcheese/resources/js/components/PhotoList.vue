@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between flex-wrap mb-5 img-area">
+    <div id="img-thumbnail" class="d-flex justify-content-between flex-wrap mb-5 img-area">
       <img
         v-show="photos.length"
         v-for=" (image, index) in photos"
         :key="image.id"
         :alt="alt(image.id)"
         :src="image.image_path"
-        @click="openPreview(index)"
         class="img-thumbnail mb-2 bg-white"
+        :class="imgThumbnailSize"
+        @click="openPreview(index)"
       />
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
@@ -58,6 +59,7 @@
 
 <script>
 import api from "../api";
+import { mapGetters } from "vuex";
 import scrollControllable from "../mixins/scrollControllable";
 export default {
   props: {
@@ -81,6 +83,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      selectedColumns: "display/selectedColumns"
+    }),
     alt() {
       return function(id) {
         return this.event.name + "の写真" + id;
@@ -95,6 +100,9 @@ export default {
       return function(index) {
         return index === this.photos.length - 1 ? "passive" : "";
       };
+    },
+    imgThumbnailSize() {
+      return "img-thumbnail-size" + this.selectedColumns;
     }
   },
   methods: {
@@ -139,10 +147,29 @@ export default {
   cursor: pointer;
   transition: all 0.3s ease 0s;
 }
+.img-area * {
+  transition: max-width 0.2s ease;
+}
 
 .img-area img:hover {
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
   transform: scale(1.02, 1.02);
+}
+
+#img-thumbnail.img-area .img-thumbnail-size1 {
+  max-width: 100%;
+}
+#img-thumbnail.img-area .img-thumbnail-size2 {
+  max-width: 49.5%;
+}
+#img-thumbnail.img-area .img-thumbnail-size3 {
+  max-width: 33.33333333%;
+}
+#img-thumbnail.img-area .img-thumbnail-size4 {
+  max-width: 24.5%;
+}
+#img-thumbnail.img-area .img-thumbnail-size5 {
+  max-width: 19.5%;
 }
 
 @media screen and (max-width: 767px) {

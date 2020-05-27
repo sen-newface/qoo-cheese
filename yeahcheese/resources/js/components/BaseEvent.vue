@@ -31,6 +31,7 @@
         />
       </div>
     </div>
+    <p class="photo-count">( 写真の枚数：{{ eventInfo.photos_count }} )</p>
   </div>
 </template>
 
@@ -58,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+.photo-count {
+  text-align: right;
+  padding: 8px 16px 0;
+}
 @media screen and (max-width: 767px) {
   img {
     float: none !important;
