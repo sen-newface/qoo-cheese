@@ -5,9 +5,10 @@ export default {
   setEventPhotos(state, photos) {
     state.eventPhotos.push(photos)//photos は{event_id: 2, photods: []}みたいなやつ
   },
-  addPhotoByEventId(state, { event_id, photo }) {
+  addPhotosByEventId(state, { event_id, photos }) {
     if (!state.eventPhotos.find(event => Number(event.event_id) == event_id)) return false
-    state.eventPhotos.find(event => Number(event.event_id) == event_id).photos.unshift(photo)
+    let event_photos = photos.concat(state.eventPhotos.find(event => Number(event.event_id) == event_id).photos)
+    state.eventPhotos.find(event => Number(event.event_id) == event_id).photos = event_photos
   },
   delPhotoByEventId(state, { event_id, photo_index }) {
     if (!state.eventPhotos.find(event => parseInt(event.event_id) == parseInt(event_id))) return false
