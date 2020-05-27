@@ -6,7 +6,7 @@
       <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
-        <a href="#" class="btn btn-primary">編集</a>
+        <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
@@ -14,33 +14,26 @@
     <section>
       <div class="d-flex mb-2">
         <h3>写真一覧</h3>
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success ml-4"
-        >写真追加</button>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
-      <div class="d-flex align-items-start flex-wrap mb-5 img-area">
-        <img
-          v-show="getPhotosForEventId(event.id) && getPhotosForEventId(event.id).length"
-          v-for=" image in getPhotosForEventId(event.id)"
-          :key="image.id"
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          class="img-thumbnail"
-          @click="deletePhoto(event.id, image.id)"
-        />
-        <p
-          v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
-        >写真はまだありません</p>
-      </div>
+      <photo-list
+        :photos="getPhotosForEventId(event.id) || []"
+        :event="this.event"
+        :isMyEvent="isMyEventByEventId(event.id)"
+      />
     </section>
   </article>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
+import photoList from "../components/PhotoList";
 export default {
+  components: {
+    photoList,
+    PreviewAndSavePhoto
+  },
   data() {
     return {
       event: {
@@ -59,18 +52,7 @@ export default {
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEventId",
       isLogin: "users/isLogin"
-    }),
-    alt() {
-      return function(id) {
-        return this.event.name + "の写真" + id;
-      };
-    }
-  },
-  methods: {
-    ...mapActions("photos", ["deleteEventPhoto"]),
-    async deletePhoto(event_id, photo_id) {
-      await this.deleteEventPhoto({ event_id, photo_id });
-    }
+    })
   },
   async created() {
     let event_id = this.$route.params["id"];
@@ -88,18 +70,3 @@ export default {
   }
 };
 </script>
-
-
-<style scoped>
-.img-area img {
-  max-width: 48%;
-}
-@media screen and (max-width: 767px) {
-  .img-area {
-    display: block !important;
-  }
-  .img-area img {
-    max-width: 100%;
-  }
-}
-</style>
