@@ -9,12 +9,26 @@
 
 <script>
 import { mapGetters } from "vuex";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   computed: {
     ...mapGetters({
       loadText: "load/text"
     })
-  }
+  },
+  watch: {
+    loadText: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      },
+      immediate: true
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 

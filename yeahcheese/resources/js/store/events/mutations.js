@@ -12,6 +12,14 @@ export default {
 
   setBaseEvents(state, events) {
     state.base_events = events
+  }
+  
+  setAuthedEvents(state, events) {
+    state.authedEvents = state.authedEvents.concat(events);
+  },
+
+  setAuthedEvent(state, event) {
+    state.authedEvents.unshift(event);
   },
 
   setcurrentEventPage(state, page) {
