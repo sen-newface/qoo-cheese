@@ -73,7 +73,7 @@ export default {
       validationMessages: [],
       isUnsave: false,
       openAlertModel: false,
-      transitionPath: null,
+      transitionPath: "",
       wantSave: false
     };
   },
@@ -133,11 +133,15 @@ export default {
       };
       const response = await this.eventUpdate(payload);
       if (this.isSuccess) {
-        this.initFlag();
-        this.$router.push({
-          name: "eventShow",
-          params: { id: this.eventForm.id }
-        });
+        if (this.transitionPath === "") {
+          this.initFlags(); // ! 通常の更新ならば、全てのフラグをオフにして普通に遷移させる
+          this.$router.push({
+            name: "eventShow",
+            params: { id: this.eventForm.id }
+          });
+        } else {
+          this.moveOtherPage(this.transitionPath);
+        }
       } else {
         this.validationMessages = response;
       }
@@ -178,10 +182,11 @@ export default {
     },
     closeModal() {
       this.openAlertModel = false;
-      this.transitionPath = null;
+      this.transitionPath = "";
       this.wantSave = null;
     },
     saveAndMove(isSave) {
+      //*モーダルのボタン
       this.wantSave = isSave;
       this.openAlertModel = false;
       this.moveOtherPage(this.transitionPath);
@@ -193,10 +198,11 @@ export default {
       if (this.canMove(path)) {
         this.isUnsave = false;
         this.$router.push(path);
-        this.transitionPath = "";
+        return true;
       }
+      return false;
     },
-    initFlag() {
+    initFlags() {
       this.isUnsave = false;
       this.openAlertModel = false;
       this.transitionPath = null;
