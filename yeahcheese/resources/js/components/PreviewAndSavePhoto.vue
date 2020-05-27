@@ -4,9 +4,9 @@
       <span type="button" class="btn btn-outline-success ml-4">写真追加</span>
       <input id="add-button" type="file" @change="loadPhoto" accept="image/*" />
     </label>
-    <div class="lap" v-if="preview">
+    <div class="wrap" v-if="preview">
       <validationMessages :errors="valiMessages" />
-      <div class="innner_lap">
+      <div class="inner_wrap">
         <p class="contnt" id="preview-photo">
           <img :src="preview" />
           <span style="display: block; text-align: center;">{{file.name}}</span>
@@ -24,6 +24,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import validationMessages from "../components/validationMessages";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   name: "PreviewAndSavePhoto",
   components: {
@@ -108,7 +109,19 @@ export default {
     delValidation() {
       this.validationMessages = [];
     }
-  }
+  },
+  watch: {
+    preview: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      }
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 
@@ -124,7 +137,7 @@ export default {
 #add-button {
   display: none;
 }
-.lap {
+.wrap {
   width: 100vw;
   height: 100vh;
   background: gray;
@@ -135,7 +148,7 @@ export default {
   position: fixed;
 }
 
-.innner_lap {
+.inner_wrap {
   background: white;
   position: absolute;
   top: 50%;
