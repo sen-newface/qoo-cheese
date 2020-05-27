@@ -31,17 +31,17 @@
                     @click="delPhoto"
                     v-if="isMyEvent"
                   ></i>
+                  <i class="fa fa-gratipay photo-favorites-icon"></i>
                   <a
                     :href="this.photos[preview_index].image_path"
                     :download="this.photos[preview_index].image_path"
                     @click.stop
-                    style="margin-top: auto; margin-left: auto;"
+                    style="margin-top: auto;"
                   >
                     <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
                   </a>
                   <i class="del_button fa fa-times" @click="preview=''"></i>
                 </div>
-
                 <img :src="preview" class="preview-photo" />
               </div>
               <i
@@ -210,6 +210,13 @@ export default {
   margin-bottom: 0 !important;
   object-fit: cover;
   max-width: 100%;
+}
+.photo-favorites-icon {
+  margin-left: auto;
+  color: ivory;
+}
+.photo-favorites-icon.likes {
+  color: orangered;
 }
 
 .wrap {
