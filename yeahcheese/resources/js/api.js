@@ -204,6 +204,7 @@ export default {
   // イベントに紐付く写真をお気に入り
   eventPhotosDeleteLikes(id, photo_id) {
     // setLoding("イベントの写真をお気に入り＊＊＊しています")
+    // DELETEは写真削除で使用しているため、uri変更する必要あり（...photos/:id/likesとか？）
     return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES(id, photo_id)).then(onSuccess, onError);
   }
 };

@@ -10,5 +10,7 @@ export const Route = {
   EVENTS_DESTROY: (id) => '/api/events/' + id,
   PHOTOS_INDEX: (id) => '/api/events/' + id + '/photos',
   PHOTOS_STORE: (id) => '/api/events/' + id + '/photos',
-  PHOTOS_DESTROY: (event_id, photo_id) => '/api/events/' + event_id + '/photos/' + photo_id
+  PHOTOS_DESTROY: (event_id, photo_id) => '/api/events/' + event_id + '/photos/' + photo_id,
+  PHOTOS_ADD_LIKES: (event_id, photo_id) => '/api/events/' + event_id + '/photos/' + photo_id, // ! URLはバックエンドと合わせる
+  PHOTOS_DELETE_LIKES: (event_id, photo_id) => '/api/events/' + event_id + '/photos/' + photo_id, // ! URLはバックエンドと合わせる
 };
