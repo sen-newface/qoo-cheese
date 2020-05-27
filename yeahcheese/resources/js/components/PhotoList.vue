@@ -31,7 +31,11 @@
                     @click="delPhoto"
                     v-if="isMyEvent"
                   ></i>
-                  <i class="fa fa-gratipay photo-favorites-icon"></i>
+                  <i
+                    class="fa fa-gratipay photo-likes-icon"
+                    :class="{ 'likes': isLikedIcon }"
+                    @click="toggleLikesIcon(photos[preview_index].id)"
+                  ></i>
                   <a
                     :href="this.photos[preview_index].image_path"
                     :download="this.photos[preview_index].image_path"
@@ -79,7 +83,9 @@ export default {
   data() {
     return {
       preview: "",
-      preview_index: ""
+      preview_index: "",
+      isLikedIcon: false,
+      likesPhotoId: null
     };
   },
   computed: {
@@ -122,6 +128,12 @@ export default {
         this.preview = "";
         this.preview_index = "";
       }
+    },
+    toggleLikesIcon(photo_id) {
+      this.isLikedIcon = !this.isLikedIcon;
+      // TODO: event_idとphoto_idを保持しておく
+      this.likesPhotoId = photo_id;
+      console.log("お気に入り状態を変更する写真のID", this.likesPhotoId);
     }
   },
   watch: {
@@ -211,12 +223,27 @@ export default {
   object-fit: cover;
   max-width: 100%;
 }
-.photo-favorites-icon {
+.photo-likes-icon {
   margin-left: auto;
+  margin-right: 6px;
   color: ivory;
+  transition: 0.5s;
 }
-.photo-favorites-icon.likes {
-  color: orangered;
+.photo-likes-icon.likes {
+  color: palevioletred;
+}
+@keyframes jump {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .wrap {
