@@ -133,6 +133,7 @@ export default {
       };
       const response = await this.eventUpdate(payload);
       if (this.isSuccess) {
+        this.initFlag();
         this.$router.push({
           name: "eventShow",
           params: { id: this.eventForm.id }
@@ -194,6 +195,12 @@ export default {
         this.$router.push(path);
         this.transitionPath = "";
       }
+    },
+    initFlag() {
+      this.isUnsave = false;
+      this.openAlertModel = false;
+      this.transitionPath = null;
+      this.wantSave = false;
     }
   },
   async created() {
