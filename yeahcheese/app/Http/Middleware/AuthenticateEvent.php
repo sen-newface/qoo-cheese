@@ -31,7 +31,6 @@ class AuthenticateEvent
      */
     private function isValidkeyOrInvalidKey($request, $user, $event)
     {
-        $opt = null;
         if (is_null($event)) {
             $request = $this->createErrorResponse($request, ['認証キーが間違っています'], 406);
         } else {

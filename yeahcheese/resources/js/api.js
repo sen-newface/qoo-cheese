@@ -108,15 +108,14 @@ export default {
   eventAuth(key) {
     setLoding("イベントのkeyを照合しています")
     let param = { key: key }
-    // ! 後で消す！！！！！
     const response = httpWithToken.post(Route.EVENTS_AUTH, param)
       .then(
         res => {
           let response = res.data;
           const status = response.status;
-          const key = response.id ? "event-" + response.id : null;
+          const key = response.data ? "event-" + response.data.id : null;
           if (key) {
-            setToken(res.data.data.key, key);
+            setToken(response.data.key, key);
           }
           setApiStatus(status);
           return response;

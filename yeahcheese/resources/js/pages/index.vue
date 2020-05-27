@@ -43,7 +43,6 @@ export default {
         return false;
       }
       let response = await api.eventAuth(this.authKey);
-      response = response;
       if (this.isApiSuccess) {
         this.$router.push({ path: response.path });
       } else {
