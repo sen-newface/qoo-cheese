@@ -6,6 +6,14 @@ export default {
     state.events = state.events.concat(events);
   },
 
+  replaceEvents(state, events) {
+    state.events = events
+  },
+
+  setBaseEvents(state, events) {
+    state.base_events = events
+  },
+
   setAuthedEvents(state, events) {
     state.authedEvents = state.authedEvents.concat(events);
   },
@@ -51,6 +59,30 @@ export default {
   },
   delEvents(state) {
     state.events = []
+  },
+  sortByCreated(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.created_at > b.created_at ? 1 : -1;
+      }
+      return a.created_at < b.created_at ? 1 : -1;
+    });
+  },
+  sortByName(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.name > b.name ? 1 : -1;
+      }
+      return a.name < b.name ? 1 : -1;
+    });
+  },
+  sortByStartDate(state, isOrderByAsc) {
+    state.events.sort(function (a, b) {
+      if (isOrderByAsc) {
+        return a.start_date > b.start_date ? 1 : -1;
+      }
+      return a.start_date < b.start_date ? 1 : -1;
+    });
   },
   deleteEventForId(state, id) {
     Vue.delete(state.events, state.events.findIndex((e) => e.id == id))

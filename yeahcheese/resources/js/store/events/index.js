@@ -4,6 +4,7 @@ import actions from './actions';
 
 const state = {
   events: [],
+  base_events: [],
   authedEvents: [],
   events_per_page: 5,
   last_page: 1,
