@@ -1,6 +1,8 @@
 import store from '../../store'
 const getters = {
-  events: state => state.events.slice().sort(function (a, b) { return (a.id < b.id ? 1 : -1) }),
+  events: state => state.events,
+  base_events: state => state.base_events,
+  authedEvents: state => state.authedEvents,
   last_page: (state, getters) => {
     let page = Math.floor(state.events.length / getters.events_per_page);
     let add = state.events.length % getters.events_per_page;
@@ -15,7 +17,12 @@ const getters = {
     return state.events.slice(start_index, end_index)
   },
   getEventForId: state => (id) => {
-    return state.events.find(event => event.id == id)
+    let res = state.events.find(event => event.id == id);
+    if (!res) res = state.authedEvents.find(event => event.id == id);
+    return res
+  },
+  getEventForkey: state => (key) => {
+    return state.authedEvents.find(event => event.key == key);
   },
   isMyEventByEventId: (state, getters) => (event_id) => {
     let user = store.getters["users/user"];
@@ -23,7 +30,6 @@ const getters = {
     var target = getters.getEventForId(event_id);
     if (target && target.user_id == user.id) return true;
     return false;
-  },
+  }
 }
-
 export default getters

@@ -37,18 +37,24 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/events/new',
+    component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/events/event-:id',
     name: "eventShow",
     component: EventsShow,
   },
-    {
-    path: '/events/:id/edit',
-    name: 'eventEdit',
-    component: EventEdit
-  },
   {
     path: '/events/new',
     component: EventStore,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/events/event-:id/edit',
+    name: 'eventEdit',
+    component: EventEdit,
     meta: { requiresAuth: true }
   },
   {
@@ -81,11 +87,13 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // meta: requiresNotAuth ログインしてたらダメ
   if (to.matched.some(record => record.meta.requiresNotAuth) && store.getters['users/isLogin']) {
+    store.commit("flashMessage/setTextAndClass", { text: "ログアウトが必要です。", cls: "danger" });
     next({ path: '/' });
   }
 
   // meta: requiresAuth ログイン必要
   if (to.matched.some(record => record.meta.requiresAuth) && !store.getters['users/isLogin']) {
+    store.commit("flashMessage/setTextAndClass", { text: "ログインが必要です。", cls: "danger" });
     next({ path: '/login' });
   }
   next();

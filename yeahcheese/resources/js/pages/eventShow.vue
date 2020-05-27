@@ -6,7 +6,7 @@
       <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
-        <a href="#" class="btn btn-primary">編集</a>
+        <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
@@ -40,7 +40,15 @@
         <p
           v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
         >写真はまだありません</p>
+      <div class="d-flex mb-2">
+        <h3>写真一覧</h3>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
+      <photo-list
+        :photos="getPhotosForEventId(event.id) || []"
+        :event="this.event"
+        :isMyEvent="isMyEventByEventId(event.id)"
+      />
     </section>
   </article>
 </template>
@@ -48,9 +56,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ChangeColumns from "../components/ChangeColumns";
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
+import photoList from "../components/PhotoList";
 export default {
   components: {
-    ChangeColumns
+    photoList,
+    PreviewAndSavePhoto
   },
   data() {
     return {
@@ -122,7 +133,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .d-flex.option * {
