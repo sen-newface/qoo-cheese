@@ -44,18 +44,15 @@ export default {
       return function(id) {
         return this.eventInfo.name + "の写真" + id;
       };
-    },
-    dispTransformDeadline() {
-      return function(release_start, release_end) {
-        return (
-          this.transformDate(release_start) +
-          "〜" +
-          this.transformDate(release_end)
-        );
-      };
     }
   },
   methods: {
+    dispTransformDeadline(release_start, release_end) {
+      return;
+      this.transformDate(release_start) +
+        "〜" +
+        this.transformDate(release_end);
+    },
     transformDate(date) {
       const dateArr = date.split("-");
       if (dateArr.length === 3) {

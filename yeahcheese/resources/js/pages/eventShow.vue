@@ -9,7 +9,9 @@
         <a href="#" class="btn btn-primary">編集</a>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
-      <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
+      <div
+        class="card-footer text-muted"
+      >{{ dispTransformDeadline(event.start_date, event.end_date) }}</div>
     </div>
     <section>
       <div class="d-flex mb-2">
