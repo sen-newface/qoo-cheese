@@ -58,6 +58,7 @@
 
 <script>
 import api from "../api";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   props: {
     photos: {
@@ -114,7 +115,19 @@ export default {
         this.preview_index = "";
       }
     }
-  }
+  },
+  watch: {
+    preview: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      }
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 
