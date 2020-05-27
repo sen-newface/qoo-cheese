@@ -1,6 +1,6 @@
 <template>
   <div id="event-edit">
-    <!-- <alert-modal :isShow="openAlertModel" :to="transitionPath"></alert-modal> -->
+    <!-- <alert-modal :isShow="openAlertModel"></alert-modal> -->
     <router-link
       class="btn btn-outline-info mb-5"
       :to="{ name: 'eventShow', params: { id: eventForm.id } }"
@@ -178,14 +178,16 @@ export default {
     this.registerReloadEvent(); //リロード対策
   },
   beforeRouteLeave(to, from, next) {
-    //!保存していないデータがある場合
     if (this.isUnsave) {
-      //!モーダルを表示させる
       this.openAlertModel = true;
-      this.transitionPath = to.fullPath;
+      this.transitionPath = to.fullPath; // !保存せずに移動するとき使用
     } else {
       next();
     }
+  },
+  beforeDestroy() {
+    // TODO: 保存フラグを確認して、trueなら入力値を更新するapiを起動させる
+    // TODO:                   falseならフルパスを取得してRoutePush
   }
 };
 </script>
