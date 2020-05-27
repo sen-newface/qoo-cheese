@@ -87,11 +87,13 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // meta: requiresNotAuth ログインしてたらダメ
   if (to.matched.some(record => record.meta.requiresNotAuth) && store.getters['users/isLogin']) {
+    store.commit("flashMessage/setTextAndClass", { text: "ログアウトが必要です。", cls: "danger" });
     next({ path: '/' });
   }
 
   // meta: requiresAuth ログイン必要
   if (to.matched.some(record => record.meta.requiresAuth) && !store.getters['users/isLogin']) {
+    store.commit("flashMessage/setTextAndClass", { text: "ログインが必要です。", cls: "danger" });
     next({ path: '/login' });
   }
   next();
