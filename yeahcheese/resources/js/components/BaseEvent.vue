@@ -62,6 +62,8 @@ export default {
         const jaDate =
           dateArr[0] + "年" + dateArr[1] + "月" + dateArr[2] + "日";
         return jaDate;
+      } else {
+        return date;
       }
     }
   }
