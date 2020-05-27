@@ -9,10 +9,10 @@ Route::resource('events', 'Api\EventsController', ['only' => ['index', 'show', '
 Route::resource('events.photos', 'Api\PhotosController', ['only' => ['index', 'store', 'destroy']]);
 
 //usercheck
-Route::middleware('auth:sanctum')->get('/user', "Api\AuthController@me");
+Route::middleware('auth:sanctum')->get('/user', "Api\AuthController@me")->name('auth.me');
 
 //作成
-Route::post('/signup', "Api\AuthController@signup");
+Route::post('/signup', "Api\AuthController@signup")->name('auth.signup');
 
 //login
-Route::post('/login', "Api\AuthController@login");
+Route::post('/login', "Api\AuthController@login")->name('auth.login');

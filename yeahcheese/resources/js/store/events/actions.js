@@ -17,6 +17,7 @@ export default {
       let response = await api.eventIndex();
       const isSuccess = store.getters["status/isApiSuccess"];
       if (isSuccess) {
+        context.commit("delEvents")
         context.commit("setEvents", response.data);
         context.commit("setInitLoad", false);
         return response
@@ -40,7 +41,10 @@ export default {
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
       commit("updateEvent", response);
+      commit("flashMessage/setTextAndClass", { text: "イベントの更新に成功しました", cls: "success" }, { root: true });
       return response;
+    } else {
+      return response.errors;
     }
   },
 
@@ -50,16 +54,6 @@ export default {
     if (isSuccess) {
       context.commit("setEvent", response);
       return response
-    } else {
-      return response.errors;
-    }
-  },
-  async eventShow({ commit }, { id }) {
-    const response = await api.eventShow(id);
-    const isSuccess = store.getters["status/isApiSuccess"];
-    if (isSuccess) {
-      commit("setNowEvent", response);
-      return response;
     } else {
       return response.errors;
     }

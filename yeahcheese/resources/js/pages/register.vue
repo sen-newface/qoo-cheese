@@ -97,6 +97,10 @@ export default {
   methods: {
     async register() {
       this.delValidation();
+      if (this.emptyCheckValidation()) {
+        this.validationMessages = ["入力内容に不備があります"];
+        return false;
+      }
       const response = await this.$store.dispatch(
         "users/register",
         this.registerForm
@@ -110,6 +114,12 @@ export default {
     },
     delValidation() {
       this.validationMessages = [];
+    },
+    emptyCheckValidation() {
+      const values = Object.values(this.registerForm);
+      return values.some(val => {
+        return val.trim() === "";
+      });
     }
   }
 };

@@ -43,7 +43,12 @@ class PhotosController extends Controller
 
     public function destroy(Event $event, Photo $photo)
     {
-        $photo->delete();
-        return response('status', 204);
+        $user = auth('sanctum')->user();
+        if (intval($photo->event->user_id) === intval($user->id)) {
+            $photo->delete();
+            return response('status', 204);
+        } else {
+            return response(null, 403);
+        }
     }
 }

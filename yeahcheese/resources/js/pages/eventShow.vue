@@ -6,7 +6,7 @@
       <div class="card-header">{{event.name}}</div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
-        <a href="#" class="btn btn-primary">編集</a>
+        <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
       <div
@@ -14,35 +14,37 @@
       >{{ dispTransformDeadline(event.start_date, event.end_date) }}</div>
     </div>
     <section>
-      <div class="d-flex mb-2">
-        <h3>写真一覧</h3>
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success ml-4"
-        >写真追加</button>
+      <div class="option" :class="isFlex">
+        <h3 :class="isFullWidth">写真一覧</h3>
+        <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
+
+        <change-columns
+          :min="minColumn"
+          :max="maxColumn"
+          :device="accessDevice"
+          :selected="selectedColumns"
+        ></change-columns>
       </div>
-      <div class="d-flex align-items-start flex-wrap mb-5 img-area">
-        <img
-          v-show="getPhotosForEventId(event.id) && getPhotosForEventId(event.id).length"
-          v-for=" image in getPhotosForEventId(event.id)"
-          :key="image.id"
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          class="img-thumbnail"
-          @click="deletePhoto(event.id, image.id)"
-        />
-        <p
-          v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
-        >写真はまだありません</p>
-      </div>
+      <photo-list
+        :photos="getPhotosForEventId(event.id) || []"
+        :event="this.event"
+        :isMyEvent="isMyEventByEventId(event.id)"
+      />
     </section>
   </article>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
+import photoList from "../components/PhotoList";
+import ChangeColumns from "../components/ChangeColumns";
 export default {
+  components: {
+    photoList,
+    PreviewAndSavePhoto,
+    ChangeColumns
+  },
   data() {
     return {
       event: {
@@ -54,13 +56,25 @@ export default {
       }
     };
   },
+  methods: {
+    ...mapActions("display", ["getAccessingUserDevice"]),
+    deleteEvent: async function() {
+      var result = confirm("本当にイベントを削除してよろしいですか？");
+      if (result) {
+        await this.$store.dispatch("events/deleteEvent", this.event.id);
+        this.$router.push({ path: "/events" });
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       getEventForId: "events/getEventForId",
       events: "events/events",
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEventId",
-      isLogin: "users/isLogin"
+      isLogin: "users/isLogin",
+      selectedColumns: "display/selectedColumns",
+      accessDevice: "display/accessDevice"
     }),
     alt() {
       return function(id) {
@@ -95,20 +109,45 @@ export default {
       } else {
         return date;
       }
+    },
+    minColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最小列数は2
+      const min = this.accessDevice ? 2 : 1;
+      return min;
+    },
+    maxColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最大列数は5
+      const max = this.accessDevice ? 5 : 2;
+      return max;
+    },
+    isFullWidth() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合は横幅をフルで取る
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
+    },
+    isFlex() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合はフレックス対応でないようにする
+      return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.event = this.getEventForId(event_id);
+    this.getAccessingUserDevice();
   }
 };
 </script>
 
-
 <style scoped>
-.img-area img {
-  max-width: 48%;
+.d-flex.option * {
+  padding: 0 16px;
+}
+h3.is-full-width {
+  text-align: center;
 }
 @media screen and (max-width: 767px) {
   .img-area {
@@ -117,5 +156,17 @@ export default {
   .img-area img {
     max-width: 100%;
   }
+}
+</style>
+
+<style>
+.is-full-width {
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  padding: 32px;
+}
+.is-full-width * {
+  margin-left: 0;
 }
 </style>

@@ -1,23 +1,35 @@
 <template>
   <div id="preview-and-save-photo">
-    <label v-show="canAdd">
-      <span class="btn btn-primary btn-lg">追加</span>
-      <input id="add-button" type="file" @change="loadPhoto" />
+    <label>
+      <span type="button" class="btn btn-outline-success" :class="isFullWidth">写真追加</span>
+      <input id="add-button" type="file" @change="loadPhoto" accept="image/*" />
     </label>
-    <label v-show="!canAdd">
-      <button id="save-button" class="btn btn-primary btn-lg" @click="upPhoto">保存</button>
-      <button id="cancel-button" class="btn btn-secondary btn-lg" @click="upCancel">キャンセル</button>
-    </label>
-    <div id="preview-photo">
-      <img :src="preview" />
+    <div class="wrap" v-if="preview">
+      <validationMessages :errors="valiMessages" />
+      <div class="inner_wrap">
+        <p class="contnt" id="preview-photo">
+          <img :src="preview" />
+          <span style="display: block; text-align: center;">{{file.name}}</span>
+        </p>
+        <label class="mt-3" v-show="!canAdd">
+          <button id="save-button" class="btn btn-success" @click="upPhoto">保存</button>
+          <label for="add-button" type="button" class="btn btn-info" style="margin-bottom: 0">選び直す</label>
+          <button id="cancel-button" class="btn btn-warning" @click="upCancel">キャンセル</button>
+        </label>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import validationMessages from "../components/validationMessages";
+import scrollControllable from "../mixins/scrollControllable";
 export default {
   name: "PreviewAndSavePhoto",
+  components: {
+    validationMessages
+  },
   props: {
     eventId: {
       type: Number
@@ -28,17 +40,36 @@ export default {
       canAdd: true,
       file: null,
       preview: null,
-      error: null
+      error: null,
+      validationMessages: []
     };
   },
   computed: {
     ...mapGetters({
-      isSuccess: "status/isApiSuccess"
-    })
+      isSuccess: "status/isApiSuccess",
+      accessDevice: "display/accessDevice"
+    }),
+    valiMessages() {
+      var response = [];
+      Object.values(this.validationMessages).forEach(val => {
+        if (Array.isArray(val)) {
+          val.forEach(innerText => {
+            response.push(innerText);
+          });
+        } else {
+          response.push(val);
+        }
+      });
+      return response;
+    },
+    isFullWidth() {
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
+    }
   },
   methods: {
     ...mapActions("photos", ["postPhoto", "setPhotosForEventId"]),
     async loadPhoto(e) {
+      this.delValidation();
       const files = e.target.files || e.DataTransfer.files;
       this.file = files[0];
       const response = await this.createPhoto(this.file);
@@ -47,15 +78,17 @@ export default {
       let data = new FormData();
       data.append("event_id", this.eventId);
       data.append("image_path", this.file);
+      this.delValidation();
       const response = await this.postPhoto({ id: this.eventId, data: data });
-      this.$emit("photo-errors", []);
-      if (!this.isSuccess) {
-        this.$emit("photo-errors", response);
+
+      if (this.isSuccess) {
+        document.getElementById("add-button").value = "";
+        this.canAdd = true;
+        this.file = null;
+        this.preview = null;
+      } else {
+        this.validationMessages = response;
       }
-      document.getElementById("add-button").value = "";
-      this.canAdd = true;
-      this.file = null;
-      this.preview = null;
     },
     async createPhoto(file) {
       const fr = new FileReader();
@@ -76,17 +109,59 @@ export default {
       this.canAdd = true;
       this.file = null;
       this.preview = null;
+    },
+    delValidation() {
+      this.validationMessages = [];
     }
-  }
+  },
+  watch: {
+    preview: {
+      handler(val) {
+        if (val) {
+          this.no_scroll();
+        } else {
+          this.return_scroll();
+        }
+      }
+    }
+  },
+  mixins: [scrollControllable]
 };
 </script>
 
 <style scoped>
 #preview-photo {
-  width: 50vw;
-  height: 40vh;
+  margin-bottom: 0 !important;
+  text-align: center;
 }
 #preview-photo img {
   object-fit: cover;
+  max-width: 100%;
+}
+#add-button {
+  display: none;
+}
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  background: gray;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(45, 45, 45, 0.5);
+  position: fixed;
+}
+
+.inner_wrap {
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  max-width: 88%;
+  max-height: 88%;
+  padding: 21px;
 }
 </style>
