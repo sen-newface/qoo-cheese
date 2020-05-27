@@ -1,7 +1,7 @@
 <template>
   <div id="preview-and-save-photo">
     <label>
-      <span type="button" class="btn btn-outline-success ml-4">写真追加</span>
+      <span type="button" class="btn btn-outline-success" :class="isFullWidth">写真追加</span>
       <input id="add-button" type="file" @change="loadPhoto" accept="image/*" multiple="multiple" />
     </label>
     <validationMessages v-show="!files.length" :errors="valiMessages" />
@@ -53,7 +53,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isSuccess: "status/isApiSuccess"
+      isSuccess: "status/isApiSuccess",
+      accessDevice: "display/accessDevice"
     }),
     valiMessages() {
       var response = [];
@@ -67,6 +68,9 @@ export default {
         }
       });
       return response.filter((x, i, self) => self.indexOf(x) === i);
+    },
+    isFullWidth() {
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
     }
   },
   methods: {

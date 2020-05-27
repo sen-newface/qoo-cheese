@@ -3,6 +3,7 @@
     <div class="d-flex justify-content-between flex-wrap mb-5 img-area">
       <div
         class="image_set"
+        :class="imgThumbnailSize"
         v-show="photos.length"
         v-for=" (image, index) in photos"
         :key="image.id"
@@ -14,7 +15,7 @@
           class="img-thumbnail mb-2 bg-white"
         />
         <div class="file_title">
-          <p style="float: left; width: 86%;">{{getTitle(image)}}</p>
+          <p class="preview_title">{{getTitle(image)}}</p>
           <p class="file_icons">
             <i
               class="fa fas fa-trash"
@@ -33,7 +34,6 @@
           </p>
         </div>
       </div>
-
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
     <div class="wrap" v-if="preview" @click="preview=''">
@@ -109,7 +109,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getTitle: "photos/getTitle"
+      getTitle: "photos/getTitle",
+      selectedColumns: "display/selectedColumns"
     }),
     alt() {
       return function(id) {
@@ -131,6 +132,9 @@ export default {
         let ext = this.getExt(photo.image_path);
         return photo.title ? photo.title : photo.image_path;
       };
+    },
+    imgThumbnailSize() {
+      return "img-thumbnail-size" + this.selectedColumns;
     }
   },
   methods: {
@@ -182,6 +186,9 @@ export default {
   cursor: pointer;
   position: relative;
 }
+.img-area * {
+  transition: max-width 0.2s ease;
+}
 
 .img-area .image_set:hover {
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
@@ -216,6 +223,11 @@ export default {
   margin-bottom: 0;
 }
 
+.file_title .preview_title {
+  float: left;
+  width: 78%;
+}
+
 .file_icons {
   color: white;
   float: right;
@@ -226,7 +238,37 @@ export default {
   font-size: 28px;
 }
 
-@media screen and (max-width: 767px) {
+.img-area .img-thumbnail-size1 {
+  max-width: 100%;
+}
+.img-area .img-thumbnail-size2 {
+  max-width: 49.5%;
+}
+.img-area .img-thumbnail-size3 {
+  max-width: 33.33333333%;
+}
+.img-area .img-thumbnail-size4 {
+  max-width: 24.5%;
+}
+.img-area .img-thumbnail-size5 {
+  max-width: 19.5%;
+}
+
+.img-area .img-thumbnail-size4 .file_title {
+  font-size: 0.8rem;
+}
+.img-area .img-thumbnail-size5 .file_title {
+  font-size: 0.8rem;
+}
+
+.img-area .img-thumbnail-size4 .file_title .file_icons i {
+  font-size: 20px !important;
+}
+.img-area .img-thumbnail-size5 .file_title .file_icons i {
+  font-size: 20px !important;
+}
+
+.file_icons i @media screen and (max-width: 767px) {
   .file_title {
     display: block;
   }
