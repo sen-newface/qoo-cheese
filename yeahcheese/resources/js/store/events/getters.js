@@ -1,6 +1,7 @@
 import store from '../../store'
 const getters = {
-  events: state => state.events.slice().sort(function (a, b) { return (a.id < b.id ? 1 : -1) }),
+  events: state => state.events,
+  base_events: state => state.base_events,
   authedEvents: state => state.authedEvents,
   last_page: (state, getters) => {
     let page = Math.floor(state.events.length / getters.events_per_page);
@@ -58,5 +59,4 @@ const getters = {
     return { class: "badge-success", text: "公開中" };
   }
 }
-
 export default getters

@@ -22,29 +22,22 @@
         <h3>写真一覧</h3>
         <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
       </div>
-      <div class="d-flex align-items-start flex-wrap mb-5 img-area">
-        <img
-          v-show="getPhotosForEventId(event.id) && getPhotosForEventId(event.id).length"
-          v-for=" image in getPhotosForEventId(event.id)"
-          :key="image.id"
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          class="img-thumbnail"
-          @click="deletePhoto(event.id, image.id)"
-        />
-        <p
-          v-show="getPhotosForEventId(event.id) && !getPhotosForEventId(event.id).length"
-        >写真はまだありません</p>
-      </div>
+      <photo-list
+        :photos="getPhotosForEventId(event.id) || []"
+        :event="this.event"
+        :isMyEvent="isMyEventByEventId(event.id)"
+      />
     </section>
   </article>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
-import { mapGetters, mapActions } from "vuex";
+import photoList from "../components/PhotoList";
 export default {
   components: {
+    photoList,
     PreviewAndSavePhoto
   },
   data() {
@@ -77,6 +70,13 @@ export default {
     ...mapActions("photos", ["deleteEventPhoto"]),
     async deletePhoto(event_id, photo_id) {
       await this.deleteEventPhoto({ event_id, photo_id });
+    },
+    async deleteEvent() {
+      var result = confirm("本当にイベントを削除してよろしいですか？");
+      if (result) {
+        await this.$store.dispatch("events/deleteEvent", this.event.id);
+        this.$router.push({ path: "/events" });
+      }
     }
   },
   async created() {
@@ -85,17 +85,10 @@ export default {
     this.event = this.getEventForId(event_id);
   },
   methods: {
-    deleteEvent: async function() {
-      var result = confirm("本当にイベントを削除してよろしいですか？");
-      if (result) {
-        await this.$store.dispatch("events/deleteEvent", this.event.id);
-        this.$router.push({ path: "/events" });
-      }
-    }
+    
   }
 };
 </script>
-
 
 <style scoped lang="scss">
 .img-area img {

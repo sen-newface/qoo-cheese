@@ -21,7 +21,7 @@ class EventsController extends Controller
      */
     public function index(Request $request)
     {
-        return EventResource::collection($request->user()->events);
+        return EventResource::collection(Event::myEvents());
     }
 
     public function auth(Request $request)
@@ -41,8 +41,7 @@ class EventsController extends Controller
         $user = auth('sanctum')->user();
         $key = $request->key;
         if ($user && !$key) {
-            //TODO ポリシーでやる
-            if (intval($event->user_id) === intval($user->id)) {
+            if ($event->isOwner()) {
                 return response(new EventResource($event), 200);
             } else {
                 return response(null, 403);
@@ -65,7 +64,7 @@ class EventsController extends Controller
      */
     public function update(Event $event, StoreEventRequest $request)
     {
-        if ($request->user()->id == $event->user_id) {
+        if ($event->isOwner()) {
             $form = $request->all();
             $event->fill($form)->save();
             return response(new EventResource($event), 200);
@@ -80,7 +79,7 @@ class EventsController extends Controller
     {
         $event->delete();
         // TODO: イベント削除の処理
-        if (intval($request->user()->id) === intval($event->user_id)) {
+        if ($event->isOwner()) {
             $event->delete();
             return response(null, 204);
         }
