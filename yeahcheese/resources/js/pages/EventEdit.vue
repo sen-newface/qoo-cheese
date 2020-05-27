@@ -100,9 +100,15 @@ export default {
   },
   watch: {
     eventForm: {
-      handler: function() {
-        // !入力があった場合はセーブしていない状態に変更
-        this.isUnsave = true;
+      handler: function(newFormData, oldFormData) {
+        // セーブしていない、尚且つデータに変更があった場合のみ、アンセーブにする
+        // 一度isUnsaveをtrueにすれば、isInitDataは起動されない
+        if (
+          this.isUnsave === false &&
+          this.isInitData(newFormData, oldFormData)
+        ) {
+          this.isUnsave = true;
+        }
       },
       deep: true
     }
@@ -141,6 +147,29 @@ export default {
           e.returnValue = "chotomate";
         }
       });
+    },
+    isInitData(newData, oldData) {
+      // ! watchで受け取った変更前と変更後のデータを比較
+      // ! watchで受け取った変更前の初期値(newData)がイベント情報
+      // ! watchで受け取った変更後の初期値(oldData)が空
+      // ! => 初回だけfalseが返るメソッド
+      // ! => 以降はnewDataもoldDataも同じ値のため、常にtrueを返す
+      console.log("起動");
+      const {
+        name: newName,
+        start_date: newStartDate,
+        end_date: newEndDate
+      } = newData;
+      const {
+        name: oldName,
+        start_date: oldStartDate,
+        end_date: oldEndDate
+      } = oldData;
+      return (
+        oldName === newName ||
+        oldStartDate === newStartDate ||
+        oldEndDate == newEndDate
+      );
     }
   },
   async created() {
