@@ -73,7 +73,8 @@ export default {
       validationMessages: [],
       isUnsave: false,
       openAlertModel: false,
-      transitionPath: null
+      transitionPath: null,
+      wantSave: false
     };
   },
   computed: {
@@ -144,7 +145,6 @@ export default {
       this.validationMessages = errors;
     },
     registerReloadEvent() {
-      console.log("ok");
       const self = this;
       window.addEventListener("beforeunload", function(e) {
         if (self.isUnsave) {
@@ -174,25 +174,47 @@ export default {
         oldStartDate === newStartDate ||
         oldEndDate == newEndDate
       );
+    },
+    closeModal() {
+      this.openAlertModel = false;
+      this.transitionPath = null;
+      this.wantSave = null;
+    },
+    saveAndMove(isSave) {
+      this.wantSave = isSave;
+      this.openAlertModel = false;
+      this.moveOtherPage(this.transitionPath);
+    },
+    canMove(path) {
+      return typeof path === "string" && path.length > 0;
+    },
+    moveOtherPage(path) {
+      if (this.canMove(path)) {
+        this.isUnsave = false;
+        this.$router.push(path);
+        this.transitionPath = "";
+      }
     }
   },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
-    this.eventForm = this.getEventForId(event_id);
+    this.eventForm = this.getEventForId(event_id); //!多分ここでストアのイベント情報を入れているせいか、eventFormの編集履歴がリンクを踏んだ先に反映されてしまっている
     this.registerReloadEvent(); //リロード対策
   },
   beforeRouteLeave(to, from, next) {
     if (this.isUnsave) {
       this.openAlertModel = true;
-      this.transitionPath = to.fullPath; // !保存せずに移動するとき使用
+      this.transitionPath = to.fullPath;
+      next(false);
     } else {
       next();
     }
   },
   beforeDestroy() {
-    // TODO: 保存フラグを確認して、trueなら入力値を更新するapiを起動させる
-    // TODO:                   falseならフルパスを取得してRoutePush
+    if (this.wantSave) {
+      this.updateEvent();
+    }
   }
 };
 </script>
