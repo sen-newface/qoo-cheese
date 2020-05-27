@@ -12,9 +12,21 @@
       <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
     </div>
     <section>
-      <div class="d-flex mb-2">
-        <h3>写真一覧</h3>
+      <div class="option" :class="isFlex">
+        <h3 :class="isFullWidth">写真一覧</h3>
         <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
+        <button
+          v-if="isMyEventByEventId(event.id)"
+          type="button"
+          class="btn btn-outline-success"
+          :class="isFullWidth"
+        >写真追加</button>
+        <change-columns
+          :min="minColumn"
+          :max="maxColumn"
+          :device="accessDevice"
+          :selected="selectedColumns"
+        ></change-columns>
       </div>
       <photo-list
         :photos="getPhotosForEventId(event.id) || []"
@@ -26,13 +38,15 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
 import photoList from "../components/PhotoList";
+import ChangeColumns from "../components/ChangeColumns";
 export default {
   components: {
     photoList,
-    PreviewAndSavePhoto
+    PreviewAndSavePhoto,
+    ChangeColumns
   },
   data() {
     return {
@@ -45,21 +59,8 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapGetters({
-      getEventForId: "events/getEventForId",
-      events: "events/events",
-      isMyEventByEventId: "events/isMyEventByEventId",
-      getPhotosForEventId: "photos/getPhotosForEventId",
-      isLogin: "users/isLogin"
-    })
-  },
-  async created() {
-    let event_id = this.$route.params["id"];
-    await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
-    this.event = this.getEventForId(event_id);
-  },
   methods: {
+    ...mapActions("display", ["getAccessingUserDevice"]),
     deleteEvent: async function() {
       var result = confirm("本当にイベントを削除してよろしいですか？");
       if (result) {
@@ -67,6 +68,74 @@ export default {
         this.$router.push({ path: "/events" });
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      getEventForId: "events/getEventForId",
+      events: "events/events",
+      isMyEventByEventId: "events/isMyEventByEventId",
+      getPhotosForEventId: "photos/getPhotosForEventId",
+      isLogin: "users/isLogin",
+      selectedColumns: "display/selectedColumns",
+      accessDevice: "display/accessDevice"
+    }),
+    minColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最小列数は2
+      const min = this.accessDevice ? 2 : 1;
+      return min;
+    },
+    maxColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最大列数は5
+      const max = this.accessDevice ? 5 : 2;
+      return max;
+    },
+    isFullWidth() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合は横幅をフルで取る
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
+    },
+    isFlex() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合はフレックス対応でないようにする
+      return this.accessDevice ? "d-flex mb-2" : "";
+    }
+  },
+  async created() {
+    let event_id = this.$route.params["id"];
+    await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
+    this.event = this.getEventForId(event_id);
+    this.getAccessingUserDevice();
   }
 };
 </script>
+
+<style scoped>
+.d-flex.option * {
+  padding: 0 16px;
+}
+h3.is-full-width {
+  text-align: center;
+}
+@media screen and (max-width: 767px) {
+  .img-area {
+    display: block !important;
+  }
+  .img-area img {
+    max-width: 100%;
+  }
+}
+</style>
+
+<style>
+.is-full-width {
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  padding: 32px;
+}
+.is-full-width * {
+  margin-left: 0;
+}
+</style>

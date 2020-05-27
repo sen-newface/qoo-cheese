@@ -1,7 +1,6 @@
 <template>
   <div id="preview-and-save-photo">
     <label v-show="canAdd">
-      <span type="button" class="btn btn-outline-success ml-4">写真追加</span>
       <input id="add-button" type="file" @change="loadPhoto" accept="image/*" />
     </label>
     <div class="wrap" v-if="preview">
