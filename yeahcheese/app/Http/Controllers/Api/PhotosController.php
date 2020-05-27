@@ -33,12 +33,13 @@ class PhotosController extends Controller
     {
         if ($event->isOwner()) {
             $photos = [];
-            foreach ($request->images as $image) {
+            foreach ($request->images as $index => $image) {
                 $imagefile = $image;
                 $filepath = Storage::disk('public')->putFile('images', $imagefile, 'public');
                 $photo = new Photo();
                 $photo->event_id = $request->event_id;
                 $photo->image_path = $filepath;
+                $photo->title = $request->titles[$index];
                 $photo->save();
                 array_push($photos, $photo);
             }
