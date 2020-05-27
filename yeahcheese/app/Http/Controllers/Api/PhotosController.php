@@ -29,22 +29,28 @@ class PhotosController extends Controller
         return response(PhotoResource::collection($event->photos, 200));
     }
 
-    public function store(StorePhotoRequest $request)
+    public function store(Event $event, Request $request)
     {
-        $post_data = $request->except('image_path');
-        $imagefile = $request->file('image_path');
-        $filepath = Storage::disk('public')->putFile('images', $imagefile, 'public');
-        $photo = new Photo();
-        $photo->event_id = $post_data['event_id'];
-        $photo->image_path = $filepath;
-        $photo->save();
-        return response(new PhotoResource($photo), 200);
+        if ($event->isOwner()) {
+            $photos = [];
+            foreach ($request->images as $image) {
+                $imagefile = $image;
+                $filepath = Storage::disk('public')->putFile('images', $imagefile, 'public');
+                $photo = new Photo();
+                $photo->event_id = $request->event_id;
+                $photo->image_path = $filepath;
+                $photo->save();
+                array_push($photos, $photo);
+            }
+            return response(PhotoResource::collection($photos, 201));
+        } else {
+            return response(null, 403);
+        }
     }
 
     public function destroy(Event $event, Photo $photo)
     {
-        $user = auth('sanctum')->user();
-        if (intval($photo->event->user_id) === intval($user->id)) {
+        if ($event->isOwner()) {
             $photo->delete();
             return response('status', 204);
         } else {
