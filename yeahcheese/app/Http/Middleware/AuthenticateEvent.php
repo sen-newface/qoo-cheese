@@ -22,19 +22,19 @@ class AuthenticateEvent
      */
     private function getRequest($request, $user, $event)
     {
-        $request = $this->isValidkeyOrInvalidKey($request, $user, $event);
+        $request = $this->isValidKey($request, $user, $event);
         return $request;
     }
 
     /**
      * 有効な認証キーか無効な認証キーかによってレスポンス内容を変化させて返却
      */
-    private function isValidkeyOrInvalidKey($request, $user, $event)
+    private function isValidKey($request, $user, $event)
     {
         if (is_null($event)) {
             $request = $this->createErrorResponse($request, ['認証キーが間違っています'], 406);
         } else {
-            $request = $this->withinResponseOrOutsideResponse($request, $user, $event);
+            $request = $this->withinDeadline($request, $user, $event);
         }
         return $request;
     }
@@ -42,7 +42,7 @@ class AuthenticateEvent
     /**
      * 公開期限内か公開期限外かによってレスポンス内容を変化させて返却
      */
-    private function withinResponseOrOutsideResponse($request, $user, $event)
+    private function withinDeadline($request, $user, $event)
     {
         // ログイン済みユーザーは公開期限に関わらず成功
         // ユーザーが保持していないイベントにアクセスしようとした場合は403エラーを飛ばす
