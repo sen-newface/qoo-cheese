@@ -47,23 +47,6 @@
 </template>
 
 <script>
-/**
- * [イベント編集] - イベント情報の更新と写真の追加・削除が可能
- * ? 必要な情報
- *  * 単一のイベント情報
- *   * created内でstoreにあるeventsからルートパラメータのイベントを取得
- *   * 更新時に参照するため、eventに格納
- *  * イベントに紐づく写真情報
- *   * イベントのリレーションから取得
- *   * 削除時に参照するため、photosに格納
- * ? 表示させる情報
- *  * イベント名
- *  * 公開開始日
- *  * 公開終了日
- *  * イベントに紐づく写真(今は仮でpathだけ表示)
- * ! Laravel側で修正が必要かもしれない部分
- * ! * バリデーションエラーの場合、送信されてきたイベント情報をオウム返しする（これをVueで受け取り、再度表示させる）
- */
 import { mapGetters, mapActions } from "vuex";
 import validationMessages from "../components/validationMessages";
 import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
