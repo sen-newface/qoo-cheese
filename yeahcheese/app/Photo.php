@@ -25,6 +25,11 @@ class Photo extends Model
         return $this->belongsTo('App\Event');
     }
 
+    public function users()
+    {
+        return $this->hasMany('App\User');
+    }
+
     protected $fillable = [
         'image_path', 'event_id'
     ];

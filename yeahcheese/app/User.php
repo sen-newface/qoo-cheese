@@ -32,12 +32,20 @@ class User extends Authenticatable
     }
 
     /**
+     * お気に入りの写真を取得
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Favorite');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-    'name', 'email', 'password',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -46,7 +54,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-    'password', 'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -55,7 +63,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-    'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime',
     ];
 
     public function setToken($key = "authToken")
