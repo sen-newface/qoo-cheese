@@ -66,5 +66,6 @@ export default {
 
 h3 span {
   font-size: 14px;
+  margin-left: 12px;
 }
 </style>

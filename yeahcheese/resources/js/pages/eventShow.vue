@@ -3,7 +3,7 @@
     <router-link v-if="isLogin" class="btn btn-outline-info mb-5" :to="{ path: '/events/'}">一覧へ戻る</router-link>
     <router-link v-else class="btn btn-outline-info mb-5" :to="{ path: '/'}">TOPへ</router-link>
     <div class="card text-center mb-5">
-      <div class="card-header">
+      <div class="card-header d-flex align-items-center justify-content-center">
         {{event.name}}
         <span
           class="badge"
@@ -108,5 +108,9 @@ export default {
   .img-area img {
     max-width: 100%;
   }
+}
+.badge {
+  font-size: 12px;
+  margin-left: 6px;
 }
 </style>
