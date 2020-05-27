@@ -154,7 +154,6 @@ export default {
       // ! watchで受け取った変更後の初期値(oldData)が空
       // ! => 初回だけfalseが返るメソッド
       // ! => 以降はnewDataもoldDataも同じ値のため、常にtrueを返す
-      console.log("起動");
       const {
         name: newName,
         start_date: newStartDate,
