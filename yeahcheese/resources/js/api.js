@@ -190,11 +190,14 @@ export default {
   },
   // イベントの写真 お気に入り登録
   photoLikesStore(likesId) {
+    setLoding("お気に入りしています")
     return httpWithToken.post(Route.PHOTOS_ADD_LIKES, likesId).then(onSuccess, onError);
   },
 
   // イベントの写真 お気に入り削除
   photoLikesDestroy(dislikesId) {
-    return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES, dislikesId).then(onSuccess, onError);
+    setLoding("お気に入りを解除しています")
+    httpWithToken.defaults.headers['X-HTTP-Method-Override'] = 'DELETE';
+    return httpWithToken.post(Route.PHOTOS_DELETE_LIKES, dislikesId).then(onSuccess, onError);
   }
 };

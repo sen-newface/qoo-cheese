@@ -15,6 +15,7 @@
           @click="openPreview(index)"
         />
         <i
+          v-if="isLogin"
           class="fa fa-gratipay photo-likes-icon thumbnail"
           :class="likesClass(image)"
           @click="toggleLikesIcon(image)"
@@ -98,7 +99,9 @@ export default {
   computed: {
     ...mapGetters({
       user: "users/user",
-      selectedColumns: "display/selectedColumns"
+      isLogin: "users/isLogin",
+      selectedColumns: "display/selectedColumns",
+      isSuccess: "status/isApiSuccess"
     }),
     alt() {
       return function(id) {
