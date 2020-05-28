@@ -84,7 +84,7 @@ export default {
     return {
       preview: "",
       preview_index: "",
-      isLikedIcon: false,
+      isLikedIcon: null,
       likesPhotoId: null
     };
   },
@@ -111,7 +111,7 @@ export default {
       return "img-thumbnail-size" + this.selectedColumns;
     },
     likesClass() {
-      if (this.likesPhotoId !== null) {
+      if (this.isLikedIcon !== null) {
         return { likes: this.isLikedIcon, dislikes: !this.isLikedIcon };
       }
       return "";
