@@ -37,6 +37,13 @@
       </div>
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
+    <input
+      type="text"
+      class="visile_input"
+      v-on:keyup.left="openPreview(preview_index - 1)"
+      v-on:keyup.right="openPreview(preview_index + 1)"
+      ref="r1"
+    />
     <div class="wrap" v-if="preview" @click="preview=''">
       <div class="inner_wrap">
         <div class="content">
@@ -47,7 +54,7 @@
                 :class="isFirstArrow(preview_index)"
                 @click="openPreview(preview_index - 1)"
               ></i>
-              <div class="width100perSp">
+              <div class="width100perSp" @click="toKeyInputForcus()">
                 <div class="d-flex preview_icons width100perSp">
                   <i
                     class="fa fas fa-trash"
@@ -162,6 +169,9 @@ export default {
         this.preview_index = "";
         this.preview_title = "";
       }
+    },
+    toKeyInputForcus() {
+      this.$refs.r1.focus();
     }
   },
   watch: {
@@ -169,6 +179,7 @@ export default {
       handler(val) {
         if (val) {
           this.no_scroll();
+          this.toKeyInputForcus();
         } else {
           this.return_scroll();
         }
@@ -368,5 +379,15 @@ export default {
   max-height: 88%;
   width: 88%;
   padding: 21px;
+}
+
+.visile_input {
+  width: 1px;
+  height: 1px;
+  color: white;
+  border: white;
+  position: absolute;
+  top: 0;
+  z-index: -100;
 }
 </style>
