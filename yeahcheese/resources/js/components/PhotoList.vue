@@ -72,7 +72,7 @@
 
 <script>
 import api from "../api";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import scrollControllable from "../mixins/scrollControllable";
 export default {
   props: {
