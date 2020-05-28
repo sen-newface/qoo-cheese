@@ -185,15 +185,16 @@ export default {
     return httpWithToken.delete(Route.PHOTOS_DESTROY(id, photo_id)).then(onSuccess, onError);
   },
   photoLikesIndex() {
+    setLoding("お気に入りした写真を取得しています")
     return httpWithToken.get(Route.PHOTOS_LIKES_INDEX).then(onSuccess, onError);
   },
   // イベントの写真 お気に入り登録
-  photoLikesStore() {
+  photoLikesStore(likesId) {
     return httpWithToken.post(Route.PHOTOS_ADD_LIKES, likesId).then(onSuccess, onError);
   },
 
   // イベントの写真 お気に入り削除
-  photoLikesDestroy() {
+  photoLikesDestroy(dislikesId) {
     return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES, dislikesId).then(onSuccess, onError);
   }
 };
