@@ -44,7 +44,7 @@
                   >
                     <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
                   </a>
-                  <i class="del_button fa fa-times" @click="preview=''"></i>
+                  <i class="del_button fa fa-times" @click="initData"></i>
                 </div>
                 <img :src="preview" class="preview-photo" />
               </div>
@@ -140,11 +140,16 @@ export default {
       // TODO: event_idとphoto_idを保持しておく
       this.likesPhotoId = photo_id;
       console.log("お気に入り状態を変更する写真のID", this.likesPhotoId);
+    },
+    initData() {
+      this.preview = "";
     }
   },
   watch: {
     preview: {
       handler(val) {
+        // !罰ボタン以外の場所をクリックしたとき対策
+        this.isLikedIcon = null;
         if (val) {
           this.no_scroll();
         } else {
