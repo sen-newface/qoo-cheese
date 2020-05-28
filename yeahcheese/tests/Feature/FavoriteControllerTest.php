@@ -26,8 +26,6 @@ class FavoriteControllerTest extends TestCase
         parent::setUp();
 
         $user = factory(User::class)->create();
-
-        $this->actingAs($user);
         $event = factory(Event::class)->create(
             [
                 'user_id' => $user->id
@@ -49,12 +47,12 @@ class FavoriteControllerTest extends TestCase
 
     public function testIndex()
     {
+        $this->actingAs($this->user);
         $url = route('like.store');
         $data = [
             'photo_id' => $this->photo->id,
         ];
         $this->post($url, $data);
-
         $url = route('like.index');
         $res = $this->json('get', $url);
         $res->assertJsonCount(1);
@@ -75,6 +73,7 @@ class FavoriteControllerTest extends TestCase
      */
     public function testStore()
     {
+        $this->actingAs($this->user);
         $url = route('like.store');
         $data = [
             'photo_id' => $this->photo->id,
@@ -89,12 +88,12 @@ class FavoriteControllerTest extends TestCase
      */
     public function testDestroy()
     {
+        $this->actingAs($this->user);
         $url = route('like.store');
         $data = [
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);
-
         $url = route('like.destroy');
         $response = $this->delete($url, ['photo_id' => $this->photo->id]);
         $response->assertStatus(204);
@@ -102,20 +101,48 @@ class FavoriteControllerTest extends TestCase
     }
 
     /**
-     * 異常系: バリデーションに引っかかる
+     * 異常系
      */
     public function testDestroyError()
     {
+        $this->actingAs($this->user);
         $url = route('like.store');
         $data = [
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);
-
         $url = route('like.destroy');
         $response = $this->delete($url, ['photo_id' => null]);
         $response
             ->assertStatus(200);
         $this->assertEquals(1, count($this->user->photos));
+    }
+
+    /**
+     * 異常系: ログインしてなければ弾く
+     */
+    public function testIndexError()
+    {
+        $url = route('like.store');
+        $data = [
+            'photo_id' => $this->photo->id,
+        ];
+        $this->post($url, $data);
+        $url = route('like.index');
+        $res = $this->json('get', $url);
+        if ($res->assertStatus(401)) {
+            return;
+        }
+        $res->assertJsonCount(1);
+        $res->assertJsonStructure(
+            [
+                '*' => [
+                    'id',
+                    'image_path',
+                    'is_favorite'
+                ]
+            ]
+        );
+        $res->assertStatus(200);
     }
 }
