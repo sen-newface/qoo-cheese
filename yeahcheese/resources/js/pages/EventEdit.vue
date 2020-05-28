@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       photos: [],
+      base_event: {},
       eventForm: {
         name: "",
         start_date: "",
@@ -213,6 +214,8 @@ export default {
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.eventForm = this.getEventForId(event_id); //!多分ここでストアのイベント情報を入れているせいか、eventFormの編集履歴がリンクを踏んだ先に反映されてしまっている
     this.registerReloadEvent(); //リロード対策
+    console.log(this.eventForm);
+    this.base_event = JSON.parse(JSON.stringify(this.eventForm));
   },
   beforeRouteLeave(to, from, next) {
     if (this.isUnsave) {
@@ -226,6 +229,8 @@ export default {
   beforeDestroy() {
     if (this.wantSave) {
       this.updateEvent();
+    } else {
+      this.$store.commit("events/updateEvent", this.base_event);
     }
   }
 };
