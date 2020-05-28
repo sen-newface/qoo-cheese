@@ -62,16 +62,6 @@ export default {
       }
     };
   },
-  methods: {
-    ...mapActions("display", ["getAccessingUserDevice"]),
-    deleteEvent: async function() {
-      var result = confirm("本当にイベントを削除してよろしいですか？");
-      if (result) {
-        await this.$store.dispatch("events/deleteEvent", this.event.id);
-        this.$router.push({ path: "/events" });
-      }
-    }
-  },
   computed: {
     ...mapGetters({
       getEventForId: "events/getEventForId",
@@ -79,25 +69,7 @@ export default {
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEventId",
       isLogin: "users/isLogin",
-      getLabelByDeadline: "events/getLabelByDeadline"
-    }),
-    alt() {
-      return function(id) {
-        return this.event.name + "の写真" + id;
-      };
-    }
-  },
-  methods: {
-    ...mapActions("photos", ["deleteEventPhoto"]),
-    async deletePhoto(event_id, photo_id) {
-      await this.deleteEventPhoto({ event_id, photo_id });
-    },
-    async deleteEvent() {
-      var result = confirm("本当にイベントを削除してよろしいですか？");
-      if (result) {
-        await this.$store.dispatch("events/deleteEvent", this.event.id);
-        this.$router.push({ path: "/events" });
-      }
+      getLabelByDeadline: "events/getLabelByDeadline",
       selectedColumns: "display/selectedColumns",
       accessDevice: "display/accessDevice"
     }),
@@ -129,12 +101,14 @@ export default {
       return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
+
   methods: {
     ...mapActions("photos", ["deleteEventPhoto"]),
     async deletePhoto(event_id, photo_id) {
       await this.deleteEventPhoto({ event_id, photo_id });
     },
-    deleteEvent: async function() {
+
+    async deleteEvent() {
       var result = confirm("本当にイベントを削除してよろしいですか？");
       if (result) {
         await this.$store.dispatch("events/deleteEvent", this.event.id);
@@ -142,10 +116,11 @@ export default {
       }
     },
     dispTransformDeadline(release_start, release_end) {
-      return;
-      this.transformDate(release_start) +
+      return (
+        this.transformDate(release_start) +
         "〜" +
-        this.transformDate(release_end);
+        this.transformDate(release_end)
+      );
     },
     transformDate(date) {
       const dateArr = date.split("-");
@@ -162,7 +137,6 @@ export default {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.event = this.getEventForId(event_id);
-    // this.getAccessingUserDevice();
     this.$store.dispatch("display/getAccessingUserDevice");
   }
 };
@@ -171,6 +145,7 @@ export default {
 <style scoped lang="scss">
 .img-area img {
   max-width: 48%;
+}
 .d-flex .option * {
   padding: 0 16px;
 }
@@ -188,9 +163,7 @@ h3.is-full-width {
 .badge {
   font-size: 12px;
   margin-left: 6px;
-</style>
-
-<style>
+}
 .is-full-width {
   display: block;
   width: 100%;
