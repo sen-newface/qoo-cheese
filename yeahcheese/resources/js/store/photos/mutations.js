@@ -21,7 +21,6 @@ export default {
     state.likedPhotos = likePhotos;
   },
   pushLikedPhoto(state, photo) {
-    console.log(photo);
     state.likedPhotos.push(photo);
     state.eventPhotos.forEach((eventInfo) => {
       if (eventInfo.photos.includes(photo.photo_id)) {
@@ -31,7 +30,6 @@ export default {
     });
   },
   deleteLikedPhoto(state, photo) {
-    console.log(photo);
     //eventPhotosとlikedPhotosを変更
     const index = state.likedPhotos.findIndex((p) => {
       return p.id == photo.id;
