@@ -157,3 +157,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.border-color {
+  border-color: #66ccff;
+}
+</style>

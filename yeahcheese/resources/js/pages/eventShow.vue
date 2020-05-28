@@ -3,7 +3,13 @@
     <router-link v-if="isLogin" class="btn btn-outline-info mb-5" :to="{ path: '/events/'}">一覧へ戻る</router-link>
     <router-link v-else class="btn btn-outline-info mb-5" :to="{ path: '/'}">TOPへ</router-link>
     <div class="card text-center mb-5">
-      <div class="card-header">{{event.name}}</div>
+      <div class="card-header d-flex align-items-center justify-content-center">
+        {{event.name}}
+        <span
+          class="badge"
+          :class="this.getLabelByDeadline(event.start_date, event.end_date).class"
+        >{{ this.getLabelByDeadline(event.start_date, event.end_date).text }}</span>
+      </div>
       <div class="card-body" v-if="isMyEventByEventId(event.id)">
         <p class="card-text">認証キー： {{event.key}}</p>
         <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
@@ -73,6 +79,25 @@ export default {
       isMyEventByEventId: "events/isMyEventByEventId",
       getPhotosForEventId: "photos/getPhotosForEventId",
       isLogin: "users/isLogin",
+      getLabelByDeadline: "events/getLabelByDeadline"
+    }),
+    alt() {
+      return function(id) {
+        return this.event.name + "の写真" + id;
+      };
+    }
+  },
+  methods: {
+    ...mapActions("photos", ["deleteEventPhoto"]),
+    async deletePhoto(event_id, photo_id) {
+      await this.deleteEventPhoto({ event_id, photo_id });
+    },
+    async deleteEvent() {
+      var result = confirm("本当にイベントを削除してよろしいですか？");
+      if (result) {
+        await this.$store.dispatch("events/deleteEvent", this.event.id);
+        this.$router.push({ path: "/events" });
+      }
       selectedColumns: "display/selectedColumns",
       accessDevice: "display/accessDevice"
     }),
@@ -143,8 +168,10 @@ export default {
 };
 </script>
 
-<style scoped>
-.d-flex.option * {
+<style scoped lang="scss">
+.img-area img {
+  max-width: 48%;
+.d-flex .option * {
   padding: 0 16px;
 }
 h3.is-full-width {
@@ -158,6 +185,9 @@ h3.is-full-width {
     max-width: 100%;
   }
 }
+.badge {
+  font-size: 12px;
+  margin-left: 6px;
 </style>
 
 <style>
