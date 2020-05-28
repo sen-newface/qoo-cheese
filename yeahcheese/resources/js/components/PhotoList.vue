@@ -1,37 +1,38 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between flex-wrap mb-5 img-area">
+    <div class="my_grid mb-5 img-area" :class="imgThumbnailSize">
       <div
-        class="image_set"
-        :class="imgThumbnailSize"
+        class="text-center grid_item"
         v-show="photos.length"
         v-for=" (image, index) in photos"
         :key="image.id"
       >
-        <img
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          @click="openPreview(index)"
-          class="img-thumbnail mb-2 bg-white"
-        />
-        <div class="file_title">
-          <p class="preview_title">{{getTitle(image)}}</p>
-          <p class="file_icons">
-            <i
-              class="fa fas fa-trash"
-              style="color: red; margin-right: auto; margin-left: 6px;"
-              @click="delPhoto(index)"
-              v-if="isMyEvent"
-            ></i>
-            <a
-              :href="image.image_path"
-              :download="getTitle(image)"
-              @click.stop
-              style="margin-top: auto; margin-left: auto;"
-            >
-              <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
-            </a>
-          </p>
+        <div class="image_set">
+          <img
+            :alt="alt(image.id)"
+            :src="image.image_path"
+            @click="openPreview(index)"
+            class="img-thumbnail mb-2 bg-white"
+          />
+          <div class="file_title">
+            <p class="preview_title" @click="openPreview(index)">{{getTitle(image)}}</p>
+            <p class="file_icons">
+              <i
+                class="fa fas fa-trash"
+                style="color: red; margin-right: auto; margin-left: 6px;"
+                @click="delPhoto(index)"
+                v-if="isMyEvent"
+              ></i>
+              <a
+                :href="image.image_path"
+                :download="getTitle(image)"
+                @click.stop
+                style="margin-top: auto; margin-left: auto;"
+              >
+                <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
+              </a>
+            </p>
+          </div>
         </div>
       </div>
       <p v-show="!photos.length">写真はまだありません</p>
@@ -39,15 +40,15 @@
     <div class="wrap" v-if="preview" @click="preview=''">
       <div class="inner_wrap">
         <div class="content">
-          <div class="preview_set w100perSp" @click.stop>
-            <div class="preview_contents w100perSp">
+          <div class="preview_set width100perSp" @click.stop>
+            <div class="preview_contents width100perSp">
               <i
                 class="fa fa-arrow-left arrow_icon"
                 :class="isFirstArrow(preview_index)"
                 @click="openPreview(preview_index - 1)"
               ></i>
-              <div class="w100perSp">
-                <div class="d-flex preview_icons w100perSp">
+              <div class="width100perSp">
+                <div class="d-flex preview_icons width100perSp">
                   <i
                     class="fa fas fa-trash"
                     style="color: red; margin-right: auto; margin-left: 6px;"
@@ -180,14 +181,17 @@ export default {
 
 
 
-<style scoped>
+<style scoped lang="scss">
+.my_grid {
+  margin: 0 auto;
+  column-count: 2;
+}
+
 .img-area .image_set {
-  max-width: 49%;
+  max-width: 100%;
   cursor: pointer;
   position: relative;
-}
-.img-area * {
-  transition: max-width 0.2s ease;
+  display: inline-block;
 }
 
 .img-area .image_set:hover {
@@ -226,6 +230,7 @@ export default {
 .file_title .preview_title {
   float: left;
   width: 78%;
+  text-align: left;
 }
 
 .file_icons {
@@ -238,37 +243,40 @@ export default {
   font-size: 28px;
 }
 
-.img-area .img-thumbnail-size1 {
-  max-width: 100%;
+.img-thumbnail-size1 {
+  column-count: 1;
 }
-.img-area .img-thumbnail-size2 {
-  max-width: 49.5%;
+.img-thumbnail-size2 {
+  column-count: 2;
 }
-.img-area .img-thumbnail-size3 {
-  max-width: 33.33333333%;
+.img-thumbnail-size3 {
+  column-count: 3;
 }
-.img-area .img-thumbnail-size4 {
-  max-width: 24.5%;
+.img-thumbnail-size4 {
+  column-count: 4;
 }
-.img-area .img-thumbnail-size5 {
-  max-width: 19.5%;
+.img-thumbnail-size5 {
+  column-count: 5;
 }
 
-.img-area .img-thumbnail-size4 .file_title {
+.img-thumbnail-size4 .file_title {
   font-size: 0.8rem;
 }
-.img-area .img-thumbnail-size5 .file_title {
+.img-thumbnail-size5 .file_title {
   font-size: 0.8rem;
 }
 
-.img-area .img-thumbnail-size4 .file_title .file_icons i {
+.img-thumbnail-size4 .file_title .file_icons i {
   font-size: 20px !important;
 }
-.img-area .img-thumbnail-size5 .file_title .file_icons i {
+.img-thumbnail-size5 .file_title .file_icons i {
   font-size: 20px !important;
 }
 
-.file_icons i @media screen and (max-width: 767px) {
+@media screen and (max-width: 767px) {
+  .my_grid {
+    column-count: 1;
+  }
   .file_title {
     display: block;
   }
@@ -291,7 +299,7 @@ export default {
   .preview_contents .fa-arrow-right {
     transform: rotate(90deg);
   }
-  .w100perSp {
+  .width100perSp {
     width: 100%;
   }
 }
@@ -337,6 +345,7 @@ export default {
   margin-bottom: 0 !important;
   object-fit: cover;
   max-width: 100%;
+  max-height: 82vh;
 }
 
 .wrap {
@@ -359,9 +368,5 @@ export default {
   max-height: 88%;
   width: 88%;
   padding: 21px;
-}
-
-.w100per {
-  width: 100%;
 }
 </style>

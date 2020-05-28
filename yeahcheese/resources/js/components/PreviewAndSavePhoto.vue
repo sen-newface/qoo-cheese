@@ -121,7 +121,7 @@ export default {
       return filename.slice(pos + 1);
     },
     checkExt(filename) {
-      const allow_exts = new Array("jpeg");
+      const allow_exts = new Array("jpeg", "jpg");
       let ext = this.getExt(filename).toLowerCase();
       if (allow_exts.indexOf(ext) === -1) return false;
       return true;
@@ -133,7 +133,7 @@ export default {
     async upPhoto() {
       let data = new FormData();
       data.append("event_id", this.eventId);
-      this.files.forEach((v, i) => {
+      this.files.forEach(v => {
         data.append("titles[]", v.title || "");
         data.append("images[]", v);
       });
@@ -176,6 +176,7 @@ export default {
   width: 49%;
   margin-bottom: 12px;
   position: relative;
+  display: inline-table;
 }
 @media screen and (max-width: 767px) {
   .preview_box {
