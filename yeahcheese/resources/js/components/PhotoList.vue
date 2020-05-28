@@ -126,6 +126,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("photos", ["photoLikesStore", "photoLikesDestroy"]),
     openPreview(index) {
       if (this.photos[index]) {
         this.preview = this.photos[index].image_path;
@@ -144,12 +145,37 @@ export default {
       }
     },
     toggleLikesIcon(photo) {
+      const user_id = this.user.id;
       const photo_id = photo.id;
+      const payload = {
+        user_id,
+        photo_id
+      };
       const request_type = photo.is_favorite ? "DELETE" : "POST";
-      // TODO: アクション起動
+      this.likesRequest(request_type, payload);
+      photo.is_favorite = !photo.is_favorite;
     },
     initData() {
       this.preview = "";
+    },
+    async likesRequest(request_type, payload) {
+      if (request_type === "DELETE") {
+        delete payload.user_id;
+        const response = await this.photoLikesDestroy(payload);
+        console.log("DELETE response", response);
+        this.ifFailedLikes();
+      } else {
+        const response = await this.photoLikesStore(payload);
+        console.log("POST response", response);
+        this.ifFailedLikes();
+      }
+    },
+    ifFailedLikes() {
+      if (!this.isSuccess) {
+        photo.is_favorite = !photo.is_favorite;
+      } else {
+        console.log("SUCCESS");
+      }
     }
   },
   watch: {
@@ -253,6 +279,10 @@ export default {
   margin-left: auto;
   margin-right: 6px;
   animation: dislike 0.5s ease;
+  cursor: pointer;
+}
+.photo-likes-icon:hover {
+  transform: scale(1.02, 1.02);
 }
 .photo-likes-icon.likes {
   color: palevioletred;
