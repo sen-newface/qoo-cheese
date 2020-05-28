@@ -51,7 +51,7 @@ export default {
     const response = await api.photoLikesIndex();
     const isSuccess = store.getters['status/isApiSuccess'];
     if (isSuccess) {
-      commit("setLikedPhotos", response.data);
+      commit("setLikedPhotos", response);
       return response;
     }
   },
