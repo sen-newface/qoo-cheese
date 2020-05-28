@@ -1,16 +1,25 @@
 <template>
   <div>
     <div id="img-thumbnail" class="d-flex justify-content-between flex-wrap mb-5 img-area">
-      <img
+      <div
+        class="img-thumbnail-wrap"
         v-show="photos.length"
         v-for=" (image, index) in photos"
         :key="image.id"
-        :alt="alt(image.id)"
-        :src="image.image_path"
-        class="img-thumbnail mb-2 bg-white"
         :class="imgThumbnailSize"
-        @click="openPreview(index)"
-      />
+      >
+        <img
+          :alt="alt(image.id)"
+          :src="image.image_path"
+          class="img-thumbnail mb-2 bg-white"
+          @click="openPreview(index)"
+        />
+        <i
+          class="fa fa-gratipay photo-likes-icon thumbnail"
+          :class="likesClasses(image.id)"
+          @click="toggleLikesIcon(image.id)"
+        ></i>
+      </div>
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
     <div class="wrap" v-if="preview" @click="preview=''">
@@ -84,12 +93,14 @@ export default {
     return {
       preview: "",
       preview_index: "",
-      isLikedIcon: null,
-      likesPhotoId: null
+      isLikedIcon: null, //お気に入りのボタンが一度でも押されたかどうかのフラグ
+      likesPreviewPhotoId: null, //プレビュー用のid収納
+      likesPhotoIds: [] //一覧用のid収納
     };
   },
   computed: {
     ...mapGetters({
+      user: "users/user",
       selectedColumns: "display/selectedColumns"
     }),
     alt() {
@@ -111,8 +122,11 @@ export default {
       return "img-thumbnail-size" + this.selectedColumns;
     },
     likesClass() {
-      if (this.isLikedIcon !== null) {
-        return { likes: this.isLikedIcon, dislikes: !this.isLikedIcon };
+      if (
+        this.isLikedIcon !== null &&
+        this.likesPhotoIds.includes(this.likesPreviewPhotoId)
+      ) {
+        return { likes: true };
       }
       return "";
     }
@@ -135,11 +149,21 @@ export default {
         this.preview_index = "";
       }
     },
+    likesClasses(photo_id) {
+      return { likes: this.likesPhotoIds.includes(photo_id) };
+    },
     toggleLikesIcon(photo_id) {
-      this.isLikedIcon = !this.isLikedIcon;
+      this.isLikedIcon =
+        this.isLikedIcon === null || this.isLikedIcon === false ? true : false;
       // TODO: event_idとphoto_idを保持しておく
-      this.likesPhotoId = photo_id;
-      console.log("お気に入り状態を変更する写真のID", this.likesPhotoId);
+      this.likesPreviewPhotoId = photo_id;
+      if (!this.likesPhotoIds.includes(photo_id)) {
+        this.likesPhotoIds.push(photo_id);
+      } else {
+        const idx = this.likesPhotoIds.findIndex(id => id === photo_id);
+        this.likesPhotoIds.splice(idx, 1);
+      }
+      console.log("お気に入りする登録もの", this.likesPhotoIds);
     },
     initData() {
       this.preview = "";
@@ -148,8 +172,6 @@ export default {
   watch: {
     preview: {
       handler(val) {
-        // !罰ボタン以外の場所をクリックしたとき対策
-        this.isLikedIcon = null;
         if (val) {
           this.no_scroll();
         } else {
@@ -157,6 +179,9 @@ export default {
         }
       }
     }
+  },
+  beforeDestroy() {
+    const user_id = this.user.id;
   },
   mixins: [scrollControllable]
 };
@@ -166,9 +191,16 @@ export default {
 
 <style scoped>
 .img-area img {
-  max-width: 49%;
   cursor: pointer;
   transition: all 0.3s ease 0s;
+}
+.img-thumbnail-wrap {
+  position: relative;
+}
+.img-thumbnail-wrap .img-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .img-area * {
   transition: max-width 0.2s ease;
@@ -237,14 +269,23 @@ export default {
 .photo-likes-icon {
   margin-left: auto;
   margin-right: 6px;
+  animation: dislike 0.5s ease;
 }
 .photo-likes-icon.likes {
   color: palevioletred;
   animation: like 0.5s ease;
 }
-.photo-likes-icon.dislikes {
-  color: ivory;
+.photo-likes-icon.thumbnail {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 55px;
   animation: dislike 0.5s ease;
+}
+/**後でまとめる */
+.photo-likes-icon.thumbnail.likes {
+  color: palevioletred;
+  animation: like 0.5s ease;
 }
 
 @keyframes like {
