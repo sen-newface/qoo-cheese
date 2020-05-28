@@ -16,7 +16,8 @@ class PhotoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $user, $event;
+    public $user;
+    public $event;
 
     public function setUp(): void
     {

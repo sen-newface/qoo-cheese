@@ -17,7 +17,9 @@ class FavoriteControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $user, $event, $photo;
+    public $user;
+    public $event;
+    public $photo;
 
     public function setUp(): void
     {
