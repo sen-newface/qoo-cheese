@@ -55,17 +55,16 @@ export default {
         this.validationMessages.push("認証キーを入力してください");
         return false;
       }
+      let response = await api.eventAuth(this.authKey);
+      if (this.isApiSuccess) {
+        this.$router.push({ path: response.path });
+      } else {
+        this.validationMessages.push(...response.errors);
+      }
       let event = this.getEventForkey(this.authKey);
       if (event) {
         this.$router.push({ path: `/events/event-${event.id}` });
         return false;
-      }
-      const response = await api.eventAuth(this.authKey);
-      if (this.isApiSuccess) {
-        await this.$store.commit("events/setAuthedEvent", response);
-        this.$router.push({ path: `/events/event-${response.id}` });
-      } else {
-        this.validationMessages.push("認証キーが間違っています");
       }
     },
     delValidation() {

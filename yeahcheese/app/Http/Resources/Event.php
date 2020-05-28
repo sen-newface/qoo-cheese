@@ -23,7 +23,8 @@ class Event extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'created_at' => $this->created_at,
-            'photos' => PhotoResource::collection($this->photos->take(2))
+            'photos' => PhotoResource::collection($this->photos->take(2)),
+            'photos_count' => count($this->photos)
         ];
     }
 }
