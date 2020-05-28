@@ -51,7 +51,6 @@ class FavoriteControllerTest extends TestCase
     {
         $url = route('like.store');
         $data = [
-            'user_id' => $this->user->id,
             'photo_id' => $this->photo->id,
         ];
         $this->post($url, $data);
@@ -78,7 +77,6 @@ class FavoriteControllerTest extends TestCase
     {
         $url = route('like.store');
         $data = [
-            'user_id' => $this->user->id,
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);
@@ -94,7 +92,6 @@ class FavoriteControllerTest extends TestCase
     {
         $url = route('like.store');
         $data = [
-            'user_id' => $this->user->id,
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);

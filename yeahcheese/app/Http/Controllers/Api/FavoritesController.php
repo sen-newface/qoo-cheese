@@ -23,8 +23,9 @@ class FavoritesController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth('sanctum')->user();
         $favorite = new Favorite();
-        $favorite->user_id = $request->user_id;
+        $favorite->user_id = $user->id;
         $favorite->photo_id = $request->photo_id;
 
         return response(FavoriteResource::make(Favorite::create($favorite->toArray())), 201);
