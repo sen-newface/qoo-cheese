@@ -17,6 +17,7 @@ export default {
       let response = await api.eventIndex();
       const isSuccess = store.getters["status/isApiSuccess"];
       if (isSuccess) {
+        context.commit("delEvents")
         context.commit("setEvents", response.data);
         context.commit("setInitLoad", false);
         return response

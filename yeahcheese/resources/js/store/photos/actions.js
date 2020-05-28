@@ -32,7 +32,19 @@ export default {
       photos = await dispatch("setPhotosForEventId", event_id)
     }
   },
-  async deleteEventPhoto({ commit }, { event_id, photo_id }) {
-    const response = await api.eventPhotosDestroy(event_id, photo_id);
+
+  async deletePhoto({ dispatch, commit, getters }, { event_id, photo_id }) {
+
+    let response = await api.eventPhotosDestroy(event_id, photo_id)
+    const isSuccess = store.getters["status/isApiSuccess"];
+    if (isSuccess) {
+      let photo_index = getters.getPhotoIndexForEventId(event_id, photo_id)
+      commit("delPhotoByEventId", { event_id: event_id, photo_index: photo_index });
+      commit("events/updateEventPreviews", { event_id: event_id, photos: getters.getPhotosForEventId(event_id) }, { root: true });
+      commit("flashMessage/setTextAndClass", { text: "写真の削除に成功しました", cls: "success" }, { root: true });
+      return response
+    } else {
+      return response.errors;
+    }
   }
 }
