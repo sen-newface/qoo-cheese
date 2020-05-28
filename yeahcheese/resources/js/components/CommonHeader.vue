@@ -25,6 +25,9 @@
               <span id="logout-btn" class="text-primary" @click="logout">ログアウト</span>
             </li>
             <li class="nav-item mr-3">
+              <router-link :to="{ path: '/photos/favorite' }">お気に入り写真一覧</router-link>
+            </li>
+            <li class="nav-item mr-3">
               <span class="text-secondary">{{ user.name }}さんがログイン中</span>
             </li>
           </template>

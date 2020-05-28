@@ -155,29 +155,26 @@ export default {
         photo_id
       };
       const request_type = photo.is_favorite ? "DELETE" : "POST";
-      this.likesRequest(request_type, payload);
-      photo.is_favorite = !photo.is_favorite;
+      this.likesRequest(request_type, payload, photo);
     },
     initData() {
       this.preview = "";
     },
-    async likesRequest(request_type, payload) {
+    async likesRequest(request_type, payload, photo) {
       if (request_type === "DELETE") {
         delete payload.user_id;
         const response = await this.photoLikesDestroy(payload);
         console.log("DELETE response", response);
-        this.ifFailedLikes();
+        this.ifSuccessLikes(photo);
       } else {
         const response = await this.photoLikesStore(payload);
         console.log("POST response", response);
-        this.ifFailedLikes();
+        this.ifSuccessLikes(photo);
       }
     },
-    ifFailedLikes() {
-      if (!this.isSuccess) {
+    ifSuccessLikes(photo) {
+      if (this.isSuccess) {
         photo.is_favorite = !photo.is_favorite;
-      } else {
-        console.log("SUCCESS");
       }
     }
   },
