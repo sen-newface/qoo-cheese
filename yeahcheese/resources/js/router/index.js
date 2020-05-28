@@ -6,6 +6,7 @@ import EventsIndex from '../pages/eventsIndex.vue';
 import EventsShow from '../pages/eventShow.vue';
 import EventStore from '../pages/eventStore.vue';
 import EventEdit from '../pages/EventEdit.vue';
+import UserFavoritePhotos from '../pages/UserFavoritePhotos.vue';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue'
 import Index from '../pages/index.vue';
@@ -55,6 +56,12 @@ const routes = [
     path: '/events/event-:id/edit',
     name: 'eventEdit',
     component: EventEdit,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/photos/favorite',
+    name: 'photoFavorite',
+    component: UserFavoritePhotos,
     meta: { requiresAuth: true }
   },
   {
