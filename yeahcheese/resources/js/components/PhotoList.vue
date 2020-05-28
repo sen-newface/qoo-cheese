@@ -33,7 +33,7 @@
                   ></i>
                   <i
                     class="fa fa-gratipay photo-likes-icon"
-                    :class="{ 'likes': isLikedIcon }"
+                    :class="likesClass"
                     @click="toggleLikesIcon(photos[preview_index].id)"
                   ></i>
                   <a
@@ -109,6 +109,12 @@ export default {
     },
     imgThumbnailSize() {
       return "img-thumbnail-size" + this.selectedColumns;
+    },
+    likesClass() {
+      if (this.likesPhotoId !== null) {
+        return { likes: this.isLikedIcon, dislikes: !this.isLikedIcon };
+      }
+      return "";
     }
   },
   methods: {
@@ -226,21 +232,37 @@ export default {
 .photo-likes-icon {
   margin-left: auto;
   margin-right: 6px;
-  color: ivory;
-  transition: 0.5s;
 }
 .photo-likes-icon.likes {
   color: palevioletred;
+  animation: like 0.5s ease;
 }
-@keyframes jump {
+.photo-likes-icon.dislikes {
+  color: ivory;
+  animation: dislike 0.5s ease;
+}
+
+@keyframes like {
   0% {
     transform: translateY(0px);
   }
-
   50% {
-    transform: translateY(5px);
+    transform: translateY(-5px);
+    text-shadow: 0 0 10px palevioletred;
   }
+  100% {
+    transform: translateY(0px);
+  }
+}
 
+@keyframes dislike {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+    text-shadow: 0 0 10px ivory;
+  }
   100% {
     transform: translateY(0px);
   }
