@@ -1,10 +1,10 @@
 <template>
   <div id="event-edit">
-    <AlertModel :isShow="openAlertModel" @close-modal="closeModal">
+    <AlertModal :isShow="openAlertModal" @close-modal="closeModal">
       <p slot="alert-text">編集内容を保存していません</p>
       <button class="modal-btn save-btn" slot="additional" @click="saveAndMove(true)">⓵変更を保存して移動</button>
       <button class="modal-btn unsave-btn" slot="additional" @click="saveAndMove(false)">②変更を保存せずに移動</button>
-    </AlertModel>
+    </AlertModal>
     <router-link
       class="btn btn-outline-info mb-5"
       :to="{ name: 'eventShow', params: { id: eventForm.id } }"
@@ -54,13 +54,13 @@
 import { mapGetters, mapActions } from "vuex";
 import validationMessages from "../components/validationMessages";
 import PreviewAndSavePhoto from "../components/PreviewAndSavePhoto";
-import AlertModel from "../components/AlertModal";
+import AlertModal from "../components/AlertModal";
 export default {
   name: "EventEdit",
   components: {
     validationMessages,
     PreviewAndSavePhoto,
-    AlertModel
+    AlertModal
   },
   data() {
     return {
@@ -72,7 +72,7 @@ export default {
       },
       validationMessages: [],
       isUnsave: false,
-      openAlertModel: false,
+      openAlertModal: false,
       transitionPath: "",
       wantSave: false
     };
