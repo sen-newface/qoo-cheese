@@ -80,8 +80,7 @@ export default {
   computed: {
     ...mapGetters({
       isSuccess: "status/isApiSuccess",
-      getEventForId: "events/getEventForId",
-      tmpEvent: "events/tmpEvent"
+      getEventForId: "events/getEventForId"
     }),
     isValid() {
       return function(form_name) {
