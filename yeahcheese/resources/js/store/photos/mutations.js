@@ -16,16 +16,31 @@ export default {
   delPhotos(state) {
     state.eventPhotos = []
   },
+
   setLikedPhotos(state, likePhotos) {
     state.likedPhotos = likePhotos;
   },
   pushLikedPhoto(state, likePhoto) {
     state.likedPhotos.push(likePhoto);
+    state.eventPhotos.forEach((eventInfo) => {
+      console.log(eventInfo);
+      if (eventInfo.photos.includes(likePhoto.photo_id)) {
+        const idx = eventInfo.photos.findIndex((p) => p.id === likePhoto.photo_id);
+        eventInfo.photos[idx].is_favorite = true;
+      }
+    });
   },
-  deleteLikedPhoto(state, disLikePhoto) {
+  deleteLikedPhoto(state, dislikePhoto) {
+    //eventPhotosとlikedPhotosを変更
     const index = state.likedPhotos.findIndex((photo) => {
-      return photo.id = disLikePhoto.id;
+      return photo.id = dislikePhoto.id;
     });
     state.likedPhotos.splice(index, 1);
+    state.eventPhotos.forEach((eventInfo) => {
+      if (eventInfo.photos.includes(dislikePhoto.photo_id)) {
+        const idx = eventInfo.photos.findIndex((p) => p.id === likePhoto.photo_id);
+        eventInfo.photos[idx].is_favorite = false;
+      }
+    });
   }
 }
