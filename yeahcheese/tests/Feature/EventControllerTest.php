@@ -268,6 +268,10 @@ class EventControllerTest extends TestCase
         $res->assertStatus(422);
         $res = $this->actingAs($user)->json('POST', $url, $data3);
         $res->assertStatus(422);
+        $res = $this->actingAs($user)->json('POST', $url, $data4);
+        $res->assertStatus(422);
+        $res = $this->actingAs($user)->json('POST', $url, $data5);
+        $res->assertStatus(422);
     }
 
     /**
