@@ -15,5 +15,17 @@ export default {
   },
   delPhotos(state) {
     state.eventPhotos = []
+  },
+  setLikedPhotos(state, likePhotos) {
+    state.likedPhotos = likePhotos;
+  },
+  pushLikedPhoto(state, likePhoto) {
+    state.likedPhotos.push(likePhoto);
+  },
+  deleteLikedPhoto(state, disLikePhoto) {
+    const index = state.likedPhotos.findIndex((photo) => {
+      return photo.id = disLikePhoto.id;
+    });
+    state.likedPhotos.splice(index, 1);
   }
 }
