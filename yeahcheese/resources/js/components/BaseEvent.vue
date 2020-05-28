@@ -49,10 +49,11 @@ export default {
   },
   methods: {
     dispTransformDeadline(release_start, release_end) {
-      return;
-      this.transformDate(release_start) +
+      return (
+        this.transformDate(release_start) +
         "〜" +
-        this.transformDate(release_end);
+        this.transformDate(release_end)
+      );
     },
     transformDate(date) {
       const dateArr = date.split("-");

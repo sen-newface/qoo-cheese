@@ -80,6 +80,28 @@ export default {
       return function(id) {
         return this.event.name + "の写真" + id;
       };
+    },
+    minColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最小列数は2
+      const min = this.accessDevice ? 2 : 1;
+      return min;
+    },
+    maxColumn() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * PCの場合は最大列数は5
+      const max = this.accessDevice ? 5 : 2;
+      return max;
+    },
+    isFullWidth() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合は横幅をフルで取る
+      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
+    },
+    isFlex() {
+      // * accessDeviceがtrueのときはPCからのアクセス
+      // * スマホの場合はフレックス対応でないようにする
+      return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
   methods: {
@@ -109,35 +131,14 @@ export default {
       } else {
         return date;
       }
-    },
-    minColumn() {
-      // * accessDeviceがtrueのときはPCからのアクセス
-      // * PCの場合は最小列数は2
-      const min = this.accessDevice ? 2 : 1;
-      return min;
-    },
-    maxColumn() {
-      // * accessDeviceがtrueのときはPCからのアクセス
-      // * PCの場合は最大列数は5
-      const max = this.accessDevice ? 5 : 2;
-      return max;
-    },
-    isFullWidth() {
-      // * accessDeviceがtrueのときはPCからのアクセス
-      // * スマホの場合は横幅をフルで取る
-      return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
-    },
-    isFlex() {
-      // * accessDeviceがtrueのときはPCからのアクセス
-      // * スマホの場合はフレックス対応でないようにする
-      return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.event = this.getEventForId(event_id);
-    this.getAccessingUserDevice();
+    // this.getAccessingUserDevice();
+    this.$store.dispatch("display/getAccessingUserDevice");
   }
 };
 </script>
