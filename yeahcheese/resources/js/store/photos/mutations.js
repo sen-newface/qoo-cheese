@@ -20,25 +20,26 @@ export default {
   setLikedPhotos(state, likePhotos) {
     state.likedPhotos = likePhotos;
   },
-  pushLikedPhoto(state, likePhoto) {
-    state.likedPhotos.push(likePhoto);
+  pushLikedPhoto(state, photo) {
+    console.log(photo);
+    state.likedPhotos.push(photo);
     state.eventPhotos.forEach((eventInfo) => {
-      console.log(eventInfo);
-      if (eventInfo.photos.includes(likePhoto.photo_id)) {
-        const idx = eventInfo.photos.findIndex((p) => p.id === likePhoto.photo_id);
+      if (eventInfo.photos.includes(photo.photo_id)) {
+        const idx = eventInfo.photos.findIndex((p) => p.id === photo.photo_id);
         eventInfo.photos[idx].is_favorite = true;
       }
     });
   },
-  deleteLikedPhoto(state, dislikePhoto) {
+  deleteLikedPhoto(state, photo) {
+    console.log(photo);
     //eventPhotosとlikedPhotosを変更
-    const index = state.likedPhotos.findIndex((photo) => {
-      return photo.id = dislikePhoto.id;
+    const index = state.likedPhotos.findIndex((p) => {
+      return p.id == photo.id;
     });
     state.likedPhotos.splice(index, 1);
     state.eventPhotos.forEach((eventInfo) => {
-      if (eventInfo.photos.includes(dislikePhoto.photo_id)) {
-        const idx = eventInfo.photos.findIndex((p) => p.id === likePhoto.photo_id);
+      if (eventInfo.photos.includes(photo.photo_id)) {
+        const idx = eventInfo.photos.findIndex((p) => p.id === photo.photo_id);
         eventInfo.photos[idx].is_favorite = false;
       }
     });

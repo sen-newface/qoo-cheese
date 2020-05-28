@@ -55,19 +55,19 @@ export default {
       return response;
     }
   },
-  async photoLikesStore({ commit }, payload) {
+  async photoLikesStore({ commit }, { photo, ...payload }) {
     const response = await api.photoLikesStore(payload);
     const isSuccess = store.getters['status/isApiSuccess'];
     if (isSuccess) {
-      commit("pushLikedPhoto", response);
+      commit("pushLikedPhoto", photo);
       return response;
     }
   },
-  async photoLikesDestroy({ commit }, payload) {
+  async photoLikesDestroy({ commit }, { photo, ...payload }) {
     const response = await api.photoLikesDestroy(payload);
     const isSuccess = store.getters['status/isApiSuccess'];
     if (isSuccess) {
-      commit("deleteLikedPhoto", response);
+      commit("deleteLikedPhoto", photo);
       return response;
     }
   }

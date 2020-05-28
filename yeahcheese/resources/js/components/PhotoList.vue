@@ -152,10 +152,11 @@ export default {
       const photo_id = photo.id;
       const payload = {
         user_id,
-        photo_id
+        photo_id,
+        photo
       };
       const request_type = photo.is_favorite ? "DELETE" : "POST";
-      this.likesRequest(request_type, payload, photo);
+      this.likesRequest(request_type, payload);
     },
     initData() {
       this.preview = "";
@@ -164,12 +165,10 @@ export default {
       if (request_type === "DELETE") {
         delete payload.user_id;
         const response = await this.photoLikesDestroy(payload);
-        console.log("DELETE response", response);
-        this.ifSuccessLikes(photo);
+        this.ifSuccessLikes(payload.photo);
       } else {
         const response = await this.photoLikesStore(payload);
-        console.log("POST response", response);
-        this.ifSuccessLikes(photo);
+        this.ifSuccessLikes(payload.photo);
       }
     },
     ifSuccessLikes(photo) {
