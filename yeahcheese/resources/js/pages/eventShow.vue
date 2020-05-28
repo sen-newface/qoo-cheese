@@ -9,18 +9,15 @@
         <router-link class="btn btn-primary" :to="{ name: 'eventEdit', params:  {id: event.id} }">編集</router-link>
         <button type="button" class="btn btn-danger" @click="deleteEvent">削除</button>
       </div>
-      <div class="card-footer text-muted">{{ event.start_date }} - {{ event.end_date }}</div>
+      <div
+        class="card-footer text-muted"
+      >{{ dispTransformDeadline(event.start_date, event.end_date) }}</div>
     </div>
     <section>
       <div class="option" :class="isFlex">
         <h3 :class="isFullWidth">写真一覧</h3>
         <PreviewAndSavePhoto v-if="isMyEventByEventId(event.id)" :event-id="event.id" />
-        <button
-          v-if="isMyEventByEventId(event.id)"
-          type="button"
-          class="btn btn-outline-success"
-          :class="isFullWidth"
-        >写真追加</button>
+
         <change-columns
           :min="minColumn"
           :max="maxColumn"
@@ -79,6 +76,11 @@ export default {
       selectedColumns: "display/selectedColumns",
       accessDevice: "display/accessDevice"
     }),
+    alt() {
+      return function(id) {
+        return this.event.name + "の写真" + id;
+      };
+    },
     minColumn() {
       // * accessDeviceがtrueのときはPCからのアクセス
       // * PCの場合は最小列数は2
@@ -102,11 +104,41 @@ export default {
       return this.accessDevice ? "d-flex mb-2" : "";
     }
   },
+  methods: {
+    ...mapActions("photos", ["deleteEventPhoto"]),
+    async deletePhoto(event_id, photo_id) {
+      await this.deleteEventPhoto({ event_id, photo_id });
+    },
+    deleteEvent: async function() {
+      var result = confirm("本当にイベントを削除してよろしいですか？");
+      if (result) {
+        await this.$store.dispatch("events/deleteEvent", this.event.id);
+        this.$router.push({ path: "/events" });
+      }
+    },
+    dispTransformDeadline(release_start, release_end) {
+      return;
+      this.transformDate(release_start) +
+        "〜" +
+        this.transformDate(release_end);
+    },
+    transformDate(date) {
+      const dateArr = date.split("-");
+      if (dateArr.length === 3) {
+        const jaDate =
+          dateArr[0] + "年" + dateArr[1] + "月" + dateArr[2] + "日";
+        return jaDate;
+      } else {
+        return date;
+      }
+    }
+  },
   async created() {
     let event_id = this.$route.params["id"];
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.event = this.getEventForId(event_id);
-    this.getAccessingUserDevice();
+    // this.getAccessingUserDevice();
+    this.$store.dispatch("display/getAccessingUserDevice");
   }
 };
 </script>
