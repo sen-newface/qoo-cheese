@@ -16,13 +16,14 @@ class PhotoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $user, $event;
+    public $user, $user2, $event;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
 
         $this->actingAs($user);
         $event = factory(Event::class)->create(
@@ -32,6 +33,7 @@ class PhotoControllerTest extends TestCase
         );
         $this->event = $event;
         $this->user = $user;
+        $this->user2 = $user2;
     }
 
     public function testIndex()
@@ -103,6 +105,23 @@ class PhotoControllerTest extends TestCase
                 ]
                 ]
             );
+    }
+
+    public function testStore403()
+    {
+        Storage::fake('images');
+        $file = UploadedFile::fake()->image('test.jpeg');
+        $file2 = UploadedFile::fake()->image('test.jpeg');
+        $url = route('events.photos.store', $this->event->id);
+        $data = [
+        'event_id' => $this->event->id,
+        'images' => [$file, $file2],
+        ];
+        $this->actingAs($this->user2);
+        $response = $this->post($url, $data);
+        Storage::disk('images')->exists($file->name);
+        $response
+        ->assertStatus(403);
     }
 
     /**
