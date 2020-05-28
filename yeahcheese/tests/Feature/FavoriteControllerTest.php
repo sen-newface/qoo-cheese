@@ -80,8 +80,7 @@ class FavoriteControllerTest extends TestCase
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);
-        $response
-            ->assertStatus(201);
+        $response->assertStatus(201);
         $this->assertEquals(1, count($this->user->photos));
     }
 
@@ -98,8 +97,25 @@ class FavoriteControllerTest extends TestCase
 
         $url = route('like.destroy');
         $response = $this->delete($url, ['photo_id' => $this->photo->id]);
-        $response
-            ->assertStatus(204);
+        $response->assertStatus(204);
         $this->assertEquals(0, count($this->user->photos));
+    }
+
+    /**
+     * 異常系: バリデーションに引っかかる
+     */
+    public function testDestroyError()
+    {
+        $url = route('like.store');
+        $data = [
+            'photo_id' => $this->photo->id,
+        ];
+        $response = $this->post($url, $data);
+
+        $url = route('like.destroy');
+        $response = $this->delete($url, ['photo_id' => null]);
+        $response
+            ->assertStatus(200);
+        $this->assertEquals(1, count($this->user->photos));
     }
 }
