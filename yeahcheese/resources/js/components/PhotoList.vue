@@ -16,8 +16,8 @@
         />
         <i
           class="fa fa-gratipay photo-likes-icon thumbnail"
-          :class="likesClasses(image.id)"
-          @click="toggleLikesIcon(image.id)"
+          :class="likesClass(image)"
+          @click="toggleLikesIcon(image)"
         ></i>
       </div>
       <p v-show="!photos.length">写真はまだありません</p>
@@ -42,8 +42,8 @@
                   ></i>
                   <i
                     class="fa fa-gratipay photo-likes-icon"
-                    :class="likesClass"
-                    @click="toggleLikesIcon(photos[preview_index].id)"
+                    :class="likesClass(photos[preview_index])"
+                    @click="toggleLikesIcon(photos[preview_index])"
                   ></i>
                   <a
                     :href="this.photos[preview_index].image_path"
@@ -92,10 +92,7 @@ export default {
   data() {
     return {
       preview: "",
-      preview_index: "",
-      isLikedIcon: null, //お気に入りのボタンが一度でも押されたかどうかのフラグ
-      likesPreviewPhotoId: null, //プレビュー用のid収納
-      likesPhotoIds: [] //一覧用のid収納
+      preview_index: ""
     };
   },
   computed: {
@@ -122,13 +119,10 @@ export default {
       return "img-thumbnail-size" + this.selectedColumns;
     },
     likesClass() {
-      if (
-        this.isLikedIcon !== null &&
-        this.likesPhotoIds.includes(this.likesPreviewPhotoId)
-      ) {
-        return { likes: true };
-      }
-      return "";
+      // ! ステートが変更されれば自動的に変化する
+      return photo => {
+        return { likes: photo.is_favorite };
+      };
     }
   },
   methods: {
@@ -149,21 +143,10 @@ export default {
         this.preview_index = "";
       }
     },
-    likesClasses(photo_id) {
-      return { likes: this.likesPhotoIds.includes(photo_id) };
-    },
-    toggleLikesIcon(photo_id) {
-      this.isLikedIcon =
-        this.isLikedIcon === null || this.isLikedIcon === false ? true : false;
-      // TODO: event_idとphoto_idを保持しておく
-      this.likesPreviewPhotoId = photo_id;
-      if (!this.likesPhotoIds.includes(photo_id)) {
-        this.likesPhotoIds.push(photo_id);
-      } else {
-        const idx = this.likesPhotoIds.findIndex(id => id === photo_id);
-        this.likesPhotoIds.splice(idx, 1);
-      }
-      console.log("お気に入りする登録もの", this.likesPhotoIds);
+    toggleLikesIcon(photo) {
+      const photo_id = photo.id;
+      const request_type = photo.is_favorite ? "DELETE" : "POST";
+      // TODO: アクション起動
     },
     initData() {
       this.preview = "";
