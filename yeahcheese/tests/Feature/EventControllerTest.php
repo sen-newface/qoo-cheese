@@ -230,19 +230,33 @@ class EventControllerTest extends TestCase
         // nameがnull
         $data1 = [
             'name' => '',
-            'start_date' => '2020-11-11',
-            'end_date' => '2020-12-12',
+            'start_date' => '2120-11-11',
+            'end_date' => '2120-12-12',
         ];
         // start_dateがnull
         $data2 = [
             'name' => 'test',
             'start_date' => '',
-            'end_date' => '2020-12-12',
+            'end_date' => '2120-12-12',
         ];
-        // end_dateがnull
+
+        // start_dateが今日より前
         $data3 = [
             'name' => 'test',
-            'start_date' => '2020-11-11',
+            'start_date' => '2010-10-10',
+            'end_date' => '2120-12-12',
+        ];
+
+        // start_dateがend_dateより後
+        $data4 = [
+            'name' => 'test',
+            'start_date' => '2130-10-10',
+            'end_date' => '2120-12-12',
+        ];
+        // end_dateがnull
+        $data5 = [
+            'name' => 'test',
+            'start_date' => '2120-11-11',
             'end_date' => '',
         ];
         $user = factory(User::class)->create();
@@ -280,17 +294,7 @@ class EventControllerTest extends TestCase
         // start_dateがnull
         $event->name = '更新したイベント名';
         $event->start_date = '';
-        $event->end_date = '2020-10-21';
-        $data = $event->toArray();
-
-        $url = route('events.update', ['event' => $event_id]);
-        $response = $this->actingAs($user)->put($url, $data);
-        $response->assertStatus(302);
-
-        // start_dateが今日より前
-        $event->name = '更新したイベント名';
-        $event->start_date = '2010-10-10';
-        $event->end_date = '2020-10-21';
+        $event->end_date = '2100-10-21';
         $data = $event->toArray();
 
         $url = route('events.update', ['event' => $event_id]);
@@ -299,8 +303,8 @@ class EventControllerTest extends TestCase
 
         // start_dateがend_dateより後ろ
         $event->name = '更新したイベント名';
-        $event->start_date = '2022-2-22';
-        $event->end_date = '2020-10-21';
+        $event->start_date = '2122-2-22';
+        $event->end_date = '2120-10-21';
         $data = $event->toArray();
 
         $url = route('events.update', ['event' => $event_id]);
@@ -309,7 +313,7 @@ class EventControllerTest extends TestCase
 
         // end_dateがnull
         $event->name = '更新したイベント名';
-        $event->start_date = '2020-09-21';
+        $event->start_date = '2120-09-21';
         $event->end_date = '';
         $data = $event->toArray();
 
