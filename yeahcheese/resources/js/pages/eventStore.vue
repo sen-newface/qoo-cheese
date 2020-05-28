@@ -88,6 +88,10 @@ export default {
   methods: {
     async eventStore() {
       this.delValidation();
+      if (this.emptyCheckValidation()) {
+        this.validationMessages = ["入力内容に不備があります"];
+        return false;
+      }
       const response = await this.$store.dispatch(
         "events/eventStore",
         this.eventStoreForm
@@ -101,6 +105,12 @@ export default {
     },
     delValidation() {
       this.validationMessages = [];
+    },
+    emptyCheckValidation() {
+      const values = Object.values(this.eventStoreForm);
+      return values.some(val => {
+        return val.trim() === "";
+      });
     }
   }
 };
