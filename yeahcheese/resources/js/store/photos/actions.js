@@ -46,5 +46,27 @@ export default {
     } else {
       return response.errors;
     }
+  },
+  async photoLikesIndex({ commit }) {
+    const response = await api.photoLikesIndex();
+    const isSuccess = store.getters['status/isApiSuccess'];
+    if (isSuccess) {
+      commit("setLikedPhotos", response.data);
+      return response;
+    }
+  },
+  async photoLikesStore({ commit }, likesId) {
+    const response = await api.photoLikesStore(likesId);
+    const isSuccess = store.getters['status/isApiSuccess'];
+    if (isSuccess) {
+      commit("pushLikedPhoto", response.data);
+    }
+  },
+  async photoLikesDestroy({ commit }, dislikesId) {
+    const response = await api.photoLikesDestroy(dislikesId);
+    const isSuccess = store.getters['status/isApiSuccess'];
+    if (isSuccess) {
+      commit("deleteLikedPhoto", response.data);
+    }
   }
 }
