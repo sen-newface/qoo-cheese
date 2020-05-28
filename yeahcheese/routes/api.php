@@ -16,3 +16,8 @@ Route::post('/signup', "Api\AuthController@signup")->name('auth.signup');
 
 //login
 Route::post('/login', "Api\AuthController@login")->name('auth.login');
+
+
+Route::get('/likes', "Api\FavoritesController@index")->name('like.index');
+Route::post('/likes', "Api\FavoritesController@store")->name('like.store');
+Route::delete('/likes', "Api\FavoritesController@destroy")->name('like.destroy');

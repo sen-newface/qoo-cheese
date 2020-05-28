@@ -34,9 +34,9 @@ class User extends Authenticatable
     /**
      * お気に入りの写真を取得
      */
-    public function favorites()
+    public function photos()
     {
-        return $this->hasMany('App\Favorite');
+        return $this->belongsToMany('App\Photo', 'favorites');
     }
 
     /**

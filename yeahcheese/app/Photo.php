@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Favorite;
 
 class Photo extends Model
 {
@@ -28,6 +29,20 @@ class Photo extends Model
     public function users()
     {
         return $this->hasMany('App\User');
+    }
+
+    public function favoriteUser()
+    {
+        return $this->belongsToMany('App\User', 'favorites');
+    }
+
+    public function isFavorite()
+    {
+        $user = auth('sanctum')->user();
+        return $user ?
+            !Favorite::where('user_id', intval($user->id))
+                ->where('photo_id', $this->id)->get()->isEmpty()
+            : false;
     }
 
     protected $fillable = [
