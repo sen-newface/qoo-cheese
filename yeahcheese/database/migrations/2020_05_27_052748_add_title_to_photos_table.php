@@ -14,7 +14,8 @@ class AddTitleToPhotosTable extends Migration
     public function up()
     {
         Schema::table(
-            'photos', function (Blueprint $table) {
+            'photos',
+            function (Blueprint $table) {
                 $table->string('title')->nullable();
             }
         );
@@ -28,7 +29,8 @@ class AddTitleToPhotosTable extends Migration
     public function down()
     {
         Schema::table(
-            'photos', function (Blueprint $table) {
+            'photos',
+            function (Blueprint $table) {
                 $table->dropColumn('title');
             }
         );
