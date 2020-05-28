@@ -179,32 +179,21 @@ export default {
     return httpWithToken.post(Route.PHOTOS_STORE(id), photo).then(onSuccess, onError);
   },
 
-  // イベントの写真 削除
-  // 必要 param eventのid , photoのid
-  // 返却値 写真の json配列
-  // イベントに紐付く写真を削除
+  // イベントの写真 
   eventPhotosDestroy(id, photo_id) {
     setLoding("イベントの写真を削除しています")
     return httpWithToken.delete(Route.PHOTOS_DESTROY(id, photo_id)).then(onSuccess, onError);
   },
-
-  // イベントの写真 お気に入り
-  // 必要 param eventのid , photoのid
-  // 返却値 まだ分からない
-  // イベントに紐付く写真をお気に入り
-  eventPhotosAddLikes(id, photo_id) {
-    // setLoding("イベントの写真をお気に入り登録しています")
-    // putかpostかpatchかはバックエンド側と合わせる
-    return httpWithToken.put(Route.PHOTOS_ADD_LIKES(id, photo_id)).then(onSuccess, onError);
+  photoLikesIndex() {
+    return httpWithToken.get(Route.PHOTOS_LIKES_INDEX).then(onSuccess, onError);
+  },
+  // イベントの写真 お気に入り登録
+  photoLikesStore() {
+    return httpWithToken.post(Route.PHOTOS_ADD_LIKES, likesId).then(onSuccess, onError);
   },
 
-  // イベントの写真 お気に入り
-  // 必要 param eventのid , photoのid
-  // 返却値 まだ分からない
-  // イベントに紐付く写真をお気に入り
-  eventPhotosDeleteLikes(id, photo_id) {
-    // setLoding("イベントの写真をお気に入り＊＊＊しています")
-    // DELETEは写真削除で使用しているため、uri変更する必要あり（...photos/:id/likesとか？）
-    return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES(id, photo_id)).then(onSuccess, onError);
+  // イベントの写真 お気に入り削除
+  photoLikesDestroy() {
+    return httpWithToken.delete(Route.PHOTOS_DELETE_LIKES, dislikesId).then(onSuccess, onError);
   }
 };
