@@ -21,7 +21,8 @@ export default {
     state.likedPhotos = likePhotos;
   },
   pushLikedPhoto(state, photo) {
-    state.likedPhotos.push(photo);
+    const pushIdx = state.likedPhotos.length;
+    state.likedPhotos.splice(pushIdx, 1, photo);
     state.eventPhotos.forEach((eventInfo) => {
       if (eventInfo.photos.includes(photo.photo_id)) {
         const idx = eventInfo.photos.findIndex((p) => p.id === photo.photo_id);
