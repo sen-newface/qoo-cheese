@@ -150,19 +150,19 @@ class PhotoControllerTest extends TestCase
      */
     public function testInvalidDestroy()
     {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
         Storage::fake('images');
         $file = UploadedFile::fake()->image('test.jpeg');
         $url = route('events.photos.store', ['event' => $this->event->id]);
         $data = [
-            'event_id' => $this->event->id,
-            'image_path' => $file,
+        'event_id' => $this->event->id,
+        'images' => [$file],
         ];
         $response = $this->post($url, $data);
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-        $url = route('events.photos.destroy', ['event' => $this->event->id, 'photo' => $response['id']]);
-        $response = $this->delete($url, [$this->event, $response['id']]);
+        $url = route('events.photos.destroy', ['event' => $this->event->id, 'photo' => $response[0]["id"]]);
+        $response = $this->delete($url, [$this->event, $response[0]["id"]]);
         $response
-            ->assertStatus(403);
+        ->assertStatus(403);
     }
 }
