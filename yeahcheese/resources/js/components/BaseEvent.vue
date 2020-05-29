@@ -1,7 +1,13 @@
 <template>
   <div class="card mb-3">
     <div class="card-header">
-      <h3 class="float-left">{{ eventInfo.name }}</h3>
+      <h3 class="float-left d-flex align-items-center">
+        {{ eventInfo.name }}
+        <span
+          class="badge"
+          :class="this.getLabelByDeadline(eventInfo.start_date, eventInfo.end_date).class"
+        >{{ this.getLabelByDeadline(eventInfo.start_date, eventInfo.end_date).text }}</span>
+      </h3>
       <router-link
         class="btn btn-outline-primary float-right"
         :to="{ name: 'eventShow', params: { id: eventInfo.id } }"
@@ -32,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "BaseEvent",
   props: {
@@ -41,6 +48,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      getLabelByDeadline: "events/getLabelByDeadline"
+    }),
     alt() {
       return function(id) {
         return this.eventInfo.name + "の写真" + id;
@@ -78,5 +88,10 @@ export default {
   img {
     float: none !important;
   }
+}
+
+h3 span {
+  font-size: 14px;
+  margin-left: 12px;
 }
 </style>

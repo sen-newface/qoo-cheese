@@ -108,14 +108,19 @@ export default {
   eventAuth(key) {
     setLoding("イベントのkeyを照合しています")
     let param = { key: key }
-    return httpWithToken.post(Route.EVENTS_AUTH, param).then(
-      res => {
-        const key = "event-" + res.data.id
-        setToken(res.data.key, key);
-        setApiStatus(res.status);
-        return res.data;
-      }
-      , onError)
+    const response = httpWithToken.post(Route.EVENTS_AUTH, param)
+      .then(
+        res => {
+          let response = res.data;
+          const status = response.status;
+          const key = response.data ? "event-" + response.data.id : null;
+          if (key) {
+            setToken(response.data.key, key);
+          }
+          setApiStatus(status);
+          return response;
+        })
+    return response;
   },
 
   // イベント一覧
@@ -171,12 +176,12 @@ export default {
   },
 
   // イベントの写真 追加
-  // 必要 param eventのid , $photo = {photo: {image_path}}
+  // 必要 param eventのid , $photos = [{image_path: "aaaa", title: "aaaaaaaaa"}]
   // 返却値 写真の json配列
   // イベントに紐付く写真を取得
-  eventPhotosPost(id, photo) {
+  eventPhotosPost(id, photos) {
     setLoding("イベントに写真を登録しています")
-    return httpWithToken.post(Route.PHOTOS_STORE(id), photo).then(onSuccess, onError);
+    return httpWithToken.post(Route.PHOTOS_STORE(id), photos).then(onSuccess, onError);
   },
 
   // イベントの写真 削除
