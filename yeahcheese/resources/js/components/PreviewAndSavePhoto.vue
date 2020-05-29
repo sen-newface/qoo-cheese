@@ -96,7 +96,7 @@ export default {
         fr.onload = res => {
           if (file.size > 2000000) {
             this.validationMessages.push(
-              "ファイルサイズは2MB以下にしてください。"
+              "一枚につきファイルサイズは2MB以下にしてください。"
             );
             resolve(null);
           }
