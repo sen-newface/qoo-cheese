@@ -324,6 +324,17 @@ class EventControllerTest extends TestCase
         $url = route('events.update', ['event' => $event_id]);
         $response = $this->actingAs($user)->put($url, $data);
         $response->assertStatus(302);
+
+        // イベント作成者でないユーザでイベント編集しようとした時
+        $another_user = new User([
+            'name' => 'test',
+            'email' => 'tttt@gmail.com',
+            'password' => 'test1234'
+        ]);
+        $another_user->save();
+        $response = $this->actingAs($another_user)->put($url, $data);
+        dd($response);
+        $response->assertStatus(403);
     }
 
     /**
