@@ -1,6 +1,6 @@
 <template>
   <div id="event-edit">
-    <AlertModal :isShow="openAlertModal" @close-modal="closeModal">
+    <AlertModal :isShow="openAlertModal" @click.native="closeModal">
       <p slot="alert-text">編集内容を保存していません</p>
       <button class="modal-btn save-btn" slot="additional" @click="saveAndMove(true)">⓵変更を保存して移動</button>
       <button class="modal-btn unsave-btn" slot="additional" @click="saveAndMove(false)">②変更を保存せずに移動</button>
@@ -181,14 +181,14 @@ export default {
       );
     },
     closeModal() {
-      this.openAlertModel = false;
+      this.openAlertModal = false;
       this.transitionPath = "";
       this.wantSave = null;
     },
     saveAndMove(isSave) {
       //*モーダルのボタン
       this.wantSave = isSave;
-      this.openAlertModel = false;
+      this.openAlertModal = false;
       this.moveOtherPage(this.transitionPath);
     },
     canMove(path) {
@@ -204,7 +204,7 @@ export default {
     },
     initFlags() {
       this.isUnsave = false;
-      this.openAlertModel = false;
+      this.openAlertModal = false;
       this.transitionPath = null;
       this.wantSave = false;
     }
@@ -214,12 +214,11 @@ export default {
     await this.$store.dispatch("events/getEventsAndPhotosIfNotExits", event_id);
     this.eventForm = this.getEventForId(event_id); //!多分ここでストアのイベント情報を入れているせいか、eventFormの編集履歴がリンクを踏んだ先に反映されてしまっている
     this.registerReloadEvent(); //リロード対策
-    console.log(this.eventForm);
     this.base_event = JSON.parse(JSON.stringify(this.eventForm));
   },
   beforeRouteLeave(to, from, next) {
     if (this.isUnsave) {
-      this.openAlertModel = true;
+      this.openAlertModal = true;
       this.transitionPath = to.fullPath;
       next(false);
     } else {

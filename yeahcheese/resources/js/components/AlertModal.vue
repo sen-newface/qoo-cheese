@@ -3,7 +3,7 @@
     <div class="modal-wrapper">
       <div class="modal-disp">
         <div class="float-right-box">
-          <button class="close-modal-btn" @click="closeModal">
+          <button class="close-modal-btn">
             <span>✖️</span>
           </button>
         </div>
@@ -28,11 +28,6 @@ export default {
     isShow: {
       type: Boolean,
       default: false
-    }
-  },
-  methods: {
-    closeModal() {
-      this.$emit("close-modal");
     }
   }
 };
