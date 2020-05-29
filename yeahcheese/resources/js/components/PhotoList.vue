@@ -49,6 +49,7 @@
                     v-if="isMyEvent"
                   ></i>
                   <i
+                    v-if="isLogin"
                     class="fa fa-gratipay photo-likes-icon"
                     :class="likesClass(photos[preview_index])"
                     @click="toggleLikesIcon(photos[preview_index])"
