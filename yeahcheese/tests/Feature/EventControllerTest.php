@@ -284,11 +284,12 @@ class EventControllerTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        // nameがnull
         $event_id = $event->id;
+
+        // nameがnull
         $event->name = '';
-        $event->start_date = '2020-09-21';
-        $event->end_date = '2020-10-21';
+        $event->start_date = '2120-09-21';
+        $event->end_date = '2120-10-21';
         $data = $event->toArray();
 
         $url = route('events.update', ['event' => $event_id]);
@@ -325,15 +326,9 @@ class EventControllerTest extends TestCase
         $response = $this->actingAs($user)->put($url, $data);
         $response->assertStatus(302);
 
-        // イベント作成者でないユーザでイベント編集しようとした時
-        $another_user = new User([
-            'name' => 'test',
-            'email' => 'tttt@gmail.com',
-            'password' => 'test1234'
-        ]);
-        $another_user->save();
+        // イベント作成者ではないユーザでイベント編集しようとした時
+        $another_user = factory(User::class)->create();
         $response = $this->actingAs($another_user)->put($url, $data);
-        dd($response);
         $response->assertStatus(403);
     }
 
@@ -342,13 +337,15 @@ class EventControllerTest extends TestCase
      */
     public function testDestoryError()
     {
+        // イベント作成者ではないユーザの時
         $user = factory(User::class)->create();
+        $another_user = factory(User::class)->create();
         $event = factory(Event::class)->create(['user_id' => $user->id]);
         factory(Photo::class)->create(['event_id' => $event->id]);
 
-        $url = route('events.destroy', ['event' => "test"]);
-        $res = $this->actingAs($user)->json("DELETE", $url);
-        $res->assertStatus(404);
+        $url = route('events.destroy', ['event' => $event->id]);
+        $res = $this->actingAs($another_user)->json("DELETE", $url);
+        $res->assertStatus(403);
         $this->assertEquals(1, count($user->events));
         $this->assertEquals(1, count(\App\Photo::all()));
     }

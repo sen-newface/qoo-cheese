@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
@@ -68,14 +69,11 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event, StoreEventRequest $request)
+    public function update(Event $event, UpdateEventRequest $request)
     {
-        if ($event->isOwner()) {
-            $form = $request->all();
-            $event->fill($form)->save();
-            return response(new EventResource($event), 200);
-        }
-        return response(null, 403);
+        $form = $request->all();
+        $event->fill($form)->save();
+        return response(new EventResource($event), 200);
     }
 
     /**
@@ -83,7 +81,6 @@ class EventsController extends Controller
      */
     public function destroy(Event $event, Request $request)
     {
-        $event->delete();
         // TODO: イベント削除の処理
         if ($event->isOwner()) {
             $event->delete();
