@@ -23,7 +23,7 @@
       </div>
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
-    <div class="wrap" v-if="preview" @click="preview=''">
+    <div class="wrap" v-if="preview && photos.length > 0" @click="preview=''">
       <div class="inner_wrap">
         <div class="content">
           <div class="preview_set" @click.stop>
@@ -54,7 +54,7 @@
                   >
                     <i class="fa fa-download mr-2" style="font-size: 27px;"></i>
                   </a>
-                  <i class="del_button fa fa-times" @click="initData"></i>
+                  <i class="del_button fa fa-times" @click="initPreview"></i>
                 </div>
                 <img :src="preview" class="preview-photo" />
               </div>
@@ -157,8 +157,9 @@ export default {
       };
       const request_type = photo.is_favorite ? "DELETE" : "POST";
       this.likesRequest(request_type, payload);
+      this.initPreview();
     },
-    initData() {
+    initPreview() {
       this.preview = "";
     },
     async likesRequest(request_type, payload, photo) {
@@ -190,7 +191,7 @@ export default {
   },
   beforeDestroy() {
     const user_id = this.user.id;
-  },
+  }
   mixins: [scrollControllable]
 };
 </script>
