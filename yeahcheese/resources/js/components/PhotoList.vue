@@ -1,26 +1,33 @@
 <template>
   <div>
-    <div id="img-thumbnail" class="d-flex justify-content-between flex-wrap mb-5 img-area">
-      <div
-        class="img-thumbnail-wrap"
-        v-show="photos.length"
-        v-for=" (image, index) in photos"
-        :key="image.id"
-        :class="imgThumbnailSize"
+    <div>
+      <transition-group
+        id="img-thumbnail"
+        class="d-flex justify-content-between flex-wrap mb-5 img-area"
+        name="fade"
+        mode="out-in"
       >
-        <img
-          :alt="alt(image.id)"
-          :src="image.image_path"
-          class="img-thumbnail mb-2 bg-white"
-          @click="openPreview(index)"
-        />
-        <i
-          v-if="isLogin"
-          class="fa fa-gratipay photo-likes-icon thumbnail"
-          :class="likesClass(image)"
-          @click="toggleLikesIcon(image)"
-        ></i>
-      </div>
+        <div
+          class="img-thumbnail-wrap"
+          v-show="photos.length"
+          v-for=" (image, index) in photos"
+          :key="image.id"
+          :class="imgThumbnailSize"
+        >
+          <img
+            :alt="alt(image.id)"
+            :src="image.image_path"
+            class="img-thumbnail mb-2 bg-white"
+            @click="openPreview(index)"
+          />
+          <i
+            v-if="isLogin"
+            class="fa fa-gratipay photo-likes-icon thumbnail"
+            :class="likesClass(image)"
+            @click="toggleLikesIcon(image)"
+          ></i>
+        </div>
+      </transition-group>
       <p v-show="!photos.length">写真はまだありません</p>
     </div>
     <div class="wrap" v-if="preview && photos.length > 0" @click="preview=''">
@@ -191,7 +198,7 @@ export default {
   },
   beforeDestroy() {
     const user_id = this.user.id;
-  }
+  },
   mixins: [scrollControllable]
 };
 </script>
@@ -348,5 +355,13 @@ export default {
   max-height: 88%;
   width: 88%;
   padding: 21px;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
 }
 </style>
