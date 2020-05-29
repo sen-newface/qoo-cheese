@@ -19,7 +19,9 @@ class Photo extends JsonResource
         return [
             'id' => $this->id,
             'image_path' => $this->image_path,
-            'is_favorite' => $this->isFavorite()
+            'is_favorite' => $this->isFavorite(),
+            'title' => $this->title,
+            'event_id' => $this->event_id,
         ];
     }
 }

@@ -132,6 +132,7 @@ export default {
   async created() {
     await this.$store.dispatch("events/initGetEvents");
     this.numberOfPage = this.events_per_page;
+    this.$store.commit("events/sortByCreated", this.isOrderByAsc);
     this.base_events = this.events;
   },
   watch: {
@@ -157,3 +158,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.border-color {
+  border-color: #66ccff;
+}
+</style>
