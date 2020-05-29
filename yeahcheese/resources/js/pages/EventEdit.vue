@@ -135,6 +135,7 @@ export default {
       if (this.isSuccess) {
         if (this.transitionPath === "") {
           this.initFlags(); // ! 通常の更新ならば、全てのフラグをオフにして普通に遷移させる
+          this.base_event = response
           this.$router.push({
             name: "eventShow",
             params: { id: this.eventForm.id }
