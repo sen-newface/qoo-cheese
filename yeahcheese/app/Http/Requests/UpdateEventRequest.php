@@ -14,7 +14,13 @@ class UpdateEventRequest extends EventRequest
      */
     public function authorize()
     {
-        return true;
+        $user = auth('sanctum')->user();
+        if (intval($this->event->user_id) === $user->id) {
+            return true;
+        }
+        // falseの場合、自動で403ステータスコードを返し、コントローラメソッドは実行されない
+        return false;
+      
     }
 
     /**
