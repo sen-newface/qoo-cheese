@@ -38,14 +38,9 @@ class EventsController extends Controller
      */
     public function show(Request $request, Event $event)
     {
-        $user = auth('sanctum')->user();
         $key = $request->key;
-        if ($user && !$key) {
-            if ($event->isOwner()) {
-                return response(new EventResource($event), 200);
-            } else {
-                return response(null, 403);
-            }
+        if ($event->isOwner()) {
+            return response(new EventResource($event), 200);
         }
         if ($event->key == $key) {
             return response(new EventResource($event), 200);
