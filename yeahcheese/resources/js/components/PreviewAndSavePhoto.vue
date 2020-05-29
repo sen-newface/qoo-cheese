@@ -2,18 +2,28 @@
   <div id="preview-and-save-photo">
     <label>
       <span type="button" class="btn btn-outline-success" :class="isFullWidth">写真追加</span>
-      <input id="add-button" type="file" @change="loadPhoto" accept="image/*" />
+      <input id="add-button" type="file" @change="loadPhoto" accept="image/*" multiple="multiple" />
     </label>
-    <div class="wrap" v-if="preview">
-      <validationMessages :errors="valiMessages" />
+    <validationMessages v-show="!files.length" :errors="valiMessages" />
+    <div class="wrap" v-if="files.length" id="previewPhotos">
+      <validationMessages v-show="files.length" :errors="valiMessages" />
       <div class="inner_wrap">
-        <p class="contnt" id="preview-photo">
-          <img :src="preview" />
-          <span style="display: block; text-align: center;">{{file.name}}</span>
-        </p>
-        <label class="mt-3" v-show="!canAdd">
+        <div id="preview-photo">
+          <div class="preview_box" v-for="(preview, index) in files" :key="`preview${index}`">
+            <img :src="preview.preview" class="rounded" />
+            <span class="file_name" style="display: block; text-align: center;">{{preview.name}}</span>
+            <i class="file_remove fa fa-times" @click="removeFile(index)"></i>
+            <input
+              type="text"
+              v-model="files[index].title"
+              style="margin-top: 7px;"
+              placeholder="画像タイトル"
+            />
+          </div>
+        </div>
+        <label class="mt-3 buttons">
           <button id="save-button" class="btn btn-success" @click="upPhoto">保存</button>
-          <label for="add-button" type="button" class="btn btn-info" style="margin-bottom: 0">選び直す</label>
+          <label for="add-button" type="button" class="btn btn-info" style="margin-bottom: 0">追加する</label>
           <button id="cancel-button" class="btn btn-warning" @click="upCancel">キャンセル</button>
         </label>
       </div>
@@ -24,7 +34,6 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import validationMessages from "../components/validationMessages";
-import scrollControllable from "../mixins/scrollControllable";
 export default {
   name: "PreviewAndSavePhoto",
   components: {
@@ -37,9 +46,7 @@ export default {
   },
   data() {
     return {
-      canAdd: true,
-      file: null,
-      preview: null,
+      files: [],
       error: null,
       validationMessages: []
     };
@@ -60,81 +67,157 @@ export default {
           response.push(val);
         }
       });
-      return response;
+      return response.filter((x, i, self) => self.indexOf(x) === i);
     },
     isFullWidth() {
       return this.accessDevice ? "ml-4 mr-4" : "is-full-width";
     }
   },
   methods: {
-    ...mapActions("photos", ["postPhoto", "setPhotosForEventId"]),
+    ...mapActions("photos", ["postPhotos", "setPhotosForEventId"]),
+    //preview関連始まり
     async loadPhoto(e) {
       this.delValidation();
+      let files = await this.fileListToBase64(e);
+      this.files = this.files.concat(files.filter(f => f !== null));
+    },
+    async fileListToBase64(e) {
+      const promises = [];
       const files = e.target.files || e.DataTransfer.files;
-      this.file = files[0];
-      const response = await this.createPhoto(this.file);
+      for (let i = 0; i < files.length; i++) {
+        promises.push(this.createPhotos(files[i]));
+      }
+      return await Promise.all(promises);
+    },
+    createPhotos(file) {
+      const fr = new FileReader();
+      fr.readAsDataURL(file);
+      return new Promise(resolve => {
+        fr.onload = res => {
+          if (file.size > 2000000) {
+            this.validationMessages.push(
+              "一枚につきファイルサイズは2MB以下にしてください。"
+            );
+            resolve(null);
+          }
+          if (!this.checkExt(file.name)) {
+            this.validationMessages.push(
+              "拡張子は[jpeg]のみ認められています。"
+            );
+            resolve(null);
+          }
+          file.preview = res.target.result;
+          file.title = "";
+          resolve(file);
+        };
+        fr.onerror = err => {
+          return (this.error = err);
+        };
+      });
+    },
+    getExt(filename) {
+      let pos = filename.lastIndexOf(".");
+      if (pos === -1) return "";
+      return filename.slice(pos + 1);
+    },
+    checkExt(filename) {
+      const allow_exts = new Array("jpeg", "jpg");
+      let ext = this.getExt(filename).toLowerCase();
+      if (allow_exts.indexOf(ext) === -1) return false;
+      return true;
+    },
+    //preview関連終わり
+    removeFile(index) {
+      this.files.splice(index, 1);
     },
     async upPhoto() {
       let data = new FormData();
       data.append("event_id", this.eventId);
-      data.append("image_path", this.file);
+      this.files.forEach(v => {
+        data.append("titles[]", v.title || "");
+        data.append("images[]", v);
+      });
       this.delValidation();
-      const response = await this.postPhoto({ id: this.eventId, data: data });
-
+      const response = await this.postPhotos({ id: this.eventId, data: data });
       if (this.isSuccess) {
         document.getElementById("add-button").value = "";
-        this.canAdd = true;
-        this.file = null;
-        this.preview = null;
+        this.files = [];
       } else {
         this.validationMessages = response;
       }
     },
-    async createPhoto(file) {
-      const fr = new FileReader();
-      fr.readAsDataURL(this.file);
-      fr.onload = res => {
-        this.preview = res.target.result;
-        this.canAdd = false;
-      };
-      fr.onerror = err => {
-        this.error = err;
-        this.canAdd = true;
-        this.file = null;
-        this.preview = null;
-      };
-    },
     upCancel() {
       document.getElementById("add-button").value = "";
-      this.canAdd = true;
-      this.file = null;
-      this.preview = null;
+      this.files = [];
     },
     delValidation() {
       this.validationMessages = [];
     }
-  },
-  watch: {
-    preview: {
-      handler(val) {
-        if (val) {
-          this.no_scroll();
-        } else {
-          this.return_scroll();
-        }
-      }
-    }
-  },
-  mixins: [scrollControllable]
+  }
 };
 </script>
 
 <style scoped>
 #preview-photo {
+  width: 100%;
+  max-height: 78vh;
   margin-bottom: 0 !important;
   text-align: center;
+  position: relative;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+  display: flex;
+  flex-wrap: wrap;
+  /* align-content: space-between; */
+  justify-content: space-between;
 }
-#preview-photo img {
+.preview_box {
+  width: 49%;
+  margin-bottom: 12px;
+  position: relative;
+  display: inline-table;
+}
+@media screen and (max-width: 767px) {
+  .preview_box {
+    width: 100%;
+  }
+  .inner_wrap {
+    width: 90%;
+    max-width: 90%;
+    padding: 15px;
+    height: 100%;
+  }
+  #preview-photo {
+    max-height: 90%;
+  }
+  .buttons * {
+    margin-top: 1rem !important;
+    font-size: 0.8rem;
+  }
+}
+.file_remove {
+  color: red;
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  z-index: 2000;
+  cursor: pointer;
+  margin: 0px;
+  font-size: 23px;
+}
+.file_name {
+  word-wrap: break-word;
+  font-size: 0.8rem;
+  position: absolute;
+  width: 100%;
+  z-index: 200;
+  bottom: 37px;
+  background: rgba(45, 45, 45, 0.4);
+  color: white;
+  padding: 4px;
+}
+.preview_box img {
   object-fit: cover;
   max-width: 100%;
 }
@@ -142,6 +225,7 @@ export default {
   display: none;
 }
 .wrap {
+  z-index: 50;
   width: 100vw;
   height: 100vh;
   background: gray;

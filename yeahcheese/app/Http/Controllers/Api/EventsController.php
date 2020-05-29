@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Resources\Event as EventResource;
@@ -15,6 +16,8 @@ class EventsController extends Controller
     {
         $this->middleware('auth:sanctum')
             ->except(['auth', 'show']);
+        $this->middleware('auth-event')
+            ->only(['auth']);
     }
     /**
      * イベント一覧取得
@@ -26,11 +29,15 @@ class EventsController extends Controller
 
     public function auth(Request $request)
     {
-        $event = Event::all()->where("key", $request->key)->first();
-        if (!$event) {
-            return response("認証キーが間違っています", 406);
+        if (is_null($request->errors)) {
+            $event = $request->event;
+            $opt = $request->only('status', 'path');
+            $resource = new EventResource($event);
+            $resource->additional($opt);
+            return $resource;
         }
-        return response(new EventResource($event), 200);
+        $response = $request->only('errors', 'status', 'key');
+        return response($response);
     }
 
     /**
@@ -38,14 +45,9 @@ class EventsController extends Controller
      */
     public function show(Request $request, Event $event)
     {
-        $user = auth('sanctum')->user();
         $key = $request->key;
-        if ($user && !$key) {
-            if ($event->isOwner()) {
-                return response(new EventResource($event), 200);
-            } else {
-                return response(null, 403);
-            }
+        if ($event->isOwner()) {
+            return response(new EventResource($event), 200);
         }
         if ($event->key == $key) {
             return response(new EventResource($event), 200);
@@ -62,14 +64,11 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event, StoreEventRequest $request)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        if ($event->isOwner()) {
-            $form = $request->all();
-            $event->fill($form)->save();
-            return response(new EventResource($event), 200);
-        }
-        return response(null, 403);
+        $form = $request->all();
+        $event->fill($form)->save();
+        return response(new EventResource($event), 200);
     }
 
     /**
@@ -77,7 +76,6 @@ class EventsController extends Controller
      */
     public function destroy(Event $event, Request $request)
     {
-        $event->delete();
         // TODO: イベント削除の処理
         if ($event->isOwner()) {
             $event->delete();

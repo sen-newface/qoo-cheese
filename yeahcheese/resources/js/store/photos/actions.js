@@ -3,12 +3,12 @@ import api from "../../api";
 import store from "../../store";
 
 export default {
-  async postPhoto(context, { id, data }) {//idはevent_id
+  async postPhotos(context, { id, data }) {//idはevent_id
     const response = await api.eventPhotosPost(id, data);
     const isSuccess = store.getters["status/isApiSuccess"];
     if (isSuccess) {
-      context.commit("addPhotoByEventId", { event_id: id, photo: response });
-      context.commit("events/setEventPreview", { id: id, photo: response }, { root: true });
+      context.commit("addPhotosByEventId", { event_id: id, photos: response });
+      context.commit("events/updateEventPreviews", { event_id: id, photos: context.getters.getPhotosForEventId(id) }, { root: true });
       context.commit("flashMessage/setTextAndClass", { text: "写真の保存に成功しました", cls: "success" }, { root: true });
       return response;
     } else {

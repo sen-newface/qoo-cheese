@@ -30,6 +30,33 @@ const getters = {
     var target = getters.getEventForId(event_id);
     if (target && target.user_id == user.id) return true;
     return false;
+  },
+  getToday: () => {
+    let now = new Date();
+    let y = now.getFullYear();
+    let m = now.getMonth() + 1;
+    let d = now.getDate();
+    if (m < 10) {
+      m = "0" + m;
+    }
+    if (d < 10) {
+      d = "0" + d;
+    }
+    return y + m + d;
+  },
+  getDeadlineWithoutHyphen: () => (str) => {
+    let res = str.slice(0, 4) + str.slice(5, 7) + str.slice(8);
+    return res;
+  },
+  getLabelByDeadline: (state, getters) => (start_date, end_date) => {
+    let today = getters.getToday;
+    if (today < parseInt(getters.getDeadlineWithoutHyphen(start_date))) {
+      return { class: "badge-secondary", text: "公開前" };
+    }
+    if (parseInt(getters.getDeadlineWithoutHyphen(end_date)) < today) {
+      return { class: "badge-danger", text: "公開終了" };
+    }
+    return { class: "badge-success", text: "公開中" };
   }
 }
 export default getters
