@@ -9,7 +9,7 @@
       <validationMessages v-show="files.length" :errors="valiMessages" />
       <div class="inner_wrap">
         <div id="preview-photo">
-          <div class="preview_box" v-for="(preview, index) in files" :key="preview + index">
+          <div class="preview_box" v-for="(preview, index) in files" :key="`preview${index}`">
             <img :src="preview.preview" class="rounded" />
             <span class="file_name" style="display: block; text-align: center;">{{preview.name}}</span>
             <i class="file_remove fa fa-times" @click="removeFile(index)"></i>
