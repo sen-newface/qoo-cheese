@@ -9,7 +9,7 @@
         :selected="selectedColumns"
       ></change-columns>
     </div>
-    <photo-list :photos="favoritePhotos || []" :event="event" />
+    <photo-list :photos="likedPhotos || []" :event="event" />
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
       getPhotosForEventId: "photos/getPhotosForEventId",
       user: "users/user",
       isLogin: "users/isLogin",
-      favoritePhotos: "photos/userFavoritePhotos",
+      likedPhotos: "photos/userFavoritePhotos",
       selectedColumns: "display/selectedColumns",
       accessDevice: "display/accessDevice"
     }),
