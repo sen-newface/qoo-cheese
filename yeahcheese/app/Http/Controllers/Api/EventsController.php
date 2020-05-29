@@ -45,14 +45,9 @@ class EventsController extends Controller
      */
     public function show(Request $request, Event $event)
     {
-        $user = auth('sanctum')->user();
         $key = $request->key;
-        if ($user && !$key) {
-            if ($event->isOwner()) {
-                return response(new EventResource($event), 200);
-            } else {
-                return response(null, 403);
-            }
+        if ($event->isOwner()) {
+            return response(new EventResource($event), 200);
         }
         if ($event->key == $key) {
             return response(new EventResource($event), 200);
@@ -69,7 +64,7 @@ class EventsController extends Controller
     /**
      * イベント情報更新（写真を除く）
      */
-    public function update(Event $event, UpdateEventRequest $request)
+    public function update(UpdateEventRequest $request, Event $event)
     {
         $form = $request->all();
         $event->fill($form)->save();
