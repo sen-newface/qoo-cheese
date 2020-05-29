@@ -97,7 +97,7 @@ class PhotoControllerTest extends TestCase
         Storage::disk('images')->exists($file->name);
         $response
             ->assertStatus(200)
-            ->assertJsonCount(2)
+            ->assertJsonCount(3)
             ->assertJsonStructure(
                 [
                 '*' => [
