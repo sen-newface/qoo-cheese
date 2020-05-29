@@ -24,15 +24,10 @@ class StoreEventRequest extends EventRequest
      */
     public function rules()
     {
-        return parent::rules() + [
-        'start_date' => 'after:yesterday',
-        ];
-    }
-
-    public function messages()
-    {
-        return parent::messages() +  [
-        'start_date.after' => '本日以降に設定してください',
+        return [
+        'name' => 'required|string|max:255',
+        'start_date' => 'required|date|before_or_equal:end_date|after:yesterday',
+        'end_date' => 'required|date|after_or_equal:start_date'
         ];
     }
 }
