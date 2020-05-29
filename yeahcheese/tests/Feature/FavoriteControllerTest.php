@@ -90,19 +90,61 @@ class FavoriteControllerTest extends TestCase
     /**
      * @test
      */
-    public function testDestroy()
-    {
+    public function testDestroy(){
         $url = route('like.store');
         $data = [
-            'user_id' => $this->user->id,
             'photo_id' => $this->photo->id,
         ];
         $response = $this->post($url, $data);
-
         $url = route('like.destroy');
         $response = $this->delete($url, ['photo_id' => $this->photo->id]);
-        $response
-            ->assertStatus(204);
+        $response->assertStatus(204);
         $this->assertEquals(0, count($this->user->photos));
+    }
+
+    /**
+     * 異常系
+     */
+    public function testDestroyError()
+    {
+        $this->actingAs($this->user);
+        $url = route('like.store');
+        $data = [
+            'photo_id' => $this->photo->id,
+        ];
+        $response = $this->post($url, $data);
+        $url = route('like.destroy');
+        $response = $this->delete($url, ['photo_id' => null]);
+        $response
+            ->assertStatus(200);
+        $this->assertEquals(1, count($this->user->photos));
+    }
+
+    /**
+     * 異常系: ログインしてなければ弾く
+     */
+    public function testIndexError()
+    {
+        $url = route('like.store');
+        $data = [
+            'photo_id' => $this->photo->id,
+        ];
+        $this->post($url, $data);
+        $url = route('like.index');
+        $res = $this->json('get', $url);
+        if ($res->assertStatus(401)) {
+            return;
+        }
+        $res->assertJsonCount(1);
+        $res->assertJsonStructure(
+            [
+                '*' => [
+                    'id',
+                    'image_path',
+                    'is_favorite'
+                ]
+            ]
+        );
+        $res->assertStatus(200);
     }
 }

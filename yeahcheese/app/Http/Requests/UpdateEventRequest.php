@@ -14,7 +14,13 @@ class UpdateEventRequest extends EventRequest
      */
     public function authorize()
     {
-        return true;
+        $user = auth('sanctum')->user();
+        if (intval($this->event->user_id) === $user->id) {
+            return true;
+        }
+        // falseの場合、自動で403ステータスコードを返し、コントローラメソッドは実行されない
+        return false;
+      
     }
 
     /**
@@ -25,7 +31,9 @@ class UpdateEventRequest extends EventRequest
     public function rules()
     {
         return [
-        //
+        'name' => 'required|string|max:255',
+        'start_date' => 'required|date|before_or_equal:end_date|',
+        'end_date' => 'required|date|after_or_equal:start_date'
         ];
     }
 }

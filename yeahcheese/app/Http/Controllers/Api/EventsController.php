@@ -66,12 +66,9 @@ class EventsController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        if ($event->isOwner()) {
-            $form = $request->all();
-            $event->fill($form)->save();
-            return response(new EventResource($event), 200);
-        }
-        return response(null, 403);
+        $form = $request->all();
+        $event->fill($form)->save();
+        return response(new EventResource($event), 200);
     }
 
     /**
@@ -79,7 +76,6 @@ class EventsController extends Controller
      */
     public function destroy(Event $event, Request $request)
     {
-        $event->delete();
         // TODO: イベント削除の処理
         if ($event->isOwner()) {
             $event->delete();

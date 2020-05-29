@@ -23,11 +23,17 @@ class FavoritesController extends Controller
 
     public function store(Request $request)
     {
-        $favorite = new Favorite();
-        $favorite->user_id = $request->user_id;
-        $favorite->photo_id = $request->photo_id;
+        $user = auth('sanctum')->user();
+        $target = Favorite::where('user_id', intval($user->id))
+            ->where('photo_id', intval($request->photo_id))->get();
+        if ($target->isEmpty()) {
+            $favorite = new Favorite();
+            $favorite->user_id = $user->id;
+            $favorite->photo_id = $request->photo_id;
 
-        return response(FavoriteResource::make(Favorite::create($favorite->toArray())), 201);
+            return response(FavoriteResource::make(Favorite::create($favorite->toArray())), 201);
+        }
+        return response(null, 200);
     }
 
     public function destroy(Request $request)
