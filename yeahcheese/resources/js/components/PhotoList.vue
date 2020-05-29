@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-show="endLoading===''">
       <transition-group
         id="img-thumbnail"
         class="d-flex justify-content-between flex-wrap mb-5 img-area"
@@ -108,7 +108,8 @@ export default {
       user: "users/user",
       isLogin: "users/isLogin",
       selectedColumns: "display/selectedColumns",
-      isSuccess: "status/isApiSuccess"
+      isSuccess: "status/isApiSuccess",
+      endLoading: "load/text"
     }),
     alt() {
       return function(id) {
@@ -363,5 +364,8 @@ export default {
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s;
+}
+.fade-leave-active {
+  position: absolute;
 }
 </style>
